@@ -38,15 +38,21 @@ class Zume_Stats_Endpoints
 
         $params = dt_recursive_sanitize_array( $params);
 
-        if ( isset( $params['range'] ) && ! empty( $params['range'] ) ) {
-            $requested_range = $this->requested_range( $params );
-
-            $stats['requested_range'] = $requested_range;
-            $stats['range'] = apply_filters( 'zume_range_stats', $requested_range, [] );
+        if ( ! isset( $params['filter'] ) ) {
+            $params['filter'] = 'none';
+        }
+        if ( ! in_array( $params['filter'], [ 'none', 'candidate', 'pre', 'active', 'post', 'l1', 'l2', 'l3' ] ) ) {
+            $params['filter'] = 'none';
         }
 
-        if ( isset( $params['all_time'] )  ) {
-            $stats['all_time'] = apply_filters( 'zume_all_time_stats', [] );
+        if ( isset( $params['range'] ) && ! empty( $params['range'] ) ) {
+            $requested_range = $this->requested_range( $params );
+            $stats['requested_range'] = $requested_range;
+            $stats['range'] = apply_filters( 'zume_range_stats', [], $requested_range );
+        }
+
+        if ( isset( $params['all_time'] ) && ! empty( $params['all_time'] )  ) {
+            $stats['all_time'] = apply_filters( 'zume_all_time_stats', [], $params['filter'] );
         }
 
         return $stats;
@@ -58,7 +64,12 @@ class Zume_Stats_Endpoints
         }
         $days = $requested_days + 1;
         $compare_days = $requested_days * 2 + 1;
+        $filter = 'none';
+        if ( isset( $params['filter'] ) && ! empty( $params['filter'] )  ) {
+            $filter = sanitize_text_field( $params['filter'] );
+        }
         $range = [
+            'filter' => $filter,
             'days' => $requested_days,
             'end' => date( 'Y-m-d', strtotime( 'yesterday' ) ),
             'end_time' => strtotime( 'yesterday' ),

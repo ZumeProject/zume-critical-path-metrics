@@ -100,9 +100,9 @@ class Zume_Critical_Path {
             require_once( 'admin/admin-menu-and-tabs.php' ); // adds starter admin page and section for plugin
         }
 
-        if ( strpos( dt_get_url_path(), 'metrics' ) !== false || ( $is_rest && strpos( dt_get_url_path(), 'zume-critical-path-metrics' ) !== false ) ){
-            require_once( 'charts/charts-loader.php' );
-        }
+            require_once( 'charts/base.php' );
+//        if ( strpos( dt_get_url_path(), 'metrics' ) !== false || ( $is_rest && strpos( dt_get_url_path(), 'zume-critical-path-metrics' ) !== false ) ){
+//        }
 
         $this->i18n();
 

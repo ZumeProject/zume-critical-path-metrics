@@ -2,7 +2,7 @@
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 add_filter( 'zume_all_time_stats', function( $stats, $filter  ) {
-    if ( ! ( 'none' === $filter || 'candidate' === $filter ) ) {
+    if ( ! ( 'none' === $filter || 'active' === $filter ) ) {
         return $stats;
     }
 
@@ -11,7 +11,7 @@ add_filter( 'zume_all_time_stats', function( $stats, $filter  ) {
         'label' => 'Visitors',
         'description' => '',
         'value' => 0,
-        'category' => 'candidate',
+        'category' => 'active',
         'type' => 'number',
         'public' => true,
     ];
