@@ -1,7 +1,7 @@
-find ./ -type f -exec sed -i -e 's|Disciple_Tools_Plugin_Starter_Template|Disciple_Tools_Plugin_Starter_Template|g' {} \;
-find ./ -type f -exec sed -i -e 's|disciple_tools_plugin_starter_template|disciple_tools_plugin_starter_template|g' {} \;
-find ./ -type f -exec sed -i -e 's|disciple-tools-plugin-starter-template|disciple-tools-plugin-starter-template|g' {} \;
-find ./ -type f -exec sed -i -e 's|starter_post_type|starter_post_type|g' {} \;
-find ./ -type f -exec sed -i -e 's|Plugin Starter Template|Plugin Starter Template|g' {} \;
-mv disciple-tools-plugin-starter-template.php disciple-tools-plugin-starter-template.php
+find ./ -type f -exec sed -i -e 's|Zume_Critical_Path|Zume_Critical_Path|g' {} \;
+find ./ -type f -exec sed -i -e 's|zume_critical_path|zume_critical_path|g' {} \;
+find ./ -type f -exec sed -i -e 's|zume-critical-path|zume-critical-path|g' {} \;
+find ./ -type f -exec sed -i -e 's|zume_critical_path_post_type|zume_critical_path_post_type|g' {} \;
+find ./ -type f -exec sed -i -e 's|Zúme Critical Path|Zúme Critical Path|g' {} \;
+mv zume-critical-path.php zume-critical-path.php
 rm .rename.sh
