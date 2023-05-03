@@ -35,6 +35,12 @@ function zume_critical_path() {
     $wp_theme = wp_get_theme();
     $version = $wp_theme->version;
 
+    if ( phpversion() < '8.0' ) {
+        add_action( 'admin_notices', 'zume_critical_path_hook_admin_notice' );
+        add_action( 'wp_ajax_dismissed_notice_handler', 'dt_hook_ajax_notice_handler' );
+        return false;
+    }
+
     /*
      * Check if the Disciple.Tools theme is loaded and is the latest required version
      */
@@ -100,8 +106,9 @@ class Zume_Critical_Path {
             require_once( 'admin/admin-menu-and-tabs.php' ); // adds starter admin page and section for plugin
         }
 
-            require_once( 'charts/base.php' );
+
 //        if ( strpos( dt_get_url_path(), 'metrics' ) !== false || ( $is_rest && strpos( dt_get_url_path(), 'zume-critical-path-metrics' ) !== false ) ){
+        require_once( 'charts/loader.php' );
 //        }
 
         $this->i18n();
