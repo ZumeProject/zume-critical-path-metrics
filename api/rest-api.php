@@ -27,6 +27,13 @@ class Zume_Stats_Endpoints
                 'permission_callback' => '__return_true'
             ]
         );
+        register_rest_route(
+            $namespace, '/stats_list', [
+                'methods'  => [ 'POST', 'GET' ],
+                'callback' => [ $this, 'endpoint_list' ],
+                'permission_callback' => '__return_true'
+            ]
+        );
     }
     public function endpoint( WP_REST_Request $request ) {
 
@@ -56,6 +63,15 @@ class Zume_Stats_Endpoints
         }
 
         return $stats;
+    }
+    public function endpoint_list( WP_REST_Request $request ) {
+
+        $params = $request->get_params();
+
+        global $wpdb;
+        $list = $wpdb->get_results( "SELECT post_title FROM $wpdb->posts WHERE post_type = 'contacts' LIMIT 100" );
+
+        return $list;
     }
     public function requested_range( $params ) {
         $requested_days = 30;

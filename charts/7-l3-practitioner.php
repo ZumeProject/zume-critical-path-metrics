@@ -65,22 +65,113 @@ class Zume_Path_L3 extends Zume_Chart_Base
                 let chart = jQuery('#chart')
                 let title = '<?php echo $this->base_title ?>'
                 chart.empty().html(`
-                    <h1>${title}</h1>
-                    <hr>
-                    <span class="loading-spinner active"></span>
-                    <div class="grid-x">
-                        <div id="cell"></div>
-                    </div>
-                `)
+                        <div id="zume-path">
+                            <div class="grid-x">
+                                <div class="cell small-6"><h1>${title}</h1></div>
+                                <div class="cell small-6">
+                                    <span style="float: right;">
+                                        <select>
+                                            <option value="30">Last 30 days</option>
+                                            <option value="7">Last 7 days</option>
+                                            <option value="90">Last 90 days</option>
+                                            <option value="365">Last 1 Year</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                            <hr>
+                            <span class="loading-spinner active"></span>
+                            <h2>Goals</h2>
+                            <div class="grid-x zume-goals"  data-equalizer data-equalize-by-row></div>
+                            <hr>
+                            <h2>Trends</h2>
+                            <div class="grid-x zume-trends"  data-equalizer data-equalize-by-row></div>
+                        </div>
+                    `)
 
+                let valence = ['valence-grey', 'valence-grey', 'valence-darkred', 'valence-red', 'valence-grey', 'valence-green', 'valence-darkgreen']
 
-
-
-                setTimeout(
-                    function()
+                let data = [
                     {
+                        "title": "Label",
+                        "value": 100,
+                        "link": 'label',
+                        "description": "description description description description ",
+                        "goal": valence[Math.floor(Math.random()*valence.length)],
+                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                    },
+                    {
+                        "title": "Label",
+                        "value": 100,
+                        "link": 'label',
+                        "description": "description description description ",
+                        "goal": valence[Math.floor(Math.random()*valence.length)],
+                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                    },
+                    {
+                        "title": "Label",
+                        "value": 100,
+                        "link": 'label',
+                        "description": "description description description description description description description description ",
+                        "goal": valence[Math.floor(Math.random()*valence.length)],
+                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                    }
+                ]
+
+                jQuery.each( data, function( key, value ) {
+                    jQuery('.zume-goals').append(`
+                            <!-- Zume Card-->
+                            <div class="cell medium-4 large-3" data-equalizer-watch>
+                                <div class="zume-card ${value.goal}" data-link="${value.link}">
+                                    <div class="zume-card-title">
+                                        ${value.title}
+                                    </div>
+                                    <div class="zume-card-content">
+                                        ${value.value}
+                                    </div>
+                                    <div class="zume-card-footer">
+                                        ${value.description}
+                                    </div>
+                                </div>
+                            </div><!-- card -->
+                        `)
+                })
+
+                jQuery.each( data, function( key, value ) {
+                    jQuery('.zume-trends').append(`
+                            <!-- Zume Card-->
+                            <div class="cell medium-4 large-3" data-equalizer-watch>
+                                <div class="zume-card ${value.trend}">
+                                    <div class="zume-card-title">
+                                        ${value.title}
+                                    </div>
+                                    <div class="zume-card-content">
+                                        ${value.value}
+                                    </div>
+                                    <div class="zume-card-footer">
+                                        ${value.description}
+                                    </div>
+                                </div>
+                            </div><!-- card -->
+                        `)
+                })
+
+                jQuery('.zume-card').click(function(){
+                    jQuery('#modal-large').foundation('open')
+
+                    jQuery('#modal-large-title').empty().html('Fact Label<hr>')
+
+                    jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
+                    jQuery.get('https://zume5.training/coaching/wp-json/zume_stats/v1/stats_list?days=365&range=true&all_time=true', function(data){
+                        jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
+                        jQuery.each(data, function(i,v)  {
+                            jQuery('#zume-list-modal').append( '<tr><td><a href="">' + v.post_title + '</a></td></tr>')
+                        })
                         jQuery('.loading-spinner').removeClass('active')
-                    }, 3000);
+                    })
+                })
+
+                jQuery('.loading-spinner').delay(3000).removeClass('active')
             })
 
         </script>

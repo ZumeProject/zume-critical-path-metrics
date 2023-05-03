@@ -14,6 +14,9 @@
     --large-text: 2em;
     --xlarge-text: 3em;
     --radius: 10px;
+
+    --medium-weight: 400;
+    --heavy-weight: 700;
 }
 
 .valence-legend {
@@ -21,38 +24,42 @@
     max-width: 500px;
     margin: 0 auto;
 }
-.darkred {
+.valence-darkred {
     background-color: var(--darkred);
 }
-.red {
+.valence-red {
     background-color: var(--red);
 }
-.grey {
+.valence-grey {
     background-color: var(--grey);
 }
-.green {
+.valence-green {
     background-color: var(--green);
 }
-.darkgreen {
+.valence-darkgreen {
     background-color: var(--darkgreen);
 }
 
 
 .zume-cards.critical-path {
-    background: linear-gradient(#ccc, #ccc) no-repeat center/2px 90%;
+    background: linear-gradient(var(--lightgrey), var(--lightgrey)) no-repeat center/10px 90%;
 }
 .zume-trio-card {
     max-width: 700px;
-    background-color: var(--lightgrey);
+    background-color: var(--grey);
     border-radius: var(--radius);
-    border: 1px solid var(--grey);
-    box-shadow: 0 1px 1px 0 rgba(0,0,0,.2);
+    box-shadow: 0 3px 3px 0 rgba(0,0,0,.6);
     margin: 20px auto;
     text-align: center;
+    color: white;
 }
 .zume-trio-card-content {
     padding: 1.5em 0;
     cursor: pointer;
+    border: 1px solid var(--white);
+}
+.zume-trio-card-content:hover {
+    background-color: var(--darkgrey);
 }
 .zume-trio-card .zume-trio-card-title {
     vertical-align: middle;
@@ -61,44 +68,49 @@
 .zume-trio-card .zume-trio-card-value {
     vertical-align: middle;
     font-size: 4em;
+    font-weight: var(--heavy-weight);
 }
 .zume-trio-card .zume-goal {
-    height: 50px;
     border-radius: 0 0 0 var(--radius);
     color: white;
+    height: 50px;
     font-size: var(--large-text);
+    border: 1px solid var(--white);
 }
 .zume-trio-card .zume-trend {
-    font-size: var(--large-text);
+    border-radius: 0 0 var(--radius) 0;
     color: white;
     height: 50px;
-    border-radius: 0 0 var(--radius) 0;
+    font-size: var(--large-text);
+    border: 1px solid var(--white);
 }
 
 
 .zume-card {
-    background-color: #fff;
     border-radius: var(--radius);
-    border: 1px solid var(--lightgrey);
-    box-shadow: 0 1px 1px 0 rgba(0,0,0,.2);
+    border: 1px solid var(--white);
+    box-shadow: 0 3px 3px 0 rgba(0,0,0,.6);
     padding: 16px;
     margin: 5px;
     text-align: center;
+    color: var(--white);
+    cursor: pointer;
 }
 .zume-card .zume-card-title {
-    color: #999;
+    color: var(--white);
     font-size: 1.4em;
     font-weight: 400;
     margin-bottom: 8px;
 }
 .zume-card .zume-card-content {
     font-size: var(--xlarge-text);
-    font-weight: 400;
+    font-weight: var(--heavy-weight);
     margin-bottom: 8px;
 }
 .zume-card .zume-card-footer {
-    color: #999;
+    color: var(--white);
     font-size: var(--small-text);
     font-weight: 400;
     margin-bottom: 8px;
+    height: 40px;
 }

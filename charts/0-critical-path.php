@@ -89,16 +89,16 @@ class Zume_Path_Overview extends Zume_Chart_Base
 
                             <div class="grid-y zume-cards critical-path" id="zume-cards"></div>
                             <div class="grid-x valence-legend">
-                                <div class="cell small-2 darkred"></div>
-                                <div class="cell small-2 red"></div>
-                                <div class="cell small-4 grey"></div>
-                                <div class="cell small-2 green"></div>
-                                <div class="cell small-2 darkgreen"></div>
+                                <div class="cell small-2 valence-darkred"></div>
+                                <div class="cell small-2 valence-red"></div>
+                                <div class="cell small-4 valence-grey"></div>
+                                <div class="cell small-2 valence-green"></div>
+                                <div class="cell small-2 valence-darkgreen"></div>
                             </div>
                         </div>
                     `)
 
-                    let valence = ['darkred', 'red', 'grey', 'green', 'darkgreen']
+                    let valence = ['valence-grey', 'valence-grey', 'valence-darkred', 'valence-red', 'valence-grey', 'valence-green', 'valence-darkgreen']
 
                     let data = [
                         {

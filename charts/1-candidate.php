@@ -66,46 +66,60 @@ class Zume_Path_Candidate extends Zume_Chart_Base
                 let title = '<?php echo $this->base_title ?>'
                 chart.empty().html(`
                         <div id="zume-path">
-                            <h1>${title}</h1>
+                            <div class="grid-x">
+                                <div class="cell small-6"><h1>${title}</h1></div>
+                                <div class="cell small-6">
+                                    <span style="float: right;">
+                                        <select>
+                                            <option value="30">Last 30 days</option>
+                                            <option value="7">Last 7 days</option>
+                                            <option value="90">Last 90 days</option>
+                                            <option value="365">Last 1 Year</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
                             <hr>
                             <span class="loading-spinner active"></span>
-                            <div class="grid-x" id="zume-cards"></div>
+                            <h2>Goals</h2>
+                            <div class="grid-x zume-goals"  data-equalizer data-equalize-by-row></div>
+                            <hr>
+                            <h2>Trends</h2>
+                            <div class="grid-x zume-trends"  data-equalizer data-equalize-by-row></div>
                         </div>
                     `)
 
+                let valence = ['valence-grey', 'valence-grey', 'valence-darkred', 'valence-red', 'valence-grey', 'valence-green', 'valence-darkgreen']
+
                 let data = [
                     {
-                        "title": "Overview",
+                        "title": "Label",
                         "value": 100,
-                        "description": "description"
+                        "description": "description description description description ",
+                        "goal": valence[Math.floor(Math.random()*valence.length)],
+                        "trend": valence[Math.floor(Math.random()*valence.length)]
                     },
                     {
-                        "title": "Overview",
+                        "title": "Label",
                         "value": 100,
-                        "description": "description"
+                        "description": "description description description ",
+                        "goal": valence[Math.floor(Math.random()*valence.length)],
+                        "trend": valence[Math.floor(Math.random()*valence.length)]
                     },
                     {
-                        "title": "Overview",
+                        "title": "Label",
                         "value": 100,
-                        "description": "description"
-                    },
-                    {
-                        "title": "Overview",
-                        "value": 100,
-                        "description": "description"
-                    },
-                    {
-                        "title": "Overview",
-                        "value": 100,
-                        "description": "description"
+                        "description": "description description description description description description description description ",
+                        "goal": valence[Math.floor(Math.random()*valence.length)],
+                        "trend": valence[Math.floor(Math.random()*valence.length)]
                     }
                 ]
 
                 jQuery.each( data, function( key, value ) {
-                    jQuery('#zume-cards').append(`
+                    jQuery('.zume-goals').append(`
                             <!-- Zume Card-->
-                            <div class="cell medium-4 large-3 ">
-                                <div class="zume-card">
+                            <div class="cell medium-4 large-3" data-equalizer-watch>
+                                <div class="zume-card ${value.goal}">
                                     <div class="zume-card-title">
                                         ${value.title}
                                     </div>
@@ -120,7 +134,41 @@ class Zume_Path_Candidate extends Zume_Chart_Base
                         `)
                 })
 
-                jQuery('.loading-spinner').delay(3000).removeClass('active')
+                jQuery.each( data, function( key, value ) {
+                    jQuery('.zume-trends').append(`
+                            <!-- Zume Card-->
+                            <div class="cell medium-4 large-3" data-equalizer-watch>
+                                <div class="zume-card ${value.trend}">
+                                    <div class="zume-card-title">
+                                        ${value.title}
+                                    </div>
+                                    <div class="zume-card-content">
+                                        ${value.value}
+                                    </div>
+                                    <div class="zume-card-footer">
+                                        ${value.description}
+                                    </div>
+                                </div>
+                            </div><!-- card -->
+                        `)
+                })
+
+                jQuery('.zume-card').click(function(){
+                    jQuery('#modal-large').foundation('open')
+
+                    jQuery('#modal-large-title').empty().html('Fact Label<hr>')
+
+                    jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
+                    jQuery.get('https://zume5.training/coaching/wp-json/zume_stats/v1/stats_list?days=365&range=true&all_time=true', function(data){
+                        jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
+                        jQuery.each(data, function(i,v)  {
+                            jQuery('#zume-list-modal').append( '<tr><td><a href="">' + v.post_title + '</a></td></tr>')
+                        })
+                        jQuery('.loading-spinner').removeClass('active')
+                    })
+                })
+
+                jQuery('.loading-spinner').removeClass('active')
             })
 
         </script>
