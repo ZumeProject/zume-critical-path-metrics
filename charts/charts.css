@@ -2,11 +2,13 @@
     --white: #ffffff;
     --lightgrey: #cccccc;
     --darkgrey: #999999;
-    --darkred: darkred;
-    --red: red;
+
+    --darkred: red;
+    --red: #ffbf00;
     --grey: grey;
-    --green: green;
-    --darkgreen: darkgreen;
+    --green: lime;
+    --darkgreen: green;
+
     --small-text: 0.8em;
     --medium-text: 1em;
     --large-text: 2em;

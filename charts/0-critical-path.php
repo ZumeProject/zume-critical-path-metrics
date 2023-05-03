@@ -89,11 +89,11 @@ class Zume_Path_Overview extends Zume_Chart_Base
 
                             <div class="grid-y zume-cards critical-path" id="zume-cards"></div>
                             <div class="grid-x valence-legend">
-                                <div class="cell small-2 red"></div>
                                 <div class="cell small-2 darkred"></div>
+                                <div class="cell small-2 red"></div>
                                 <div class="cell small-4 grey"></div>
-                                <div class="cell small-2 darkgreen"></div>
                                 <div class="cell small-2 green"></div>
+                                <div class="cell small-2 darkgreen"></div>
                             </div>
                         </div>
                     `)
