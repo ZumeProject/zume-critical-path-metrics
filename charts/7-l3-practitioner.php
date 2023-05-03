@@ -1,14 +1,14 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) {
     exit;
-} // Exit if accessed directly.
+}
 
 
-class Zume_Path_Overview extends Zume_Chart_Base
+class Zume_Path_L3 extends Zume_Chart_Base
 {
     //slug and title of the top menu folder
-    public $base_slug = ''; // lowercase
-    public $slug = ''; // lowercase
+    public $base_slug = 'l3_practitioner'; // lowercase
+    public $slug = '';
     public $title;
     public $base_title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
@@ -20,7 +20,7 @@ class Zume_Path_Overview extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Critical Path', 'disciple_tools' );
+        $this->base_title = __( 'L3 Practitioner', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path/$this->base_slug" === $url_path ) {
@@ -61,7 +61,7 @@ class Zume_Path_Overview extends Zume_Chart_Base
             jQuery(document).ready(function(){
                 "use strict";
                 let chart = jQuery('#chart')
-                let title = '<?php echo $this->base_title ?>
+                let title = '<?php echo $this->base_title ?>'
                 let spinner = ' <span class="loading-spinner active"></span> '
                 chart.empty().html(`<h1>${title}</h1>${spinner}`)
             })
@@ -78,4 +78,4 @@ class Zume_Path_Overview extends Zume_Chart_Base
     }
 
 }
-new Zume_Path_Overview();
+new Zume_Path_L3();

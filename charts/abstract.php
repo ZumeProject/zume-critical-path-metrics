@@ -14,9 +14,7 @@ abstract class Zume_Chart_Base
     public $js_object_name = ''; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = ''; // should be full file name plus extension
     public $permissions = [];
-    /**
-     * Disciple_Tools_Counter constructor.
-     */
+
     public function __construct() {
         $this->base_slug = str_replace( ' ', '', trim( strtolower( $this->base_slug ) ) );
         $url_path = dt_get_url_path( true );
@@ -36,35 +34,12 @@ abstract class Zume_Chart_Base
     }
 
     public function base_menu( $content ) {
-//        $line = '<li><a href="'. site_url( '/zume-path/'.$this->base_slug.'/' . $this->slug ) . '">' . $this->title . '</a></li>';
-//
-//        $ref = '<ul class="menu vertical nested" id="' . $this->base_slug . '-menu">';
-//        $pos = strpos( $content, $ref );
-//        if ( $pos === false ){
-//            $content .= '
-//            <li><a href="'. site_url( '/zume-path/'. $this->base_slug .'/'. $this->slug ) .'">'.$this->base_title.'</a>
-//                <ul class="menu vertical nested" id="' . $this->base_slug . '-menu">'
-//                . $line . '
-//            </ul></li>';
-//        } else {
-//            $content = substr_replace( $content, $ref . $line, $pos, strlen( $ref ) );
-//        }
-
         $content .= '<li class=""><a href="'.site_url('/zume-path/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
-
         return $content;
     }
 
-
-    /**
-     *  This hook add a page for the metric charts
-     *
-     * @param $template_for_url
-     *
-     * @return mixed
-     */
     public function base_add_url( $template_for_url ) {
-       
+
         if ( empty ( $this->base_slug ) ) {
             $template_for_url["zume-path"] = 'template-metrics.php';
         } else {
@@ -98,23 +73,4 @@ abstract class Zume_Chart_Base
         return $pass;
     }
 
-    public function _empty_geojson() {
-        return array(
-            'type' => 'FeatureCollection',
-            'features' => []
-        );
-    }
-
-    public function _no_results() {
-        return '<p>'. esc_attr__( 'No Results', 'disciple_tools' ) .'</p>';
-    }
-    public function _circular_structure_error( $wp_error ) {
-        $link = false;
-        $data = $wp_error->get_error_data();
-
-        if ( isset( $data['record'] ) ){
-            $link = "<a target='_blank' href=" . get_permalink( $data['record'] ) . '>Open record</a>';
-        }
-        return '<p>' . esc_html( $wp_error->get_error_message() ) . ' ' . $link . '</p>';
-    }
 }

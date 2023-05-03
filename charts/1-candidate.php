@@ -4,7 +4,7 @@ if ( !defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly.
 
 
-class Zume_Path_Cadidate extends Zume_Chart_Base
+class Zume_Path_Candidate extends Zume_Chart_Base
 {
     //slug and title of the top menu folder
     public $base_slug = 'candidate'; // lowercase
@@ -20,7 +20,7 @@ class Zume_Path_Cadidate extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Critical Path', 'disciple_tools' );
+        $this->base_title = __( 'Candidate', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path/$this->base_slug" === $url_path ) {
@@ -61,7 +61,7 @@ class Zume_Path_Cadidate extends Zume_Chart_Base
             jQuery(document).ready(function(){
                 "use strict";
                 let chart = jQuery('#chart')
-                let title = '<?php echo $this->base_title ?>
+                let title = '<?php echo $this->base_title ?>'
                 let spinner = ' <span class="loading-spinner active"></span> '
                 chart.empty().html(`<h1>${title}</h1>${spinner}`)
             })
@@ -78,4 +78,4 @@ class Zume_Path_Cadidate extends Zume_Chart_Base
     }
 
 }
-new Zume_Path_Cadidate();
+new Zume_Path_Candidate();

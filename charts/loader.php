@@ -24,8 +24,14 @@ class Zume_Metrics_Base {
             add_filter('dt_metrics_menu', [$this, 'dt_metrics_menu'], 99);
 
             require_once ('abstract.php');
-            require_once ('overview.php');
-            require_once ('candidate.php');
+            require_once ('0-critical-path.php');
+            require_once ('1-candidate.php');
+            require_once ('2-pre-training.php');
+            require_once ('3-active-training.php');
+            require_once ('4-post-training.php');
+            require_once ('5-l1-practitioner.php');
+            require_once ('6-l2-practitioner.php');
+            require_once ('7-l3-practitioner.php');
 
 //            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
@@ -43,12 +49,6 @@ class Zume_Metrics_Base {
     }
 
     public function dt_metrics_menu( $content ) {
-        $content .= '<li class=""><a href="'.site_url('/zume-path/pre').'" >' .  esc_html( 'Pre-Training' ) . '</a></li>';
-        $content .= '<li class=""><a href="'.site_url('/zume-path/active').'" >' .  esc_html( 'Active Training' ) . '</a></li>';
-        $content .= '<li class=""><a href="'.site_url('/zume-path/post').'" >' .  esc_html( 'Post-Training' ) . '</a></li>';
-        $content .= '<li class=""><a href="'.site_url('/zume-path/l1-practitioner').'" >' .  esc_html( 'L1 Practitioner' ) . '</a></li>';
-        $content .= '<li class=""><a href="'.site_url('/zume-path/l2-practitioner').'" >' .  esc_html( 'L2 Practitioner' ) . '</a></li>';
-        $content .= '<li class=""><a href="'.site_url('/zume-path/l3-practitioner').'" >' .  esc_html( 'L3 Practitioner' ) . '</a></li>';
         return $content;
         // jQuery('#metrics-sidemenu li').removeClass('side-menu-item-highlight');
     }
