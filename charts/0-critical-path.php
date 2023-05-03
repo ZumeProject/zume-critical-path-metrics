@@ -86,8 +86,6 @@ class Zume_Path_Overview extends Zume_Chart_Base
                             </div>
                             <hr>
                             <span class="loading-spinner active"></span>
-
-                            <div class="grid-y zume-cards critical-path" id="zume-cards"></div>
                             <div class="grid-x valence-legend">
                                 <div class="cell small-2 valence-darkred"></div>
                                 <div class="cell small-2 valence-red"></div>
@@ -95,6 +93,8 @@ class Zume_Path_Overview extends Zume_Chart_Base
                                 <div class="cell small-2 valence-green"></div>
                                 <div class="cell small-2 valence-darkgreen"></div>
                             </div>
+                            <div class="grid-y zume-cards critical-path" id="zume-cards"></div>
+
                         </div>
                     `)
 
@@ -103,7 +103,7 @@ class Zume_Path_Overview extends Zume_Chart_Base
                     let data = [
                         {
                             "title": "Candidates",
-                            "link": "candidate",
+                            "link": "candidates",
                             "value": '45,034',
                             "goal": valence[Math.floor(Math.random()*valence.length)],
                             "trend": valence[Math.floor(Math.random()*valence.length)],

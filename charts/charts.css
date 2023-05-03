@@ -57,6 +57,8 @@
     padding: 1.5em 0;
     cursor: pointer;
     border: 1px solid var(--white);
+    background-color: var(--grey);
+    border-radius: var(--radius) var(--radius) 0 0;
 }
 .zume-trio-card-content:hover {
     background-color: var(--darkgrey);
@@ -95,6 +97,9 @@
     text-align: center;
     color: var(--white);
     cursor: pointer;
+}
+.zume-card:hover {
+    opacity: .8;
 }
 .zume-card .zume-card-title {
     color: var(--white);

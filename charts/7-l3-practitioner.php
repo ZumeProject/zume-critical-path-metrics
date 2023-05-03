@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) {
 class Zume_Path_L3 extends Zume_Chart_Base
 {
     //slug and title of the top menu folder
-    public $base_slug = 'l3_practitioner'; // lowercase
+    public $base_slug = 'l3_practitioners'; // lowercase
     public $slug = '';
     public $title;
     public $base_title;
@@ -78,6 +78,15 @@ class Zume_Path_L3 extends Zume_Chart_Base
                                         </select>
                                     </span>
                                 </div>
+                            </div>
+                            <hr>
+
+                            <h2>Critical Path</h2>
+                            <div class="grid-x">
+                                <div class="cell medium-6">
+                                    <div class="grid-x zume-critical-path"></div>
+                                </div>
+                                <div class="cell medium-6"></div>
                             </div>
                             <hr>
                             <span class="loading-spinner active"></span>
@@ -153,6 +162,42 @@ class Zume_Path_L3 extends Zume_Chart_Base
                                     </div>
                                 </div>
                             </div><!-- card -->
+                        `)
+                })
+
+                let path = [
+                    {
+                        "title": "L3 Practitioners",
+                        "link": "l3_practitioners",
+                        "value": '45,034',
+                        "goal": valence[Math.floor(Math.random()*valence.length)],
+                        "trend": valence[Math.floor(Math.random()*valence.length)],
+                    },
+                ]
+
+                jQuery('.zume-critical-path').empty()
+                jQuery.each( path, function( key, value ) {
+                    jQuery('.zume-critical-path').append(`
+                            <div class="cell zume-trio-card" style="margin:5px;">
+                                <div class="zume-trio-card-content" data-link="${value.link}">
+                                    <div class="zume-trio-card-title">
+                                        ${value.title}
+                                    </div>
+                                    <div class="zume-trio-card-value">
+                                        ${value.value}
+                                    </div>
+                                </div>
+                                <div class="zume-trio-card-footer">
+                                    <div class="grid-x">
+                                        <div class="cell small-6 zume-goal ${value.goal}">
+                                            GOAL
+                                        </div>
+                                        <div class="cell small-6 zume-trend ${value.trend}">
+                                            TREND
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         `)
                 })
 
