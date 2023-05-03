@@ -34,6 +34,8 @@ class Zume_Path_Overview extends Zume_Chart_Base
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
+        wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
+
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
             'jquery',
             'jquery-ui-core',
@@ -61,7 +63,130 @@ class Zume_Path_Overview extends Zume_Chart_Base
 
     public function wp_head() {
         $this->styles();
-        $this->content();
+            ?>
+            <script>
+                jQuery(document).ready(function(){
+                    "use strict";
+                    let chart = jQuery('#chart')
+                    let title = '<?php echo $this->base_title ?>'
+                    chart.empty().html(`
+                        <div id="zume-path">
+                            <div class="grid-x">
+                                <div class="cell small-6"><h1>${title}</h1></div>
+                                <div class="cell small-6">
+                                    <span style="float: right;">
+                                        <select>
+                                            <option value="30">Last 30 days</option>
+                                            <option value="7">Last 7 days</option>
+                                            <option value="90">Last 90 days</option>
+                                            <option value="365">Last 1 Year</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                            <hr>
+                            <span class="loading-spinner active"></span>
+
+                            <div class="grid-y zume-cards critical-path" id="zume-cards"></div>
+                            <div class="grid-x valence-legend">
+                                <div class="cell small-2 red"></div>
+                                <div class="cell small-2 darkred"></div>
+                                <div class="cell small-4 grey"></div>
+                                <div class="cell small-2 darkgreen"></div>
+                                <div class="cell small-2 green"></div>
+                            </div>
+                        </div>
+                    `)
+
+                    let valence = ['darkred', 'red', 'grey', 'green', 'darkgreen']
+
+                    let data = [
+                        {
+                            "title": "Candidates",
+                            "link": "candidate",
+                            "value": '45,034',
+                            "goal": valence[Math.floor(Math.random()*valence.length)],
+                            "trend": valence[Math.floor(Math.random()*valence.length)],
+                        },
+                        {
+                            "title": "Pre-Training Trainee",
+                            "link": "pre",
+                            "value": '467',
+                            "goal": valence[Math.floor(Math.random()*valence.length)],
+                            "trend": valence[Math.floor(Math.random()*valence.length)],
+                        },
+                        {
+                            "title": "Active Training Trainees",
+                            "link": "active",
+                            "value": '150',
+                            "goal": valence[Math.floor(Math.random()*valence.length)],
+                            "trend": valence[Math.floor(Math.random()*valence.length)],
+                        },
+                        {
+                            "title": "Post-Training Trainees",
+                            "link": "post",
+                            "value": '570',
+                            "goal": valence[Math.floor(Math.random()*valence.length)],
+                            "trend": valence[Math.floor(Math.random()*valence.length)],
+                        },
+                        {
+                            "title": "L1 Practitioners",
+                            "link": "l1_practitioners",
+                            "value": '122',
+                            "goal": valence[Math.floor(Math.random()*valence.length)],
+                            "trend": valence[Math.floor(Math.random()*valence.length)],
+                        },
+                        {
+                            "title": "L2 Practitioners",
+                            "link": "l2_practitioners",
+                            "value": '20',
+                            "goal": valence[Math.floor(Math.random()*valence.length)],
+                            "trend": valence[Math.floor(Math.random()*valence.length)],
+                        },
+                        {
+                            "title": "L3 Practitioners",
+                            "link": "l3_practitioners",
+                            "value": '10',
+                            "goal": valence[Math.floor(Math.random()*valence.length)],
+                            "trend": valence[Math.floor(Math.random()*valence.length)],
+                        }
+                    ]
+
+                    jQuery.each( data, function( key, value ) {
+                        jQuery('#zume-cards').append(`
+                            <div class="cell zume-trio-card" >
+                                <div class="zume-trio-card-content" data-link="${value.link}">
+                                    <div class="zume-trio-card-title">
+                                        ${value.title}
+                                    </div>
+                                    <div class="zume-trio-card-value">
+                                        ${value.value}
+                                    </div>
+                                </div>
+                                <div class="zume-trio-card-footer">
+                                    <div class="grid-x">
+                                        <div class="cell small-6 zume-goal ${value.goal}">
+                                            GOAL
+                                        </div>
+                                        <div class="cell small-6 zume-trend ${value.trend}">
+                                            TREND
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `)
+                    })
+
+                    jQuery('.zume-trio-card-content').click(function(){
+                        let link = jQuery(this).data('link')
+                        window.location.href = '/coaching/zume-path/' + link
+                    })
+
+                    jQuery('.loading-spinner').delay(3000).removeClass('active')
+                })
+
+            </script>
+            <?php
     }
 
     public function styles() {
@@ -74,27 +199,6 @@ class Zume_Path_Overview extends Zume_Chart_Base
                 font-weight: 700;
             }
         </style>
-        <?php
-    }
-
-    public function content() {
-        ?>
-        <script>
-            jQuery(document).ready(function(){
-                "use strict";
-                let chart = jQuery('#chart')
-                let title = '<?php echo $this->base_title ?>'
-                let spinner = ' <span class="loading-spinner active"></span> '
-                chart.empty().html(`
-                    <h1>${title}</h1>
-                    ${spinner}
-                    <hr>
-                    <div class="grid-x">
-                        <div id="cell"></div>
-                    </div>
-                `)
-            })
-        </script>
         <?php
     }
 

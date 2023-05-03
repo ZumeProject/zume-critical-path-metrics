@@ -34,6 +34,8 @@ class Zume_Path_Pre extends Zume_Chart_Base
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
+        wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
+
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
             'jquery',
             'jquery-ui-core',
@@ -62,9 +64,25 @@ class Zume_Path_Pre extends Zume_Chart_Base
                 "use strict";
                 let chart = jQuery('#chart')
                 let title = '<?php echo $this->base_title ?>'
-                let spinner = ' <span class="loading-spinner active"></span> '
-                chart.empty().html(`<h1>${title}</h1>${spinner}`)
+                chart.empty().html(`
+                    <h1>${title}</h1>
+                    <hr>
+                    <span class="loading-spinner active"></span>
+                    <div class="grid-x">
+                        <div id="cell"></div>
+                    </div>
+                `)
+
+
+
+
+                setTimeout(
+                    function()
+                    {
+                        jQuery('.loading-spinner').removeClass('active')
+                    }, 3000);
             })
+
         </script>
         <?php
     }

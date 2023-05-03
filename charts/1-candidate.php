@@ -34,6 +34,8 @@ class Zume_Path_Candidate extends Zume_Chart_Base
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
+        wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
+
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
             'jquery',
             'jquery-ui-core',
@@ -62,9 +64,65 @@ class Zume_Path_Candidate extends Zume_Chart_Base
                 "use strict";
                 let chart = jQuery('#chart')
                 let title = '<?php echo $this->base_title ?>'
-                let spinner = ' <span class="loading-spinner active"></span> '
-                chart.empty().html(`<h1>${title}</h1>${spinner}`)
+                chart.empty().html(`
+                        <div id="zume-path">
+                            <h1>${title}</h1>
+                            <hr>
+                            <span class="loading-spinner active"></span>
+                            <div class="grid-x" id="zume-cards"></div>
+                        </div>
+                    `)
+
+                let data = [
+                    {
+                        "title": "Overview",
+                        "value": 100,
+                        "description": "description"
+                    },
+                    {
+                        "title": "Overview",
+                        "value": 100,
+                        "description": "description"
+                    },
+                    {
+                        "title": "Overview",
+                        "value": 100,
+                        "description": "description"
+                    },
+                    {
+                        "title": "Overview",
+                        "value": 100,
+                        "description": "description"
+                    },
+                    {
+                        "title": "Overview",
+                        "value": 100,
+                        "description": "description"
+                    }
+                ]
+
+                jQuery.each( data, function( key, value ) {
+                    jQuery('#zume-cards').append(`
+                            <!-- Zume Card-->
+                            <div class="cell medium-4 large-3 ">
+                                <div class="zume-card">
+                                    <div class="zume-card-title">
+                                        ${value.title}
+                                    </div>
+                                    <div class="zume-card-content">
+                                        ${value.value}
+                                    </div>
+                                    <div class="zume-card-footer">
+                                        ${value.description}
+                                    </div>
+                                </div>
+                            </div><!-- card -->
+                        `)
+                })
+
+                jQuery('.loading-spinner').delay(3000).removeClass('active')
             })
+
         </script>
         <?php
     }
@@ -76,6 +134,7 @@ class Zume_Path_Candidate extends Zume_Chart_Base
             ],
         ];
     }
+
 
 }
 new Zume_Path_Candidate();

@@ -1,0 +1,102 @@
+:root {
+    --white: #ffffff;
+    --lightgrey: #cccccc;
+    --darkgrey: #999999;
+    --darkred: darkred;
+    --red: red;
+    --grey: grey;
+    --green: green;
+    --darkgreen: darkgreen;
+    --small-text: 0.8em;
+    --medium-text: 1em;
+    --large-text: 2em;
+    --xlarge-text: 3em;
+    --radius: 10px;
+}
+
+.valence-legend {
+    height: 10px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.darkred {
+    background-color: var(--darkred);
+}
+.red {
+    background-color: var(--red);
+}
+.grey {
+    background-color: var(--grey);
+}
+.green {
+    background-color: var(--green);
+}
+.darkgreen {
+    background-color: var(--darkgreen);
+}
+
+
+.zume-cards.critical-path {
+    background: linear-gradient(#ccc, #ccc) no-repeat center/2px 90%;
+}
+.zume-trio-card {
+    max-width: 700px;
+    background-color: var(--lightgrey);
+    border-radius: var(--radius);
+    border: 1px solid var(--grey);
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.2);
+    margin: 20px auto;
+    text-align: center;
+}
+.zume-trio-card-content {
+    padding: 1.5em 0;
+    cursor: pointer;
+}
+.zume-trio-card .zume-trio-card-title {
+    vertical-align: middle;
+    font-size: var(--large-text);
+}
+.zume-trio-card .zume-trio-card-value {
+    vertical-align: middle;
+    font-size: 4em;
+}
+.zume-trio-card .zume-goal {
+    height: 50px;
+    border-radius: 0 0 0 var(--radius);
+    color: white;
+    font-size: var(--large-text);
+}
+.zume-trio-card .zume-trend {
+    font-size: var(--large-text);
+    color: white;
+    height: 50px;
+    border-radius: 0 0 var(--radius) 0;
+}
+
+
+.zume-card {
+    background-color: #fff;
+    border-radius: var(--radius);
+    border: 1px solid var(--lightgrey);
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.2);
+    padding: 16px;
+    margin: 5px;
+    text-align: center;
+}
+.zume-card .zume-card-title {
+    color: #999;
+    font-size: 1.4em;
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+.zume-card .zume-card-content {
+    font-size: var(--xlarge-text);
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+.zume-card .zume-card-footer {
+    color: #999;
+    font-size: var(--small-text);
+    font-weight: 400;
+    margin-bottom: 8px;
+}
