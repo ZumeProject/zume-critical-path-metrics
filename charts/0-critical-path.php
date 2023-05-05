@@ -86,13 +86,7 @@ class Zume_Path_Overview extends Zume_Chart_Base
                             </div>
                             <hr>
                             <span class="loading-spinner active"></span>
-                            <div class="grid-x valence-legend">
-                                <div class="cell small-2 valence-darkred"></div>
-                                <div class="cell small-2 valence-red"></div>
-                                <div class="cell small-4 valence-grey"></div>
-                                <div class="cell small-2 valence-green"></div>
-                                <div class="cell small-2 valence-darkgreen"></div>
-                            </div>
+
                             <div class="grid-y zume-cards critical-path" id="zume-cards"></div>
 
                         </div>
@@ -109,21 +103,21 @@ class Zume_Path_Overview extends Zume_Chart_Base
                             "trend": valence[Math.floor(Math.random()*valence.length)],
                         },
                         {
-                            "title": "Pre-Training Trainee",
+                            "title": "Pre-Training",
                             "link": "pre",
                             "value": '467',
                             "goal": valence[Math.floor(Math.random()*valence.length)],
                             "trend": valence[Math.floor(Math.random()*valence.length)],
                         },
                         {
-                            "title": "Active Training Trainees",
+                            "title": "Active Training",
                             "link": "active",
                             "value": '150',
                             "goal": valence[Math.floor(Math.random()*valence.length)],
                             "trend": valence[Math.floor(Math.random()*valence.length)],
                         },
                         {
-                            "title": "Post-Training Trainees",
+                            "title": "Post-Training",
                             "link": "post",
                             "value": '570',
                             "goal": valence[Math.floor(Math.random()*valence.length)],
@@ -197,6 +191,9 @@ class Zume_Path_Overview extends Zume_Chart_Base
             }
             #-menu {
                 font-weight: 700;
+            }
+            #zume-cards {
+                max-width: 700px;
             }
         </style>
         <?php

@@ -80,21 +80,24 @@ class Zume_Path_L2 extends Zume_Chart_Base
                                 </div>
                             </div>
                             <hr>
-
                             <span class="loading-spinner active"></span>
-                            <h2>Critical Path</h2>
                             <div class="grid-x">
                                 <div class="cell medium-6">
                                     <div class="grid-x zume-critical-path"></div>
                                 </div>
-                                <div class="cell medium-6"></div>
+                                <div class="cell medium-6" style="padding:1em;">
+                                    <h3><strong>What is L2 Practitioner Stage?</strong></h3>
+                                    <p>
+                                        The L2 Practitioner Stage moves from competence in 4-fields to multiplying leaders and simple churches.
+                                    </p>
+                                </div>
                             </div>
                             <hr>
                             <h2>Goals</h2>
-                            <div class="grid-x zume-goals"  data-equalizer data-equalize-by-row></div>
+                            <div class="grid-x zume-goals"></div>
                             <hr>
                             <h2>Trends</h2>
-                            <div class="grid-x zume-trends"  data-equalizer data-equalize-by-row></div>
+                            <div class="grid-x zume-trends"></div>
                         </div>
                     `)
 
@@ -102,23 +105,16 @@ class Zume_Path_L2 extends Zume_Chart_Base
 
                 let data = [
                     {
-                        "title": "Label",
+                        "title": "People",
                         "value": 100,
-                        "description": "description description description description ",
+                        "description": "Number of L2 Practitioners",
                         "goal": valence[Math.floor(Math.random()*valence.length)],
                         "trend": valence[Math.floor(Math.random()*valence.length)]
                     },
                     {
-                        "title": "Label",
+                        "title": "Active Reporting",
                         "value": 100,
-                        "description": "description description description ",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
-                    },
-                    {
-                        "title": "Label",
-                        "value": 100,
-                        "description": "description description description description description description description description ",
+                        "description": "How many are in active church reporting.",
                         "goal": valence[Math.floor(Math.random()*valence.length)],
                         "trend": valence[Math.floor(Math.random()*valence.length)]
                     }

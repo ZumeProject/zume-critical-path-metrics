@@ -82,12 +82,21 @@ class Zume_Path_Post extends Zume_Chart_Base
                             <hr>
 
                             <span class="loading-spinner active"></span>
-                            <h2>Critical Path</h2>
+
                             <div class="grid-x">
                                 <div class="cell medium-6">
                                     <div class="grid-x zume-critical-path"></div>
                                 </div>
-                                <div class="cell medium-6"></div>
+                                <div class="cell medium-6" style="padding:1em;">
+                                    <h3><strong>What is the Post-Training stage?</strong></h3>
+                                    <p>
+                                         The Post-Training stage is the time after a person has completed the training. This stage is
+                                            primarily focused on the 3-month plan and beginning to practice Zúme skills.
+                                    </p>
+                                    <p>
+                                       The top goal is get a coach and to start growing the disciple making lifestyle and finish the 3-month plan.
+                                    </p>
+                                </div>
                             </div>
                             <hr>
                             <h2>Goals</h2>
@@ -102,23 +111,37 @@ class Zume_Path_Post extends Zume_Chart_Base
 
                 let data = [
                     {
-                        "title": "Label",
+                        "title": "People",
                         "value": 100,
-                        "description": "description description description description ",
+                        "description": "Number of People in the Post-Training Phase",
                         "goal": valence[Math.floor(Math.random()*valence.length)],
                         "trend": valence[Math.floor(Math.random()*valence.length)]
                     },
                     {
-                        "title": "Label",
+                        "title": "3-Month Plans",
                         "value": 100,
-                        "description": "description description description ",
+                        "description": "Active 3-Month Plans",
                         "goal": valence[Math.floor(Math.random()*valence.length)],
                         "trend": valence[Math.floor(Math.random()*valence.length)]
                     },
                     {
-                        "title": "Label",
+                        "title": "Check-ins",
                         "value": 100,
-                        "description": "description description description description description description description description ",
+                        "description": "Check-ins",
+                        "goal": valence[Math.floor(Math.random()*valence.length)],
+                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                    },
+                    {
+                        "title": "Has a Coach",
+                        "value": 100,
+                        "description": "Has a Coach",
+                        "goal": valence[Math.floor(Math.random()*valence.length)],
+                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                    },
+                    {
+                        "title": "Actively being Coached",
+                        "value": 100,
+                        "description": "Actively being Coached",
                         "goal": valence[Math.floor(Math.random()*valence.length)],
                         "trend": valence[Math.floor(Math.random()*valence.length)]
                     }
@@ -166,7 +189,7 @@ class Zume_Path_Post extends Zume_Chart_Base
                     {
                         "title": "Post-Training Trainee",
                         "link": "post",
-                        "value": '2340',
+                        "value": '2,340',
                         "goal": valence[Math.floor(Math.random()*valence.length)],
                         "trend": valence[Math.floor(Math.random()*valence.length)],
                     },

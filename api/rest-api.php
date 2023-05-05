@@ -34,36 +34,119 @@ class Zume_Stats_Endpoints
                 'permission_callback' => '__return_true'
             ]
         );
+        register_rest_route(
+            $namespace, '/candidates/hero', [
+                'methods'  => [ 'POST', 'GET' ],
+                'callback' => [ $this, 'endpoint_candidates' ],
+                'permission_callback' => '__return_true'
+            ]
+        );
     }
     public function endpoint( WP_REST_Request $request ) {
 
-        $params = $request->get_params();
+        $params = dt_recursive_sanitize_array( $request->get_params() );
+        return $params;
 
         $stats = [
             'current_timestamp' => time(),
+            'params' => $params,
         ];
 
-        $params = dt_recursive_sanitize_array( $params);
 
-        if ( ! isset( $params['filter'] ) ) {
-            $params['filter'] = 'none';
-        }
-        if ( ! in_array( $params['filter'], [ 'none', 'candidate', 'pre', 'active', 'post', 'l1', 'l2', 'l3' ] ) ) {
-            $params['filter'] = 'none';
-        }
-
-        if ( isset( $params['range'] ) && ! empty( $params['range'] ) ) {
-            $requested_range = $this->requested_range( $params );
-            $stats['requested_range'] = $requested_range;
-            $stats['range'] = apply_filters( 'zume_range_stats', [], $requested_range );
-        }
-
-        if ( isset( $params['all_time'] ) && ! empty( $params['all_time'] )  ) {
-            $stats['all_time'] = apply_filters( 'zume_all_time_stats', [], $params['filter'] );
-        }
 
         return $stats;
     }
+//    public function endpoint( WP_REST_Request $request ) {
+//
+//        $params = dt_recursive_sanitize_array( $request->get_params() );
+//
+//
+//        $stats = [
+//            'current_timestamp' => time(),
+//        ];
+//
+//        if ( ! isset( $params['filter'] ) ) {
+//            $params['filter'] = 'none';
+//        }
+//        if ( ! in_array( $params['filter'], [ 'none', 'candidate', 'pre', 'active', 'post', 'l1', 'l2', 'l3' ] ) ) {
+//            $params['filter'] = 'none';
+//        }
+//
+//        if ( isset( $params['range'] ) && ! empty( $params['range'] ) ) {
+//            $requested_range = $this->requested_range( $params );
+//            $stats['requested_range'] = $requested_range;
+//            $stats['range'] = apply_filters( 'zume_range_stats', [], $requested_range );
+//        }
+//
+//        if ( isset( $params['all_time'] ) && ! empty( $params['all_time'] )  ) {
+//            $stats['all_time'] = apply_filters( 'zume_all_time_stats', [], $params['filter'] );
+//        }
+//
+//        return $stats;
+//    }
+    public function endpoint_candidates( WP_REST_Request $request ) {
+        $params = $request->get_params();
+
+        $value = 100;
+        $goal = 90;
+        $trend = 110;
+
+        $requested_range = $this->requested_range( $params );
+        $stats = [
+            'current_timestamp' => time(),
+        ];
+        $stats['requested_range'] = $requested_range;
+        $stats['hero'] = [
+            'key' => 'candidate',
+            'label' => 'Candidates',
+            'description' => 'Candidates are visitors',
+            'value' => $value, // current value
+            'goal' => $goal, // value set as goal
+            'goal_color' => $this->get_valence( $value, $goal ),
+            'trend' => $trend, // value from previous block of time
+            'trend_percent' => $this->get_valence( $value, $trend ),
+            'category' => 'candidate',
+        ];
+
+        $stats['facts'][] = [
+            'key' => 'visitors',
+            'label' => 'Visitors',
+            'description' => 'Visitors to all Zume properties.',
+            'value' => 0,
+            'goal' => 0,
+            'trend' => 0,
+            'category' => 'candidate',
+        ];
+        $stats['facts'][] = [
+            'key' => 'registrations',
+            'label' => 'Registrations',
+            'description' => 'Registrations to all Zume properties.',
+            'value' => 0,
+            'goal' => 0,
+            'trend' => 0,
+            'category' => 'candidate',
+        ];
+
+        return $stats;
+
+    }
+    public function get_valence( $value, $compare ) {
+        $percent = round( ( $value / $compare ) * 100, 0 );
+
+        $valence = 'valence-grey';
+        if ( $percent > 120 ) {
+            $valence = 'valence-darkgreen';
+        } else if ( $percent > 110 ) {
+            $valence = 'valence-green';
+        } else if ( $percent < 80 ) {
+            $valence = 'valence-red';
+        } else if ( $percent < 90 ) {
+            $valence = 'valence-darkred';
+        }
+
+        return $valence;
+    }
+
     public function endpoint_list( WP_REST_Request $request ) {
 
         $params = $request->get_params();

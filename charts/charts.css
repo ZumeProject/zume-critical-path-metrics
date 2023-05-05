@@ -65,12 +65,13 @@
 }
 .zume-trio-card .zume-trio-card-title {
     vertical-align: middle;
-    font-size: var(--large-text);
+    font-size: var(--xlarge-text);
+    font-weight: var(--heavy-weight);
+    text-transform: uppercase;
 }
 .zume-trio-card .zume-trio-card-value {
     vertical-align: middle;
-    font-size: 4em;
-    font-weight: var(--heavy-weight);
+    font-size: var(--xlarge-text);
 }
 .zume-trio-card .zume-goal {
     border-radius: 0 0 0 var(--radius);

@@ -32,6 +32,7 @@ class Zume_Metrics_Base {
             require_once ('5-l1-practitioner.php');
             require_once ('6-l2-practitioner.php');
             require_once ('7-l3-practitioner.php');
+            require_once ('8-legend.php');
 
 //            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }

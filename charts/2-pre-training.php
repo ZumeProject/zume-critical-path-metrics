@@ -81,13 +81,18 @@ class Zume_Path_Pre extends Zume_Chart_Base
                             </div>
                             <hr>
                             <span class="loading-spinner active"></span>
-
-                            <h2>Critical Path</h2>
                             <div class="grid-x">
                                 <div class="cell medium-6">
                                     <div class="grid-x zume-critical-path"></div>
                                 </div>
-                                <div class="cell medium-6"></div>
+                                <div class="cell medium-6" style="padding:1em;">
+                                    <h3><strong>What is Pre-Training Stage?</strong></h3>
+                                    <p>
+                                        Pre-training stage refers to the critical path stage between registration and active training. The top actions
+                                        that lead to a user entering the active training stage are: Make a Plan, Invite Friends, Get a Coach, and Update Profile.
+                                        The minimum of this stage is not having a plan. Once they have a plan, they are in the active training stage.
+                                    </p>
+                                </div>
                             </div>
                             <hr>
                             <h2>Goals</h2>
@@ -102,23 +107,37 @@ class Zume_Path_Pre extends Zume_Chart_Base
 
                 let data = [
                     {
-                        "title": "Label",
+                        "title": "People",
                         "value": 100,
-                        "description": "description description description description ",
+                        "description": "All users in the pre-training phase.",
                         "goal": valence[Math.floor(Math.random()*valence.length)],
                         "trend": valence[Math.floor(Math.random()*valence.length)]
                     },
                     {
-                        "title": "Label",
+                        "title": "Has No Plan",
                         "value": 100,
-                        "description": "description description description ",
+                        "description": "Less is good. User has not made a plan for training.",
                         "goal": valence[Math.floor(Math.random()*valence.length)],
                         "trend": valence[Math.floor(Math.random()*valence.length)]
                     },
                     {
-                        "title": "Label",
+                        "title": "Has Friends",
                         "value": 100,
-                        "description": "description description description description description description description description ",
+                        "description": "User has invited friends to join the training.",
+                        "goal": valence[Math.floor(Math.random()*valence.length)],
+                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                    },
+                    {
+                        "title": "Has Coach",
+                        "value": 100,
+                        "description": "User has a coach assigned to them.",
+                        "goal": valence[Math.floor(Math.random()*valence.length)],
+                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                    },
+                    {
+                        "title": "Has Updated Profile",
+                        "value": 100,
+                        "description": "User has completed their profile.",
                         "goal": valence[Math.floor(Math.random()*valence.length)],
                         "trend": valence[Math.floor(Math.random()*valence.length)]
                     }
@@ -166,7 +185,7 @@ class Zume_Path_Pre extends Zume_Chart_Base
                     {
                         "title": "Pre-Training Trainees",
                         "link": "pre",
-                        "value": '10000',
+                        "value": '10,000',
                         "goal": valence[Math.floor(Math.random()*valence.length)],
                         "trend": valence[Math.floor(Math.random()*valence.length)],
                     },

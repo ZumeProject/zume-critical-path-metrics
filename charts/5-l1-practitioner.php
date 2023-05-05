@@ -81,13 +81,17 @@ class Zume_Path_L1 extends Zume_Chart_Base
                             </div>
                             <hr>
                             <span class="loading-spinner active"></span>
-
-                            <h2>Critical Path</h2>
                             <div class="grid-x">
                                 <div class="cell medium-6">
                                     <div class="grid-x zume-critical-path"></div>
                                 </div>
-                                <div class="cell medium-6"></div>
+                                <div class="cell medium-6" style="padding:1em;">
+                                    <h3><strong>What is L1 Practitioner Stage?</strong></h3>
+                                    <p>
+                                        The L1 Practitioner Stage is the first stage of the practitioner path. They have committed to the lifestyle
+                                        and they are working to get the first 4 generations of disciples.
+                                    </p>
+                                </div>
                             </div>
                             <hr>
                             <h2>Goals</h2>
@@ -102,23 +106,30 @@ class Zume_Path_L1 extends Zume_Chart_Base
 
                 let data = [
                     {
-                        "title": "Label",
+                        "title": "People",
                         "value": 100,
-                        "description": "description description description description ",
+                        "description": "Number of people in L1 Practitioner status",
                         "goal": valence[Math.floor(Math.random()*valence.length)],
                         "trend": valence[Math.floor(Math.random()*valence.length)]
                     },
                     {
-                        "title": "Label",
+                        "title": "Active Reporting",
                         "value": 100,
-                        "description": "description description description ",
+                        "description": "Number of people who have current reporting",
                         "goal": valence[Math.floor(Math.random()*valence.length)],
                         "trend": valence[Math.floor(Math.random()*valence.length)]
                     },
                     {
-                        "title": "Label",
+                        "title": "Active Coaching",
                         "value": 100,
-                        "description": "description description description description description description description description ",
+                        "description": "Has recieved coaching in the time range.",
+                        "goal": valence[Math.floor(Math.random()*valence.length)],
+                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                    },
+                    {
+                        "title": "Checkins",
+                        "value": 100,
+                        "description": "Has checked back into the system.",
                         "goal": valence[Math.floor(Math.random()*valence.length)],
                         "trend": valence[Math.floor(Math.random()*valence.length)]
                     }
@@ -199,13 +210,13 @@ class Zume_Path_L1 extends Zume_Chart_Base
                 })
 
                 jQuery('.zume-card').click(function(){
-                    jQuery('#modal-large').foundation('open')
+                    jQuery('#modal-small').foundation('open')
 
-                    jQuery('#modal-large-title').empty().html('Fact Label<hr>')
+                    jQuery('#modal-small-title').empty().html('Fact Label<hr>')
 
-                    jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
+                    jQuery('#modal-small-content').empty().html('<span class="loading-spinner active"></span>')
                     jQuery.get('https://zume5.training/coaching/wp-json/zume_stats/v1/stats_list?days=365&range=true&all_time=true', function(data){
-                        jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
+                        jQuery('#modal-small-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
                         jQuery.each(data, function(i,v)  {
                             jQuery('#zume-list-modal').append( '<tr><td><a href="">' + v.post_title + '</a></td></tr>')
                         })

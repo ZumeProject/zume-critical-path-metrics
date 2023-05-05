@@ -81,20 +81,30 @@ class Zume_Path_Active extends Zume_Chart_Base
                             </div>
                             <hr>
                             <span class="loading-spinner active"></span>
-
-                            <h2>Critical Path</h2>
                             <div class="grid-x">
                                 <div class="cell medium-6">
                                     <div class="grid-x zume-critical-path"></div>
                                 </div>
-                                <div class="cell medium-6"></div>
+                                <div class="cell medium-6" style="padding:1em;">
+                                    <h3><strong>What is the Active Training stage?</strong></h3>
+                                    <p>
+                                        The Active Training stage is the stage where the user is actively going through the training.
+                                        The goal of this stage is to get the user to complete the training.
+                                    </p>
+                                </div>
                             </div>
                             <hr>
                             <h2>Goals</h2>
-                            <div class="grid-x zume-goals"  data-equalizer data-equalize-by-row></div>
+                            <div class="grid-x zume-goals"></div>
                             <hr>
                             <h2>Trends</h2>
-                            <div class="grid-x zume-trends"  data-equalizer data-equalize-by-row></div>
+                            <div class="grid-x zume-trends"></div>
+                            <hr>
+                            <h2>Session Goals</h2>
+                            <div class="grid-x zume-session-goals"></div>
+                            <hr>
+                            <h2>Session Trends</h2>
+                            <div class="grid-x zume-session-trends"></div>
                         </div>
                     `)
 
@@ -102,23 +112,37 @@ class Zume_Path_Active extends Zume_Chart_Base
 
                 let data = [
                     {
-                        "title": "Label",
+                        "title": "People",
                         "value": 100,
-                        "description": "description description description description ",
+                        "description": "Number of users at the active training stage.",
                         "goal": valence[Math.floor(Math.random()*valence.length)],
                         "trend": valence[Math.floor(Math.random()*valence.length)]
                     },
                     {
-                        "title": "Label",
+                        "title": "Check-ins",
                         "value": 100,
-                        "description": "description description description ",
+                        "description": "Number of users that have checked in.",
                         "goal": valence[Math.floor(Math.random()*valence.length)],
                         "trend": valence[Math.floor(Math.random()*valence.length)]
                     },
                     {
-                        "title": "Label",
+                        "title": "Has a Coach",
                         "value": 100,
-                        "description": "description description description description description description description description ",
+                        "description": "Users that have a coach assigned to them.",
+                        "goal": valence[Math.floor(Math.random()*valence.length)],
+                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                    },
+                    {
+                        "title": "Has a Profile",
+                        "value": 100,
+                        "description": "Users that have completed their profile.",
+                        "goal": valence[Math.floor(Math.random()*valence.length)],
+                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                    },
+                    {
+                        "title": "Session Progress",
+                        "value": 100,
+                        "description": "Session Progress through concepts and tools. Trainees per session.",
                         "goal": valence[Math.floor(Math.random()*valence.length)],
                         "trend": valence[Math.floor(Math.random()*valence.length)]
                     }
@@ -166,7 +190,7 @@ class Zume_Path_Active extends Zume_Chart_Base
                     {
                         "title": "Active Training Trainees",
                         "link": "active",
-                        "value": '23400',
+                        "value": '23,400',
                         "goal": valence[Math.floor(Math.random()*valence.length)],
                         "trend": valence[Math.floor(Math.random()*valence.length)],
                     },
@@ -195,6 +219,115 @@ class Zume_Path_Active extends Zume_Chart_Base
                                     </div>
                                 </div>
                             </div>
+                        `)
+                })
+
+                let sessions = [
+                    {
+                        "title": "Session 1",
+                        "value": 100,
+                        "description": "Session 1.",
+                        "goal": valence[Math.floor(Math.random() * valence.length)],
+                        "trend": valence[Math.floor(Math.random() * valence.length)]
+                    },
+                    {
+                        "title": "Session 2",
+                        "value": 100,
+                        "description": "Session 2.",
+                        "goal": valence[Math.floor(Math.random() * valence.length)],
+                        "trend": valence[Math.floor(Math.random() * valence.length)]
+                    },
+                    {
+                        "title": "Session 3",
+                        "value": 100,
+                        "description": "Session 3.",
+                        "goal": valence[Math.floor(Math.random() * valence.length)],
+                        "trend": valence[Math.floor(Math.random() * valence.length)]
+                    },
+                    {
+                        "title": "Session 4",
+                        "value": 100,
+                        "description": "Session 4.",
+                        "goal": valence[Math.floor(Math.random() * valence.length)],
+                        "trend": valence[Math.floor(Math.random() * valence.length)]
+                    },
+                    {
+                        "title": "Session 5",
+                        "value": 100,
+                        "description": "Session 5.",
+                        "goal": valence[Math.floor(Math.random() * valence.length)],
+                        "trend": valence[Math.floor(Math.random() * valence.length)]
+                    },
+                    {
+                        "title": "Session 6",
+                        "value": 100,
+                        "description": "Session 6.",
+                        "goal": valence[Math.floor(Math.random() * valence.length)],
+                        "trend": valence[Math.floor(Math.random() * valence.length)]
+                    },
+                    {
+                        "title": "Session 7",
+                        "value": 100,
+                        "description": "Session 7.",
+                        "goal": valence[Math.floor(Math.random() * valence.length)],
+                        "trend": valence[Math.floor(Math.random() * valence.length)]
+                    },
+                    {
+                        "title": "Session 8",
+                        "value": 100,
+                        "description": "Session 8.",
+                        "goal": valence[Math.floor(Math.random() * valence.length)],
+                        "trend": valence[Math.floor(Math.random() * valence.length)]
+                    },
+                    {
+                        "title": "Session 9",
+                        "value": 100,
+                        "description": "Session 9.",
+                        "goal": valence[Math.floor(Math.random() * valence.length)],
+                        "trend": valence[Math.floor(Math.random() * valence.length)]
+                    },
+                    {
+                        "title": "Session 10",
+                        "value": 100,
+                        "description": "Session 10.",
+                        "goal": valence[Math.floor(Math.random() * valence.length)],
+                        "trend": valence[Math.floor(Math.random() * valence.length)]
+                    }
+                ]
+
+                jQuery.each( sessions, function( key, value ) {
+                    jQuery('.zume-session-goals').append(`
+                            <div class="cell medium-4 large-3">
+                                <div class="zume-card ${value.goal}">
+                                    <div class="zume-card-title">
+                                        ${value.title}
+                                    </div>
+                                    <div class="zume-card-content">
+                                        ${value.value}
+                                    </div>
+                                    <div class="zume-card-footer">
+                                        ${value.description}
+                                    </div>
+                                </div>
+                            </div><!-- card -->
+                        `)
+                })
+
+                jQuery.each( sessions, function( key, value ) {
+                    jQuery('.zume-session-trends').append(`
+                            <div class="cell medium-4 large-3">
+                                <div class="zume-card ${value.trend}">
+                                    <div class="zume-card-title">
+                                        ${value.title}
+                                    </div>
+                                    <div class="zume-card-content">
+                                        ${value.value}
+                                    </div>
+                                    <div class="zume-card-footer">
+                                        ${value.description}
+                                    </div>
+                                </div>
+                            </div><!-- card -->
                         `)
                 })
 
