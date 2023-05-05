@@ -36,24 +36,30 @@ class Zume_Stats_Endpoints
         );
         register_rest_route(
             $namespace, '/candidates/hero', [
-                'methods'  => [ 'POST', 'GET' ],
-                'callback' => [ $this, 'endpoint_candidates' ],
+                'methods'  => [ 'POST' ],
+                'callback' => [ $this, 'candidates_hero' ],
                 'permission_callback' => '__return_true'
             ]
         );
     }
+
+    public function candidates_hero( WP_REST_Request $request ) {
+        $params = dt_recursive_sanitize_array( $request->get_params() );
+        $requested_range = $this->requested_range( $params );
+        return Zume_Query::candidate_hero( $requested_range );
+    }
+
+
     public function endpoint( WP_REST_Request $request ) {
 
         $params = dt_recursive_sanitize_array( $request->get_params() );
+        $params = dt_recursive_sanitize_array( $request->get_headers() );
         return $params;
 
         $stats = [
             'current_timestamp' => time(),
             'params' => $params,
         ];
-
-
-
         return $stats;
     }
 //    public function endpoint( WP_REST_Request $request ) {
@@ -183,7 +189,7 @@ class Zume_Stats_Endpoints
     }
 
     public function authorize_url( $authorized ){
-        if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), $this->namespace . '/stats' ) !== false ) {
+        if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), $this->namespace  ) !== false ) {
             $authorized = true;
         }
         return $authorized;

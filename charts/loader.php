@@ -24,6 +24,8 @@ class Zume_Metrics_Base {
             add_filter('dt_metrics_menu', [$this, 'dt_metrics_menu'], 99);
 
             require_once ('abstract.php');
+
+            require_once ('0-an-overview.php');
             require_once ('0-critical-path.php');
             require_once ('1-candidate.php');
             require_once ('2-pre-training.php');
@@ -32,6 +34,13 @@ class Zume_Metrics_Base {
             require_once ('5-l1-practitioner.php');
             require_once ('6-l2-practitioner.php');
             require_once ('7-l3-practitioner.php');
+
+            require_once ('10-coaching-stages.php');
+            require_once ('11-facilitator.php');
+            require_once ('12-early.php');
+            require_once ('13-advanced.php');
+
+            require_once ('9-goals.php');
             require_once ('8-legend.php');
 
 //            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );

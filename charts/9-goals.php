@@ -4,10 +4,10 @@ if ( !defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly.
 
 
-class Zume_Path_Candidate extends Zume_Chart_Base
+class Zume_Path_Goals extends Zume_Chart_Base
 {
     //slug and title of the top menu folder
-    public $base_slug = 'candidates'; // lowercase
+    public $base_slug = 'goals'; // lowercase
     public $slug = ''; // lowercase
     public $title;
     public $base_title;
@@ -20,7 +20,7 @@ class Zume_Path_Candidate extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Candidate', 'disciple_tools' );
+        $this->base_title = __( 'Goals', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path/$this->base_slug" === $url_path ) {
@@ -57,6 +57,12 @@ class Zume_Path_Candidate extends Zume_Chart_Base
         );
     }
 
+    public function base_menu( $content ) {
+        $content .= '<li class=""><hr></li>';
+        $content .= '<li class="">GOALS</li>';
+        $content .= '<li class=""><a href="'.site_url('/zume-path/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
+        return $content;
+    }
 
     public function wp_head() {
         ?>
@@ -71,14 +77,6 @@ class Zume_Path_Candidate extends Zume_Chart_Base
                             <div class="grid-x">
                                 <div class="cell small-6"><h1>${title}</h1></div>
                                 <div class="cell small-6">
-                                    <span style="float: right;">
-                                        <select id="range">
-                                            <option value="30">Last 30 days</option>
-                                            <option value="7">Last 7 days</option>
-                                            <option value="90">Last 90 days</option>
-                                            <option value="365">Last 1 Year</option>
-                                        </select>
-                                    </span>
                                 </div>
                             </div>
                             <hr>
@@ -88,19 +86,18 @@ class Zume_Path_Candidate extends Zume_Chart_Base
                                     <div class="grid-x zume-critical-path"></div>
                                 </div>
                                 <div class="cell medium-6" style="padding:1em;">
-                                    <h3><strong>What is the Candidate stage?</strong></h3>
+                                    <h3><strong>What are Practitioners?</strong></h3>
+                                    <p>
+                                        A Candidate is a person in this stage that moves from an Anonymous Visitor coming from the web
+                                        to a person who has registered.
+                                    </p>
+                                    <h3><strong>What are Churches?</strong></h3>
                                     <p>
                                         A Candidate is a person in this stage that moves from an Anonymous Visitor coming from the web
                                         to a person who has registered.
                                     </p>
                                 </div>
                             </div>
-                            <hr>
-                            <h2>Goals</h2>
-                            <div class="grid-x zume-goals"></div>
-                            <hr>
-                            <h2>Trends</h2>
-                            <div class="grid-x zume-trends"></div>
                         </div>
                     `)
 
@@ -129,9 +126,16 @@ class Zume_Path_Candidate extends Zume_Chart_Base
 
                 let path = [
                     {
-                        "title": "Candidates",
-                        "link": "candidate",
+                        "title": "Practitioners",
+                        "link": "l1_practitioners",
                         "value": '45,034',
+                        "goal": get_valence( valence ),
+                        "trend": get_valence( valence )
+                    },
+                    {
+                        "title": "Churches",
+                        "link": "churches",
+                        "value": '10,000',
                         "goal": get_valence( valence ),
                         "trend": get_valence( valence )
                     },
@@ -162,79 +166,6 @@ class Zume_Path_Candidate extends Zume_Chart_Base
                             </div>
                         `)
                 })
-
-                let goals = [
-                    {
-                        "title": "Visitors",
-                        "value": '100',
-                        "description": "Unique visitors to the website.",
-                        "goal": get_valence( valence ),
-                        "trend": get_valence( valence )
-                    },
-                    {
-                        "title": "Registrations",
-                        "value": '100',
-                        "description": "Registrations have crossed the line from visitor to trainee.",
-                        "goal": get_valence( valence ),
-                        "trend": get_valence( valence )
-                    },
-                ]
-
-                jQuery.each( goals, function( key, value ) {
-                    jQuery('.zume-goals').append(`
-                            <!-- Zume Card-->
-                            <div class="cell medium-4 large-3" data-equalizer-watch>
-                                <div class="zume-card ${value.goal}">
-                                    <div class="zume-card-title">
-                                        ${value.title}
-                                    </div>
-                                    <div class="zume-card-content">
-                                        ${value.value}
-                                    </div>
-                                    <div class="zume-card-footer">
-                                        ${value.description}
-                                    </div>
-                                </div>
-                            </div><!-- card -->
-                        `)
-                })
-
-                let trends = [
-                    {
-                        "title": "Visitors",
-                        "value": 100,
-                        "description": "Unique visitors to the website.",
-                        "goal": get_valence( valence ),
-                        "trend": get_valence( valence )
-                    },
-                    {
-                        "title": "Registrations",
-                        "value": '100',
-                        "description": "Registrations have crossed the line from visitor to trainee.",
-                        "goal": get_valence( valence ),
-                        "trend": get_valence( valence )
-                    },
-                ]
-
-                jQuery.each( trends, function( key, value ) {
-                    jQuery('.zume-trends').append(`
-                            <!-- Zume Card-->
-                            <div class="cell medium-4 large-3" data-equalizer-watch>
-                                <div class="zume-card ${value.trend}">
-                                    <div class="zume-card-title">
-                                        ${value.title}
-                                    </div>
-                                    <div class="zume-card-content">
-                                        ${value.value}
-                                    </div>
-                                    <div class="zume-card-footer">
-                                        ${value.description}
-                                    </div>
-                                </div>
-                            </div><!-- card -->
-                        `)
-                })
-
 
                 jQuery('.zume-card').click(function(){
                     jQuery('#modal-large').foundation('open')
@@ -269,4 +200,4 @@ class Zume_Path_Candidate extends Zume_Chart_Base
 
 
 }
-new Zume_Path_Candidate();
+new Zume_Path_Goals();
