@@ -191,7 +191,9 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
     public function styles() {
         ?>
         <style>
-
+            .zume-cards {
+                max-width: 700px;
+            }
         </style>
         <?php
     }

@@ -26,7 +26,7 @@ class Zume_Metrics_Base {
             require_once ('abstract.php');
 
             require_once ('0-an-overview.php');
-            require_once ('0-critical-path.php');
+            require_once ('0-trainee-journey.php');
             require_once ('1-candidate.php');
             require_once ('2-pre-training.php');
             require_once ('3-active-training.php');
