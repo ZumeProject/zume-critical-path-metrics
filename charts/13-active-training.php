@@ -1,14 +1,11 @@
 <?php
-if ( !defined( 'ABSPATH' ) ) {
-    exit;
-}
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-
-class Zume_Path_L3 extends Zume_Chart_Base
+class Zume_Path_Active extends Zume_Chart_Base
 {
     //slug and title of the top menu folder
-    public $base_slug = 'l3_practitioners'; // lowercase
-    public $slug = '';
+    public $base_slug = 'active'; // lowercase
+    public $slug = ''; // lowercase
     public $title;
     public $base_title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
@@ -20,7 +17,7 @@ class Zume_Path_L3 extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'L3 Practitioner', 'disciple_tools' );
+        $this->base_title = __( 'Active Training', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path/$this->base_slug" === $url_path ) {
@@ -34,6 +31,7 @@ class Zume_Path_L3 extends Zume_Chart_Base
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
+        wp_enqueue_script( 'zume_api', plugin_dir_url(__FILE__) . 'charts.js', [ 'jquery' ], filemtime( plugin_dir_path(__FILE__) . 'charts.js' ), true );
         wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
 
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
@@ -60,6 +58,7 @@ class Zume_Path_L3 extends Zume_Chart_Base
     public function wp_head() {
         ?>
         <script>
+            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
             jQuery(document).ready(function(){
                 "use strict";
                 let chart = jQuery('#chart')
@@ -80,24 +79,31 @@ class Zume_Path_L3 extends Zume_Chart_Base
                                 </div>
                             </div>
                             <hr>
+                            <span class="loading-spinner active"></span>
                             <div class="grid-x">
                                 <div class="cell medium-6">
                                     <div class="grid-x zume-critical-path"></div>
                                 </div>
                                 <div class="cell medium-6" style="padding:1em;">
-                                    <h3><strong>What is L3 Practitioner Stage?</strong></h3>
+                                    <h3><strong>What is the Active Training stage?</strong></h3>
                                     <p>
-                                        The L3 Practitioner Stage is a full church planting multiplier.
+                                        The Active Training stage is the stage where the user is actively going through the training.
+                                        The goal of this stage is to get the user to complete the training.
                                     </p>
                                 </div>
                             </div>
                             <hr>
-                            <span class="loading-spinner active"></span>
                             <h2>Goals</h2>
                             <div class="grid-x zume-goals"></div>
                             <hr>
                             <h2>Trends</h2>
                             <div class="grid-x zume-trends"></div>
+                            <hr>
+                            <h2>Session Goals</h2>
+                            <div class="grid-x zume-session-goals"></div>
+                            <hr>
+                            <h2>Session Trends</h2>
+                            <div class="grid-x zume-session-trends"></div>
                         </div>
                     `)
 
@@ -106,27 +112,38 @@ class Zume_Path_L3 extends Zume_Chart_Base
                 let data = [
                     {
                         "title": "People",
-                        "value": 100,
-                        "link": 'label',
-                        "description": "These are the people in L3 Practitioner.",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                        "value": '0',
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
                     },
                     {
-                        "title": "Active Reporting",
-                        "value": 100,
-                        "link": 'label',
-                        "description": "Active reporting.",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                        "title": "Check-ins",
+                        "value": '0',
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
                     },
                     {
-                        "title": "Churches",
-                        "value": 100,
-                        "link": 'label',
-                        "description": "Churches.",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                        "title": "Has a Coach",
+                        "value": '0',
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
+                    },
+                    {
+                        "title": "Has a Profile",
+                        "value": '0',
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
+                    },
+                    {
+                        "title": "Session Progress",
+                        "value": '0',
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
                     }
                 ]
 
@@ -134,7 +151,7 @@ class Zume_Path_L3 extends Zume_Chart_Base
                     jQuery('.zume-goals').append(`
                             <!-- Zume Card-->
                             <div class="cell medium-4 large-3" data-equalizer-watch>
-                                <div class="zume-card ${value.goal}" data-link="${value.link}">
+                                <div class="zume-card ${value.goal}">
                                     <div class="zume-card-title">
                                         ${value.title}
                                     </div>
@@ -170,11 +187,12 @@ class Zume_Path_L3 extends Zume_Chart_Base
 
                 let path = [
                     {
-                        "title": "L3 Practitioners",
-                        "link": "l3_practitioners",
-                        "value": '45,034',
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)],
+                        "title": "Active Training Trainees",
+                        "link": "active",
+
+                        "value": '0',
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey',
                     },
                 ]
 
@@ -201,6 +219,115 @@ class Zume_Path_L3 extends Zume_Chart_Base
                                     </div>
                                 </div>
                             </div>
+                        `)
+                })
+
+                let sessions = [
+                    {
+                        "title": "Session 1",
+                        "value": 0,
+                        "description": "Session 1.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
+                    },
+                    {
+                        "title": "Session 2",
+                        "value": 0,
+                        "description": "Session 2.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
+                    },
+                    {
+                        "title": "Session 3",
+                        "value": 0,
+                        "description": "Session 3.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
+                    },
+                    {
+                        "title": "Session 4",
+                        "value": 0,
+                        "description": "Session 4.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
+                    },
+                    {
+                        "title": "Session 5",
+                        "value": 0,
+                        "description": "Session 5.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
+                    },
+                    {
+                        "title": "Session 6",
+                        "value": 0,
+                        "description": "Session 6.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
+                    },
+                    {
+                        "title": "Session 7",
+                        "value": 0,
+                        "description": "Session 7.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
+                    },
+                    {
+                        "title": "Session 8",
+                        "value": 0,
+                        "description": "Session 8.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
+                    },
+                    {
+                        "title": "Session 9",
+                        "value": 0,
+                        "description": "Session 9.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
+                    },
+                    {
+                        "title": "Session 10",
+                        "value": 0,
+                        "description": "Session 10.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
+                    }
+                ]
+
+                jQuery.each( sessions, function( key, value ) {
+                    jQuery('.zume-session-goals').append(`
+                            <div class="cell medium-4 large-3">
+                                <div class="zume-card ${value.goal}">
+                                    <div class="zume-card-title">
+                                        ${value.title}
+                                    </div>
+                                    <div class="zume-card-content">
+                                        ${value.value}
+                                    </div>
+                                    <div class="zume-card-footer">
+                                        ${value.description}
+                                    </div>
+                                </div>
+                            </div><!-- card -->
+                        `)
+                })
+
+                jQuery.each( sessions, function( key, value ) {
+                    jQuery('.zume-session-trends').append(`
+                            <div class="cell medium-4 large-3">
+                                <div class="zume-card ${value.trend}">
+                                    <div class="zume-card-title">
+                                        ${value.title}
+                                    </div>
+                                    <div class="zume-card-content">
+                                        ${value.value}
+                                    </div>
+                                    <div class="zume-card-footer">
+                                        ${value.description}
+                                    </div>
+                                </div>
+                            </div><!-- card -->
                         `)
                 })
 
@@ -235,4 +362,4 @@ class Zume_Path_L3 extends Zume_Chart_Base
     }
 
 }
-new Zume_Path_L3();
+new Zume_Path_Active();

@@ -1,8 +1,5 @@
 <?php
-if ( !defined( 'ABSPATH' ) ) {
-    exit;
-} // Exit if accessed directly.
-
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 class Zume_Path_L1 extends Zume_Chart_Base
 {
@@ -34,6 +31,7 @@ class Zume_Path_L1 extends Zume_Chart_Base
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
+        wp_enqueue_script( 'zume_api', plugin_dir_url(__FILE__) . 'charts.js', [ 'jquery' ], filemtime( plugin_dir_path(__FILE__) . 'charts.js' ), true );
         wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
 
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
@@ -60,6 +58,7 @@ class Zume_Path_L1 extends Zume_Chart_Base
     public function wp_head() {
         ?>
         <script>
+            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
             jQuery(document).ready(function(){
                 "use strict";
                 let chart = jQuery('#chart')
@@ -107,31 +106,31 @@ class Zume_Path_L1 extends Zume_Chart_Base
                 let data = [
                     {
                         "title": "People",
-                        "value": 100,
-                        "description": "Number of people in L1 Practitioner status",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                        "value": 0,
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
                     },
                     {
                         "title": "Active Reporting",
-                        "value": 100,
-                        "description": "Number of people who have current reporting",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                        "value": 0,
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
                     },
                     {
                         "title": "Active Coaching",
-                        "value": 100,
-                        "description": "Has recieved coaching in the time range.",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                        "value": 0,
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
                     },
                     {
                         "title": "Checkins",
-                        "value": 100,
-                        "description": "Has checked back into the system.",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                        "value": 0,
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
                     }
                 ]
 
@@ -177,9 +176,10 @@ class Zume_Path_L1 extends Zume_Chart_Base
                     {
                         "title": "L1 Practitioners",
                         "link": "l1-practitioners",
-                        "value": '45,034',
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)],
+                        "description": "Description.",
+                        "value": '0',
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey',
                     },
                 ]
 

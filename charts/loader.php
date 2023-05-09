@@ -1,4 +1,5 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 class Zume_Metrics_Base {
 
@@ -25,25 +26,22 @@ class Zume_Metrics_Base {
 
             require_once ('abstract.php');
 
-            require_once ('0-an-overview.php');
-            require_once ('0-trainee-journey.php');
-            require_once ('1-candidate.php');
-            require_once ('2-pre-training.php');
-            require_once ('3-active-training.php');
-            require_once ('4-post-training.php');
-            require_once ('5-l1-practitioner.php');
-            require_once ('6-l2-practitioner.php');
-            require_once ('7-l3-practitioner.php');
+            require_once ('01-goals.php');
+            require_once ('02-concepts.php');
 
-            require_once ('10-coaching-stages.php');
-            require_once ('11-facilitator.php');
-            require_once ('12-early.php');
-            require_once ('13-advanced.php');
+            require_once ('10-trainee-journey.php');
+            require_once ('11-candidate.php');
+            require_once ('12-pre-training.php');
+            require_once ('13-active-training.php');
+            require_once ('14-post-training.php');
+            require_once ('15-l1-practitioner.php');
+            require_once ('16-l2-practitioner.php');
+            require_once ('17-l3-practitioner.php');
 
-            require_once ('9-goals.php');
-            require_once ('8-legend.php');
-
-//            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            require_once ('20-overview.php');
+            require_once ('21-facilitator.php');
+            require_once ('22-early.php');
+            require_once ('23-advanced.php');
         }
     }
 
@@ -53,14 +51,12 @@ class Zume_Metrics_Base {
                 "link" => site_url( "/zume-path/" ), // the link where the user will be directed when they click
                 "label" => __( "Critical Path", "disciple_tools" )  // the label the user will see
             ];
-
         }
         return $tabs;
     }
 
     public function dt_metrics_menu( $content ) {
         return $content;
-        // jQuery('#metrics-sidemenu li').removeClass('side-menu-item-highlight');
     }
 
     public function dt_templates_for_urls( $template_for_url ) {

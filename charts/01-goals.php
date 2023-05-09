@@ -1,13 +1,11 @@
 <?php
-if ( !defined( 'ABSPATH' ) ) {
-    exit;
-} // Exit if accessed directly.
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 
 class Zume_Path_Goals extends Zume_Chart_Base
 {
     //slug and title of the top menu folder
-    public $base_slug = 'goals'; // lowercase
+    public $base_slug = ''; // lowercase
     public $slug = ''; // lowercase
     public $title;
     public $base_title;
@@ -23,7 +21,7 @@ class Zume_Path_Goals extends Zume_Chart_Base
         $this->base_title = __( 'Goals', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
-        if ( "zume-path/$this->base_slug" === $url_path ) {
+        if ( "zume-path" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             add_action( 'wp_head',[ $this, 'wp_head' ], 1000);
         }
@@ -34,6 +32,7 @@ class Zume_Path_Goals extends Zume_Chart_Base
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
+        wp_enqueue_script( 'zume_api', plugin_dir_url(__FILE__) . 'charts.js', [ 'jquery' ], filemtime( plugin_dir_path(__FILE__) . 'charts.js' ), true );
         wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
 
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
@@ -58,15 +57,17 @@ class Zume_Path_Goals extends Zume_Chart_Base
     }
 
     public function base_menu( $content ) {
-        $content .= '<li class=""><hr></li>';
-        $content .= '<li class="">GOALS</li>';
+        $content .= '<li class="">ZÚME</li>';
         $content .= '<li class=""><a href="'.site_url('/zume-path/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
         return $content;
     }
 
     public function wp_head() {
+        $this->styles();
+        $this->js_api();
         ?>
         <script>
+            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
             jQuery(document).ready(function(){
                 "use strict";
 
@@ -75,8 +76,17 @@ class Zume_Path_Goals extends Zume_Chart_Base
                 chart.empty().html(`
                         <div id="zume-path">
                             <div class="grid-x">
-                                <div class="cell small-6"><h1>${title}</h1></div>
+                                <div class="cell small-6"><h1>Zúme ${title}</h1></div>
                                 <div class="cell small-6">
+                                     <span style="float: right;">
+                                        <select>
+                                            <option value="30">All Time</option>
+                                            <option value="30">Last 30 days</option>
+                                            <option value="7">Last 7 days</option>
+                                            <option value="90">Last 90 days</option>
+                                            <option value="365">Last 1 Year</option>
+                                        </select>
+                                    </span>
                                 </div>
                             </div>
                             <hr>
@@ -101,71 +111,18 @@ class Zume_Path_Goals extends Zume_Chart_Base
                         </div>
                     `)
 
-                let days = 30
-                let range_select = jQuery('#range')
-                let site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/stats/candidates'
-                window.phase_data = []
-                function get_range_stats() {
-                    jQuery.get( site_url+'?days='+days+'&filter=candidate&range=true', function(data){
-                        window.phase_data = data
-                        jQuery('.loading-spinner').removeClass('active')
-                        console.log(data)
+
+
+                let critical_path = jQuery('.zume-critical-path')
+                window.API_post(window.site_url+'goals', ( data ) => {
+                    critical_path.empty()
+                    jQuery.each( data.list, function( key, value ) {
+                        let content = window.template_trio(value)
+                        critical_path.append(content)
                     })
-                }
-                range_select.on('change', function(){
-                    days = jQuery(this).val()
-                    jQuery('.loading-spinner').addClass('active')
-                    get_range_stats()
+                    console.log(data)
                 })
 
-
-                let valence = ['valence-grey', 'valence-grey', 'valence-darkred', 'valence-red', 'valence-grey', 'valence-green', 'valence-darkgreen']
-                function get_valence( valence ) {
-                    return valence[Math.floor(Math.random()*valence.length)]
-                }
-
-                let path = [
-                    {
-                        "title": "Practitioners",
-                        "link": "l1_practitioners",
-                        "value": '45,034',
-                        "goal": get_valence( valence ),
-                        "trend": get_valence( valence )
-                    },
-                    {
-                        "title": "Churches",
-                        "link": "churches",
-                        "value": '10,000',
-                        "goal": get_valence( valence ),
-                        "trend": get_valence( valence )
-                    },
-                ]
-
-                jQuery('.zume-critical-path').empty()
-                jQuery.each( path, function( key, value ) {
-                    jQuery('.zume-critical-path').append(`
-                            <div class="cell zume-trio-card">
-                                <div class="zume-trio-card-content" data-link="${value.link}">
-                                    <div class="zume-trio-card-title">
-                                        ${value.title}
-                                    </div>
-                                    <div class="zume-trio-card-value">
-                                        ${value.value}
-                                    </div>
-                                </div>
-                                <div class="zume-trio-card-footer">
-                                    <div class="grid-x">
-                                        <div class="cell small-6 zume-goal ${value.goal}">
-                                            GOAL
-                                        </div>
-                                        <div class="cell small-6 zume-trend ${value.trend}">
-                                            TREND
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `)
-                })
 
                 jQuery('.zume-card').click(function(){
                     jQuery('#modal-large').foundation('open')
@@ -183,13 +140,11 @@ class Zume_Path_Goals extends Zume_Chart_Base
                 })
 
                 jQuery('.loading-spinner').removeClass('active')
-                get_range_stats()
             })
 
         </script>
         <?php
     }
-
     public function data() {
         return [
             'translations' => [
@@ -197,7 +152,17 @@ class Zume_Path_Goals extends Zume_Chart_Base
             ],
         ];
     }
-
-
+    public function styles() {
+        ?>
+        <style>
+            .side-menu-item-highlight {
+                font-weight: 300;
+            }
+            #-menu {
+                font-weight: 700;
+            }
+        </style>
+        <?php
+    }
 }
 new Zume_Path_Goals();

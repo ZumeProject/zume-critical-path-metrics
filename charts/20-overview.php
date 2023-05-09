@@ -1,13 +1,11 @@
 <?php
-if ( !defined( 'ABSPATH' ) ) {
-    exit;
-} // Exit if accessed directly.
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 
 class Zume_Coaching_Stages extends Zume_Chart_Base
 {
     //slug and title of the top menu folder
-    public $base_slug = 'coaching_stages'; // lowercase
+    public $base_slug = 'coaching_engagement'; // lowercase
     public $slug = ''; // lowercase
     public $title;
     public $base_title;
@@ -20,7 +18,7 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Coaching Stages', 'disciple_tools' );
+        $this->base_title = __( 'Overview', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path/$this->base_slug" === $url_path ) {
@@ -34,6 +32,7 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
+        wp_enqueue_script( 'zume_api', plugin_dir_url(__FILE__) . 'charts.js', [ 'jquery' ], filemtime( plugin_dir_path(__FILE__) . 'charts.js' ), true );
         wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
 
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
@@ -62,7 +61,7 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
     }
     public function base_menu( $content ) {
         $content .= '<li class=""><hr></li>';
-        $content .= '<li class="">COACHING</li>';
+        $content .= '<li class="">COACHES</li>';
         $content .= '<li class=""><a href="'.site_url('/zume-path/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
         return $content;
     }
@@ -70,6 +69,7 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
         $this->styles();
         ?>
         <script>
+            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
             jQuery(document).ready(function(){
                 "use strict";
                 let chart = jQuery('#chart')
@@ -77,7 +77,7 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
                 chart.empty().html(`
                         <div id="zume-path">
                             <div class="grid-x">
-                                <div class="cell small-6"><h1>${title}</h1></div>
+                                <div class="cell small-6"><h1>Coaching ${title}</h1></div>
                                 <div class="cell small-6">
                                     <span style="float: right;">
                                         <select>
@@ -91,88 +91,53 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
                             </div>
                             <hr>
                             <span class="loading-spinner active"></span>
-
-                            <div class="grid-y zume-cards critical-path" id="zume-cards"></div>
-
+                            <div class="grid-x zume-goals"></div>
                         </div>
                     `)
 
-                let valence = ['valence-grey', 'valence-grey', 'valence-darkred', 'valence-red', 'valence-grey', 'valence-green', 'valence-darkgreen']
-
                 let data = [
                     {
-                        "title": "Candidates",
-                        "link": "candidates",
-                        "value": '45,034',
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)],
+                        "title": "Active Coaches",
+                        "value": 100,
+                        "link": 'label',
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
                     },
                     {
-                        "title": "Pre-Training",
-                        "link": "pre",
-                        "value": '467',
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)],
+                        "title": "Users in Coaching",
+                        "value": 100,
+                        "link": 'label',
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
                     },
                     {
-                        "title": "Active Training",
-                        "link": "active",
-                        "value": '150',
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)],
+                        "title": "Engagements",
+                        "value": 100,
+                        "link": 'label',
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
                     },
-                    {
-                        "title": "Post-Training",
-                        "link": "post",
-                        "value": '570',
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)],
-                    },
-                    {
-                        "title": "L1 Practitioners",
-                        "link": "l1_practitioners",
-                        "value": '122',
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)],
-                    },
-                    {
-                        "title": "L2 Practitioners",
-                        "link": "l2_practitioners",
-                        "value": '20',
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)],
-                    },
-                    {
-                        "title": "L3 Practitioners",
-                        "link": "l3_practitioners",
-                        "value": '10',
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)],
-                    }
                 ]
 
                 jQuery.each( data, function( key, value ) {
-                    jQuery('#zume-cards').append(`
-                            <div class="cell zume-trio-card" >
-                                <div class="zume-trio-card-content" data-link="${value.link}">
-                                    <div class="zume-trio-card-title">
+                    jQuery('.zume-goals').append(`
+                            <!-- Zume Card-->
+                            <div class="cell medium-4 large-3" data-equalizer-watch>
+                                <div class="zume-card ${value.goal}" data-link="${value.link}">
+                                    <div class="zume-card-title">
                                         ${value.title}
                                     </div>
-                                    <div class="zume-trio-card-value">
+                                    <div class="zume-card-content">
                                         ${value.value}
                                     </div>
-                                </div>
-                                <div class="zume-trio-card-footer">
-                                    <div class="grid-x">
-                                        <div class="cell small-6 zume-goal ${value.goal}">
-                                            GOAL
-                                        </div>
-                                        <div class="cell small-6 zume-trend ${value.trend}">
-                                            TREND
-                                        </div>
+                                    <div class="zume-card-footer">
+                                        ${value.description}
                                     </div>
                                 </div>
-                            </div>
+                            </div><!-- card -->
                         `)
                 })
 

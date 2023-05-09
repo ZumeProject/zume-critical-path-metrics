@@ -1,5 +1,5 @@
 <?php
-
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 abstract class Zume_Chart_Base
 {
@@ -39,13 +39,11 @@ abstract class Zume_Chart_Base
     }
 
     public function base_add_url( $template_for_url ) {
-
         if ( empty ( $this->base_slug ) ) {
             $template_for_url["zume-path"] = 'template-metrics.php';
         } else {
             $template_for_url["zume-path/$this->base_slug"] = 'template-metrics.php';
         }
-
         return $template_for_url;
     }
 
@@ -72,5 +70,21 @@ abstract class Zume_Chart_Base
         }
         return $pass;
     }
+
+    public function js_api() {
+        ?>
+        <script>
+            jQuery(document).ready(function($) {
+                window.API_get = (url, callback ) => {
+                    return $.get(url, callback);
+                }
+                window.API_post = (url, callback ) => {
+                    return $.post(url, callback);
+                }
+            })
+        </script>
+        <?php
+    }
+
 
 }

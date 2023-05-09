@@ -1,14 +1,11 @@
 <?php
-if ( !defined( 'ABSPATH' ) ) {
-    exit;
-} // Exit if accessed directly.
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-
-class Zume_Path_L2 extends Zume_Chart_Base
+class Zume_Coaching_Advanced extends Zume_Chart_Base
 {
     //slug and title of the top menu folder
-    public $base_slug = 'l2_practitioners'; // lowercase
-    public $slug = ''; // lowercase
+    public $base_slug = 'coaching_advanced'; // lowercase
+    public $slug = '';
     public $title;
     public $base_title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
@@ -20,7 +17,7 @@ class Zume_Path_L2 extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'L2 Practitioner', 'disciple_tools' );
+        $this->base_title = __( 'Advanced Practitioner', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path/$this->base_slug" === $url_path ) {
@@ -34,6 +31,7 @@ class Zume_Path_L2 extends Zume_Chart_Base
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
+        wp_enqueue_script( 'zume_api', plugin_dir_url(__FILE__) . 'charts.js', [ 'jquery' ], filemtime( plugin_dir_path(__FILE__) . 'charts.js' ), true );
         wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
 
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
@@ -60,6 +58,7 @@ class Zume_Path_L2 extends Zume_Chart_Base
     public function wp_head() {
         ?>
         <script>
+            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
             jQuery(document).ready(function(){
                 "use strict";
                 let chart = jQuery('#chart')
@@ -80,24 +79,16 @@ class Zume_Path_L2 extends Zume_Chart_Base
                                 </div>
                             </div>
                             <hr>
-                            <span class="loading-spinner active"></span>
                             <div class="grid-x">
-                                <div class="cell medium-6">
+                                <div class="cell">
                                     <div class="grid-x zume-critical-path"></div>
-                                </div>
-                                <div class="cell medium-6" style="padding:1em;">
-                                    <h3><strong>What is L2 Practitioner Stage?</strong></h3>
-                                    <p>
-                                        The L2 Practitioner Stage moves from competence in 4-fields to multiplying leaders and simple churches.
-                                    </p>
                                 </div>
                             </div>
                             <hr>
-                            <h2>Goals</h2>
+                            <span class="loading-spinner active"></span>
+                            <h2>Stats</h2>
                             <div class="grid-x zume-goals"></div>
-                            <hr>
-                            <h2>Trends</h2>
-                            <div class="grid-x zume-trends"></div>
+
                         </div>
                     `)
 
@@ -105,45 +96,36 @@ class Zume_Path_L2 extends Zume_Chart_Base
 
                 let data = [
                     {
-                        "title": "People",
+                        "title": "New Requests",
                         "value": 100,
-                        "description": "Number of L2 Practitioners",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                        "link": 'label',
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
                     },
                     {
-                        "title": "Active Reporting",
+                        "title": "Coaching Engagements",
                         "value": 100,
-                        "description": "How many are in active church reporting.",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
-                    }
+                        "link": 'label',
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
+                    },
+                    {
+                        "title": "Reports",
+                        "value": 100,
+                        "link": 'label',
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
+                    },
                 ]
 
                 jQuery.each( data, function( key, value ) {
                     jQuery('.zume-goals').append(`
                             <!-- Zume Card-->
                             <div class="cell medium-4 large-3" data-equalizer-watch>
-                                <div class="zume-card ${value.goal}">
-                                    <div class="zume-card-title">
-                                        ${value.title}
-                                    </div>
-                                    <div class="zume-card-content">
-                                        ${value.value}
-                                    </div>
-                                    <div class="zume-card-footer">
-                                        ${value.description}
-                                    </div>
-                                </div>
-                            </div><!-- card -->
-                        `)
-                })
-
-                jQuery.each( data, function( key, value ) {
-                    jQuery('.zume-trends').append(`
-                            <!-- Zume Card-->
-                            <div class="cell medium-4 large-3" data-equalizer-watch>
-                                <div class="zume-card ${value.trend}">
+                                <div class="zume-card ${value.goal}" data-link="${value.link}">
                                     <div class="zume-card-title">
                                         ${value.title}
                                     </div>
@@ -160,11 +142,12 @@ class Zume_Path_L2 extends Zume_Chart_Base
 
                 let path = [
                     {
-                        "title": "L2 Practitioners",
-                        "link": "l2-practitioners",
-                        "value": '100',
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)],
+                        "title": "Advanced Practitioners",
+                        "link": "advanced_practitioners",
+                        "description": "Description.",
+                        "value": '0',
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey',
                     },
                 ]
 
@@ -225,4 +208,4 @@ class Zume_Path_L2 extends Zume_Chart_Base
     }
 
 }
-new Zume_Path_L2();
+new Zume_Coaching_Advanced();

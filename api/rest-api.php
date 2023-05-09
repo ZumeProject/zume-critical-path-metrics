@@ -21,75 +21,32 @@ class Zume_Stats_Endpoints
         $namespace = $this->namespace;
 
         register_rest_route(
-            $namespace, '/stats', [
-                'methods'  => [ 'POST', 'GET' ],
-                'callback' => [ $this, 'endpoint' ],
-                'permission_callback' => '__return_true'
-            ]
-        );
-        register_rest_route(
-            $namespace, '/stats_list', [
-                'methods'  => [ 'POST', 'GET' ],
-                'callback' => [ $this, 'endpoint_list' ],
+            $namespace, '/goals', [
+                'methods'  => [ 'GET', 'POST' ],
+                'callback' => [ $this, 'goals' ],
                 'permission_callback' => '__return_true'
             ]
         );
         register_rest_route(
             $namespace, '/candidates/hero', [
-                'methods'  => [ 'POST' ],
+                'methods'  => [ 'GET', 'POST' ],
                 'callback' => [ $this, 'candidates_hero' ],
                 'permission_callback' => '__return_true'
             ]
         );
-    }
 
+    }
+    public function goals( WP_REST_Request $request ) {
+        $params = dt_recursive_sanitize_array( $request->get_params() );
+        $requested_range = $this->requested_range( $params );
+        return Zume_Query::goals( $requested_range );
+    }
     public function candidates_hero( WP_REST_Request $request ) {
         $params = dt_recursive_sanitize_array( $request->get_params() );
         $requested_range = $this->requested_range( $params );
         return Zume_Query::candidate_hero( $requested_range );
     }
 
-
-    public function endpoint( WP_REST_Request $request ) {
-
-        $params = dt_recursive_sanitize_array( $request->get_params() );
-        $params = dt_recursive_sanitize_array( $request->get_headers() );
-        return $params;
-
-        $stats = [
-            'current_timestamp' => time(),
-            'params' => $params,
-        ];
-        return $stats;
-    }
-//    public function endpoint( WP_REST_Request $request ) {
-//
-//        $params = dt_recursive_sanitize_array( $request->get_params() );
-//
-//
-//        $stats = [
-//            'current_timestamp' => time(),
-//        ];
-//
-//        if ( ! isset( $params['filter'] ) ) {
-//            $params['filter'] = 'none';
-//        }
-//        if ( ! in_array( $params['filter'], [ 'none', 'candidate', 'pre', 'active', 'post', 'l1', 'l2', 'l3' ] ) ) {
-//            $params['filter'] = 'none';
-//        }
-//
-//        if ( isset( $params['range'] ) && ! empty( $params['range'] ) ) {
-//            $requested_range = $this->requested_range( $params );
-//            $stats['requested_range'] = $requested_range;
-//            $stats['range'] = apply_filters( 'zume_range_stats', [], $requested_range );
-//        }
-//
-//        if ( isset( $params['all_time'] ) && ! empty( $params['all_time'] )  ) {
-//            $stats['all_time'] = apply_filters( 'zume_all_time_stats', [], $params['filter'] );
-//        }
-//
-//        return $stats;
-//    }
     public function endpoint_candidates( WP_REST_Request $request ) {
         $params = $request->get_params();
 

@@ -1,14 +1,11 @@
 <?php
-if ( !defined( 'ABSPATH' ) ) {
-    exit;
-} // Exit if accessed directly.
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-
-class Zume_Path_Pre extends Zume_Chart_Base
+class Zume_Path_L3 extends Zume_Chart_Base
 {
     //slug and title of the top menu folder
-    public $base_slug = 'pre'; // lowercase
-    public $slug = ''; // lowercase
+    public $base_slug = 'l3_practitioners'; // lowercase
+    public $slug = '';
     public $title;
     public $base_title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
@@ -20,7 +17,7 @@ class Zume_Path_Pre extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Pre-Training', 'disciple_tools' );
+        $this->base_title = __( 'L3 Practitioner', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path/$this->base_slug" === $url_path ) {
@@ -34,6 +31,7 @@ class Zume_Path_Pre extends Zume_Chart_Base
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
+        wp_enqueue_script( 'zume_api', plugin_dir_url(__FILE__) . 'charts.js', [ 'jquery' ], filemtime( plugin_dir_path(__FILE__) . 'charts.js' ), true );
         wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
 
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
@@ -60,6 +58,7 @@ class Zume_Path_Pre extends Zume_Chart_Base
     public function wp_head() {
         ?>
         <script>
+            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
             jQuery(document).ready(function(){
                 "use strict";
                 let chart = jQuery('#chart')
@@ -80,26 +79,24 @@ class Zume_Path_Pre extends Zume_Chart_Base
                                 </div>
                             </div>
                             <hr>
-                            <span class="loading-spinner active"></span>
                             <div class="grid-x">
                                 <div class="cell medium-6">
                                     <div class="grid-x zume-critical-path"></div>
                                 </div>
                                 <div class="cell medium-6" style="padding:1em;">
-                                    <h3><strong>What is Pre-Training Stage?</strong></h3>
+                                    <h3><strong>What is L3 Practitioner Stage?</strong></h3>
                                     <p>
-                                        Pre-training stage refers to the critical path stage between registration and active training. The top actions
-                                        that lead to a user entering the active training stage are: Make a Plan, Invite Friends, Get a Coach, and Update Profile.
-                                        The minimum of this stage is not having a plan. Once they have a plan, they are in the active training stage.
+                                        The L3 Practitioner Stage is a full church planting multiplier.
                                     </p>
                                 </div>
                             </div>
                             <hr>
+                            <span class="loading-spinner active"></span>
                             <h2>Goals</h2>
-                            <div class="grid-x zume-goals"  data-equalizer data-equalize-by-row></div>
+                            <div class="grid-x zume-goals"></div>
                             <hr>
                             <h2>Trends</h2>
-                            <div class="grid-x zume-trends"  data-equalizer data-equalize-by-row></div>
+                            <div class="grid-x zume-trends"></div>
                         </div>
                     `)
 
@@ -108,38 +105,27 @@ class Zume_Path_Pre extends Zume_Chart_Base
                 let data = [
                     {
                         "title": "People",
-                        "value": 100,
-                        "description": "All users in the pre-training phase.",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                        "value": 0,
+                        "link": 'label',
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
                     },
                     {
-                        "title": "Has No Plan",
-                        "value": 100,
-                        "description": "Less is good. User has not made a plan for training.",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                        "title": "Active Reporting",
+                        "value": 0,
+                        "link": 'label',
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
                     },
                     {
-                        "title": "Has Friends",
-                        "value": 100,
-                        "description": "User has invited friends to join the training.",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
-                    },
-                    {
-                        "title": "Has Coach",
-                        "value": 100,
-                        "description": "User has a coach assigned to them.",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
-                    },
-                    {
-                        "title": "Has Updated Profile",
-                        "value": 100,
-                        "description": "User has completed their profile.",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                        "title": "Churches",
+                        "value": 0,
+                        "link": 'label',
+                        "description": "Description.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
                     }
                 ]
 
@@ -147,7 +133,7 @@ class Zume_Path_Pre extends Zume_Chart_Base
                     jQuery('.zume-goals').append(`
                             <!-- Zume Card-->
                             <div class="cell medium-4 large-3" data-equalizer-watch>
-                                <div class="zume-card ${value.goal}">
+                                <div class="zume-card ${value.goal}" data-link="${value.link}">
                                     <div class="zume-card-title">
                                         ${value.title}
                                     </div>
@@ -183,11 +169,12 @@ class Zume_Path_Pre extends Zume_Chart_Base
 
                 let path = [
                     {
-                        "title": "Pre-Training Trainees",
-                        "link": "pre",
-                        "value": '10,000',
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)],
+                        "title": "L3 Practitioners",
+                        "link": "l3_practitioners",
+                        "description": "Description.",
+                        "value": '0',
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey',
                     },
                 ]
 
@@ -248,4 +235,4 @@ class Zume_Path_Pre extends Zume_Chart_Base
     }
 
 }
-new Zume_Path_Pre();
+new Zume_Path_L3();

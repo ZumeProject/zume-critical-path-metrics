@@ -1,12 +1,11 @@
 <?php
-if ( !defined( 'ABSPATH' ) ) {
-    exit;
-}
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-class Zume_Coaching_Advanced extends Zume_Chart_Base
+
+class Zume_Coaching_Early extends Zume_Chart_Base
 {
     //slug and title of the top menu folder
-    public $base_slug = 'coaching_advanced'; // lowercase
+    public $base_slug = 'coaching_early'; // lowercase
     public $slug = '';
     public $title;
     public $base_title;
@@ -19,7 +18,7 @@ class Zume_Coaching_Advanced extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Advanced Practitioner', 'disciple_tools' );
+        $this->base_title = __( 'Early Practitioner', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path/$this->base_slug" === $url_path ) {
@@ -33,6 +32,7 @@ class Zume_Coaching_Advanced extends Zume_Chart_Base
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
+        wp_enqueue_script( 'zume_api', plugin_dir_url(__FILE__) . 'charts.js', [ 'jquery' ], filemtime( plugin_dir_path(__FILE__) . 'charts.js' ), true );
         wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
 
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
@@ -59,6 +59,7 @@ class Zume_Coaching_Advanced extends Zume_Chart_Base
     public function wp_head() {
         ?>
         <script>
+            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
             jQuery(document).ready(function(){
                 "use strict";
                 let chart = jQuery('#chart')
@@ -83,14 +84,12 @@ class Zume_Coaching_Advanced extends Zume_Chart_Base
                                 <div class="cell">
                                     <div class="grid-x zume-critical-path"></div>
                                 </div>
+
                             </div>
                             <hr>
                             <span class="loading-spinner active"></span>
-                            <h2>Goals</h2>
+                            <h2>Stats</h2>
                             <div class="grid-x zume-goals"></div>
-                            <hr>
-                            <h2>Trends</h2>
-                            <div class="grid-x zume-trends"></div>
                         </div>
                     `)
 
@@ -98,29 +97,29 @@ class Zume_Coaching_Advanced extends Zume_Chart_Base
 
                 let data = [
                     {
-                        "title": "People",
-                        "value": 100,
+                        "title": "New Requests",
+                        "value": 0,
                         "link": 'label',
-                        "description": "These are the people in L3 Practitioner.",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                        "description": "New Requests.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
                     },
                     {
-                        "title": "Active Reporting",
-                        "value": 100,
+                        "title": "Coaching Engagements",
+                        "value": 0,
                         "link": 'label',
                         "description": "Active reporting.",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
                     },
                     {
-                        "title": "Churches",
-                        "value": 100,
+                        "title": "Reports",
+                        "value": 0,
                         "link": 'label',
-                        "description": "Churches.",
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)]
-                    }
+                        "description": "Reports.",
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey'
+                    },
                 ]
 
                 jQuery.each( data, function( key, value ) {
@@ -142,32 +141,13 @@ class Zume_Coaching_Advanced extends Zume_Chart_Base
                         `)
                 })
 
-                jQuery.each( data, function( key, value ) {
-                    jQuery('.zume-trends').append(`
-                            <!-- Zume Card-->
-                            <div class="cell medium-4 large-3" data-equalizer-watch>
-                                <div class="zume-card ${value.trend}">
-                                    <div class="zume-card-title">
-                                        ${value.title}
-                                    </div>
-                                    <div class="zume-card-content">
-                                        ${value.value}
-                                    </div>
-                                    <div class="zume-card-footer">
-                                        ${value.description}
-                                    </div>
-                                </div>
-                            </div><!-- card -->
-                        `)
-                })
-
                 let path = [
                     {
-                        "title": "Advanced Practitioners",
-                        "link": "advanced_practitioners",
-                        "value": '45,034',
-                        "goal": valence[Math.floor(Math.random()*valence.length)],
-                        "trend": valence[Math.floor(Math.random()*valence.length)],
+                        "title": "Early Practitioners",
+                        "link": "facilitators",
+                        "value": '0',
+                        "goal": 'valence-grey',
+                        "trend": 'valence-grey',
                     },
                 ]
 
@@ -228,4 +208,4 @@ class Zume_Coaching_Advanced extends Zume_Chart_Base
     }
 
 }
-new Zume_Coaching_Advanced();
+new Zume_Coaching_Early();
