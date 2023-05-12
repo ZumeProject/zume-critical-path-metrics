@@ -31,7 +31,7 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
-        wp_enqueue_script( 'zume_api', plugin_dir_url(__FILE__) . 'charts.js', [ 'jquery' ], filemtime( plugin_dir_path(__FILE__) . 'charts.js' ), true );
+//        wp_enqueue_script( 'zume_api', plugin_dir_url(__FILE__) . 'charts.js', [ 'jquery' ], filemtime( plugin_dir_path(__FILE__) . 'charts.js' ), true );
         wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
 
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
@@ -65,7 +65,8 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
         return $content;
     }
     public function wp_head() {
-        $this->styles();
+            $this->styles();
+            $this->js_api();
             ?>
             <script>
                 window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
@@ -83,7 +84,8 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
                                             <option value="30">Last 30 days</option>
                                             <option value="7">Last 7 days</option>
                                             <option value="90">Last 90 days</option>
-                                            <option value="365">Last 1 Year</option>
+                                            <option value="365">Last 1 year</option>
+                                            <option value="all">All Time</option>
                                         </select>
                                     </span>
                                 </div>
@@ -91,86 +93,129 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
                             <hr>
                             <span class="loading-spinner active"></span>
 
-                            <div class="grid-y zume-cards critical-path" id="zume-cards"></div>
+                            <div class="grid-y zume-cards critical-path" id="zume-cards">
+                                <div class="candidates"></div>
+                                <div class="pre_training_trainees"></div>
+                                <div class="active_training_trainees"></div>
+                                <div class="post_training_trainees"></div>
+                                <div class="l1_practitioners"></div>
+                                <div class="l2_practitioners"></div>
+                                <div class="l3_practitioners"></div>
+                            </div>
+
                         </div>
                     `)
 
-                    let data = [
-                        {
-                            "title": "Candidates",
-                            "link": "candidates",
-                            "value": '0',
-                            "goal": 'valence-grey',
-                            "trend": 'valence-grey',
-                        },
-                        {
-                            "title": "Pre-Training",
-                            "link": "pre",
-                            "value": '0',
-                            "goal": 'valence-grey',
-                            "trend": 'valence-grey',
-                        },
-                        {
-                            "title": "Active Training",
-                            "link": "active",
-                            "value": '0',
-                            "goal": 'valence-grey',
-                            "trend": 'valence-grey',
-                        },
-                        {
-                            "title": "Post-Training",
-                            "link": "post",
-                            "value": '0',
-                            "goal": 'valence-grey',
-                            "trend": 'valence-grey',
-                        },
-                        {
-                            "title": "L1 Practitioners",
-                            "link": "l1_practitioners",
-                            "value": '0',
-                            "goal": 'valence-grey',
-                            "trend": 'valence-grey',
-                        },
-                        {
-                            "title": "L2 Practitioners",
-                            "link": "l2_practitioners",
-                            "value": '0',
-                            "goal": 'valence-grey',
-                            "trend": 'valence-grey',
-                        },
-                        {
-                            "title": "L3 Practitioners",
-                            "link": "l3_practitioners",
-                            "value": '0',
-                            "goal": 'valence-grey',
-                            "trend": 'valence-grey',
-                        }
-                    ]
-
-                    jQuery.each( data, function( key, value ) {
-                        jQuery('#zume-cards').append(`
-                            <div class="cell zume-trio-card" >
-                                <div class="zume-trio-card-content" data-link="${value.link}">
-                                    <div class="zume-trio-card-title">
-                                        ${value.title}
-                                    </div>
-                                    <div class="zume-trio-card-value">
-                                        ${value.value}
-                                    </div>
-                                </div>
-                                <div class="zume-trio-card-footer">
-                                    <div class="grid-x">
-                                        <div class="cell small-6 zume-goal ${value.goal}">
-                                            GOAL
-                                        </div>
-                                        <div class="cell small-6 zume-trend ${value.trend}">
-                                            TREND
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `)
+                    window.API_post( window.site_url+'candidates', ( data ) => {
+                        jQuery('.candidates').html(window.template_trio(data))
                     })
+                    window.API_post( window.site_url+'pre_training_trainees', ( data ) => {
+                        jQuery('.pre_training_trainees').html(window.template_trio(data))
+                    })
+                    window.API_post( window.site_url+'active_training_trainees', ( data ) => {
+                        jQuery('.active_training_trainees').html(window.template_trio(data))
+                    })
+                    window.API_post( window.site_url+'post_training_trainees', ( data ) => {
+                        jQuery('.post_training_trainees').html(window.template_trio(data))
+                    })
+                    window.API_post( window.site_url+'l1_practitioners', ( data ) => {
+                        jQuery('.l1_practitioners').html(window.template_trio(data))
+                    })
+                    window.API_post( window.site_url+'l2_practitioners', ( data ) => {
+                        jQuery('.l2_practitioners').html(window.template_trio(data))
+                    })
+                    window.API_post( window.site_url+'l3_practitioners', ( data ) => {
+                        jQuery('.l3_practitioners').html(window.template_trio(data))
+                    })
+
+
+
+                    // window.API_post( window.site_url+'l1', ( data ) => {
+                    // critical_path.append(window.template_trio(data))
+                    // console.log(data)
+                    // })
+
+                    // window.API_post( window.site_url+'churches', ( data ) => {
+                    // critical_path.append(window.template_trio(data))
+                    // console.log(data)
+                    // })
+
+                    // let data = [
+                    //     {
+                    //         "title": "Candidates",
+                    //         "link": "candidates",
+                    //         "value": '0',
+                    //         "goal": 'valence-grey',
+                    //         "trend": 'valence-grey',
+                    //     },
+                    //     {
+                    //         "title": "Pre-Training",
+                    //         "link": "pre",
+                    //         "value": '0',
+                    //         "goal": 'valence-grey',
+                    //         "trend": 'valence-grey',
+                    //     },
+                    //     {
+                    //         "title": "Active Training",
+                    //         "link": "active",
+                    //         "value": '0',
+                    //         "goal": 'valence-grey',
+                    //         "trend": 'valence-grey',
+                    //     },
+                    //     {
+                    //         "title": "Post-Training",
+                    //         "link": "post",
+                    //         "value": '0',
+                    //         "goal": 'valence-grey',
+                    //         "trend": 'valence-grey',
+                    //     },
+                    //     {
+                    //         "title": "L1 Practitioners",
+                    //         "link": "l1_practitioners",
+                    //         "value": '0',
+                    //         "goal": 'valence-grey',
+                    //         "trend": 'valence-grey',
+                    //     },
+                    //     {
+                    //         "title": "L2 Practitioners",
+                    //         "link": "l2_practitioners",
+                    //         "value": '0',
+                    //         "goal": 'valence-grey',
+                    //         "trend": 'valence-grey',
+                    //     },
+                    //     {
+                    //         "title": "L3 Practitioners",
+                    //         "link": "l3_practitioners",
+                    //         "value": '0',
+                    //         "goal": 'valence-grey',
+                    //         "trend": 'valence-grey',
+                    //     }
+                    // ]
+
+                    // jQuery.each( data, function( key, value ) {
+                    //     jQuery('#zume-cards').append(`
+                    //         <div class="cell zume-trio-card" >
+                    //             <div class="zume-trio-card-content" data-link="${value.link}">
+                    //                 <div class="zume-trio-card-title">
+                    //                     ${value.title}
+                    //                 </div>
+                    //                 <div class="zume-trio-card-value">
+                    //                     ${value.value}
+                    //                 </div>
+                    //             </div>
+                    //             <div class="zume-trio-card-footer">
+                    //                 <div class="grid-x">
+                    //                     <div class="cell small-6 zume-goal ${value.goal}">
+                    //                         GOAL
+                    //                     </div>
+                    //                     <div class="cell small-6 zume-trend ${value.trend}">
+                    //                         TREND
+                    //                     </div>
+                    //                 </div>
+                    //             </div>
+                    //         </div>
+                    //     `)
+                    // })
 
                     jQuery('.zume-trio-card-content').click(function(){
                         let link = jQuery(this).data('link')

@@ -81,6 +81,47 @@ abstract class Zume_Chart_Base
                 window.API_post = (url, callback ) => {
                     return $.post(url, callback);
                 }
+                window.template_trio = (value) => {
+                    return `
+                      <div class="cell zume-trio-card ${value.key}">
+                          <div class="zume-trio-card-content ${value.key}" data-link="${value.link}">
+                              <div class="zume-trio-card-title ${value.key}">
+                                  ${value.label}
+                              </div>
+                              <div class="zume-trio-card-value ${value.key}">
+                                  ${value.value}
+                              </div>
+                          </div>
+                          <div class="zume-trio-card-footer ${value.key}">
+                              <div class="grid-x">
+                                  <div class="cell small-6 zume-goal ${value.key} ${value.goal_valence}">
+                                      GOAL
+                                  </div>
+                                  <div class="cell small-6 zume-trend ${value.key} ${value.trend_valence}">
+                                      TREND
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                    `;
+                }
+                window.template_single = (value) => {
+                    return `
+                        <div class="cell medium-4 large-3" data-equalizer-watch>
+                            <div class="zume-card ${value.key} ${value.goal_valence}">
+                                <div class="zume-card-title ${value.key}">
+                                    ${value.title}
+                                </div>
+                                <div class="zume-card-content ${value.key}">
+                                    ${value.value}
+                                </div>
+                                <div class="zume-card-footer ${value.key}">
+                                    ${value.description}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
             })
         </script>
         <?php

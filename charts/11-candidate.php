@@ -103,22 +103,7 @@ class Zume_Path_Candidate extends Zume_Chart_Base
                         </div>
                     `)
 
-                let days = 30
-                let range_select = jQuery('#range')
-                let site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/stats/candidates'
-                window.phase_data = []
-                function get_range_stats() {
-                    jQuery.get( site_url+'?days='+days+'&filter=candidate&range=true', function(data){
-                        window.phase_data = data
-                        jQuery('.loading-spinner').removeClass('active')
-                        console.log(data)
-                    })
-                }
-                range_select.on('change', function(){
-                    days = jQuery(this).val()
-                    jQuery('.loading-spinner').addClass('active')
-                    get_range_stats()
-                })
+
 
                 let path = [
                     {

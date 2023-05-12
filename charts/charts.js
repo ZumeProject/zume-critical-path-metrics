@@ -29,4 +29,27 @@ jQuery(document).ready(function($) {
       </div>
     `;
   }
+
+  // window.load_stats = ( url, target ) => {
+  //   let range = jQuery('#range').val()
+  //   window.API_get( url+'?range='+range, function( data ) {
+  //     console.log( data )
+  //   })
+  //   return true
+  //   // window.phase_data = []
+  //   // function get_range_stats( day ) {
+  //   //   jQuery.get( window.site_url+'?filter=', function(data){
+  //   //     window.phase_data = data
+  //   //     console.log(data)
+  //   //     jQuery('.loading-spinner').removeClass('active')
+  //   //   })
+  //   // }
+  //   // get_range_stats( range_select.val() )
+  //   // range_select.on('change', function(){
+  //   //   get_range_stats( jQuery(this).val() )
+  //   //   jQuery('.loading-spinner').addClass('active')
+  //   // })
+  // }
+
+
 })

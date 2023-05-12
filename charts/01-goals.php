@@ -32,7 +32,6 @@ class Zume_Path_Goals extends Zume_Chart_Base
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
-        wp_enqueue_script( 'zume_api', plugin_dir_url(__FILE__) . 'charts.js', [ 'jquery' ], filemtime( plugin_dir_path(__FILE__) . 'charts.js' ), true );
         wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
 
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
@@ -80,11 +79,11 @@ class Zume_Path_Goals extends Zume_Chart_Base
                                 <div class="cell small-6">
                                      <span style="float: right;">
                                         <select>
-                                            <option value="30">All Time</option>
                                             <option value="30">Last 30 days</option>
                                             <option value="7">Last 7 days</option>
                                             <option value="90">Last 90 days</option>
                                             <option value="365">Last 1 Year</option>
+                                            <option value="all">All Time</option>
                                         </select>
                                     </span>
                                 </div>
@@ -93,7 +92,8 @@ class Zume_Path_Goals extends Zume_Chart_Base
                             <span class="loading-spinner active"></span>
                             <div class="grid-x">
                                 <div class="cell medium-6">
-                                    <div class="grid-x zume-critical-path"></div>
+                                    <div class="post_training_trainees zume-critical-path"></div>
+
                                 </div>
                                 <div class="cell medium-6" style="padding:1em;">
                                     <h3><strong>What are Practitioners?</strong></h3>
@@ -111,17 +111,42 @@ class Zume_Path_Goals extends Zume_Chart_Base
                         </div>
                     `)
 
-
-
-                let critical_path = jQuery('.zume-critical-path')
-                window.API_post(window.site_url+'goals', ( data ) => {
-                    critical_path.empty()
-                    jQuery.each( data.list, function( key, value ) {
-                        let content = window.template_trio(value)
-                        critical_path.append(content)
-                    })
-                    console.log(data)
+                window.API_post( window.site_url+'post_training_trainees', ( data ) => {
+                    jQuery('.post_training_trainees').html(window.template_trio(data))
                 })
+
+
+
+                // let critical_path = jQuery('.zume-critical-path')
+                //     critical_path.empty()
+                //
+                // window.API_post( window.site_url+'post_training_trainees', ( data ) => {
+                //     critical_path.append(window.template_trio(data))
+                //     console.log(data)
+                // })
+
+
+
+                // window.API_post( window.site_url+'l1', ( data ) => {
+                    // critical_path.append(window.template_trio(data))
+                    // console.log(data)
+                // })
+
+                // window.API_post( window.site_url+'churches', ( data ) => {
+                    // critical_path.append(window.template_trio(data))
+                    // console.log(data)
+                // })
+
+                // window.API_post( window.site_url, ( data ) => {
+                //     critical_path.empty()
+                //     jQuery.each( data.list, function( key, value ) {
+                //         let content = window.template_trio(value)
+                //         critical_path.append(content)
+                //     })
+                //     console.log(data)
+                // })
+
+                // window.load_stats( window.site_url, 'zume-critical-path')
 
 
                 jQuery('.zume-card').click(function(){
