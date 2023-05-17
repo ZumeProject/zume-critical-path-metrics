@@ -78,12 +78,12 @@ class Zume_Path_Goals extends Zume_Chart_Base
                                 <div class="cell small-6"><h1>Zúme ${title}</h1></div>
                                 <div class="cell small-6">
                                      <span style="float: right;">
-                                        <select>
+                                        <select id="range-filter">
+                                            <option value="-1">All Time</option>
                                             <option value="30">Last 30 days</option>
                                             <option value="7">Last 7 days</option>
                                             <option value="90">Last 90 days</option>
                                             <option value="365">Last 1 Year</option>
-                                            <option value="all">All Time</option>
                                         </select>
                                     </span>
                                 </div>
@@ -93,60 +93,26 @@ class Zume_Path_Goals extends Zume_Chart_Base
                             <div class="grid-x">
                                 <div class="cell medium-6">
                                     <div class="post_training_trainees zume-critical-path"></div>
-
                                 </div>
                                 <div class="cell medium-6" style="padding:1em;">
-                                    <h3><strong>What are Practitioners?</strong></h3>
+                                    <h3><strong>What are Trainees?</strong></h3>
                                     <p>
-                                        A Candidate is a person in this stage that moves from an Anonymous Visitor coming from the web
-                                        to a person who has registered.
+                                        Blah blah blah.
                                     </p>
-                                    <h3><strong>What are Churches?</strong></h3>
-                                    <p>
-                                        A Candidate is a person in this stage that moves from an Anonymous Visitor coming from the web
-                                        to a person who has registered.
-                                    </p>
+
                                 </div>
                             </div>
                         </div>
                     `)
 
-                window.API_post( window.site_url+'post_training_trainees', ( data ) => {
-                    jQuery('.post_training_trainees').html(window.template_trio(data))
-                })
+                window.load = ( filter ) => {
+                    window.API_post( window.site_url+'post_training_trainees?filter='+filter, ( data ) => {
+                        jQuery('.post_training_trainees').html(window.template_single(data))
+                        jQuery('.zume-card-title.post_training_trainees').html('Trainees')
+                    })
+                }
+                window.setup_filter()
 
-
-
-                // let critical_path = jQuery('.zume-critical-path')
-                //     critical_path.empty()
-                //
-                // window.API_post( window.site_url+'post_training_trainees', ( data ) => {
-                //     critical_path.append(window.template_trio(data))
-                //     console.log(data)
-                // })
-
-
-
-                // window.API_post( window.site_url+'l1', ( data ) => {
-                    // critical_path.append(window.template_trio(data))
-                    // console.log(data)
-                // })
-
-                // window.API_post( window.site_url+'churches', ( data ) => {
-                    // critical_path.append(window.template_trio(data))
-                    // console.log(data)
-                // })
-
-                // window.API_post( window.site_url, ( data ) => {
-                //     critical_path.empty()
-                //     jQuery.each( data.list, function( key, value ) {
-                //         let content = window.template_trio(value)
-                //         critical_path.append(content)
-                //     })
-                //     console.log(data)
-                // })
-
-                // window.load_stats( window.site_url, 'zume-critical-path')
 
 
                 jQuery('.zume-card').click(function(){

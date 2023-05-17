@@ -32,7 +32,6 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
-        wp_enqueue_script( 'zume_api', plugin_dir_url(__FILE__) . 'charts.js', [ 'jquery' ], filemtime( plugin_dir_path(__FILE__) . 'charts.js' ), true );
         wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
 
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
@@ -67,6 +66,7 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
     }
     public function wp_head() {
         $this->styles();
+        $this->js_api();
         ?>
         <script>
             window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
@@ -80,11 +80,12 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
                                 <div class="cell small-6"><h1>Coaching ${title}</h1></div>
                                 <div class="cell small-6">
                                     <span style="float: right;">
-                                        <select>
+                                        <select id="range-filter">
                                             <option value="30">Last 30 days</option>
                                             <option value="7">Last 7 days</option>
                                             <option value="90">Last 90 days</option>
                                             <option value="365">Last 1 Year</option>
+                                            <option value="-1">All Time</option>
                                         </select>
                                     </span>
                                 </div>

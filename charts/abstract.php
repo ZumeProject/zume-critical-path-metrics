@@ -75,12 +75,23 @@ abstract class Zume_Chart_Base
         ?>
         <script>
             jQuery(document).ready(function($) {
+
                 window.API_get = (url, callback ) => {
                     return $.get(url, callback);
                 }
                 window.API_post = (url, callback ) => {
                     return $.post(url, callback);
                 }
+                window.setup_filter = () => {
+                    let range_filter = jQuery('#range-filter')
+                    window.filter = range_filter.val()
+                    range_filter.on('change', function(){
+                        window.filter = range_filter.val()
+                        window.load( window.filter )
+                    })
+                    window.load( window.filter )
+                }
+
                 window.template_trio = (value) => {
                     return `
                       <div class="cell zume-trio-card ${value.key}">
@@ -108,9 +119,9 @@ abstract class Zume_Chart_Base
                 window.template_single = (value) => {
                     return `
                         <div class="cell medium-4 large-3" data-equalizer-watch>
-                            <div class="zume-card ${value.key} ${value.goal_valence}">
+                            <div class="zume-card ${value.key} ${value.valence}">
                                 <div class="zume-card-title ${value.key}">
-                                    ${value.title}
+                                    ${value.label}
                                 </div>
                                 <div class="zume-card-content ${value.key}">
                                     ${value.value}
