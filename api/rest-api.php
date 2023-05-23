@@ -69,6 +69,13 @@ class Zume_Stats_Endpoints
                 'permission_callback' => '__return_true'
             ]
         );
+        register_rest_route(
+            $namespace, '/location', [
+                'methods'  => [ 'GET', 'POST' ],
+                'callback' => [ $this, 'location' ],
+                'permission_callback' => '__return_true'
+            ]
+        );
 
 
 
@@ -103,6 +110,9 @@ class Zume_Stats_Endpoints
     }
     public function l3_practitioners( WP_REST_Request $request ) {
         return Zume_Query::l3_practitioners( dt_recursive_sanitize_array( $request->get_params() ) );
+    }
+    public function location( WP_REST_Request $request ) {
+        return DT_Ipstack_API::get_location_grid_meta_from_current_visitor();
     }
 
 //

@@ -42,6 +42,8 @@ class Zume_Metrics_Base {
             require_once ('21-facilitator.php');
             require_once ('22-early.php');
             require_once ('23-advanced.php');
+
+            require_once ('30-type.php');
         }
     }
 
