@@ -76,18 +76,14 @@ class Zume_Stats_Endpoints
                 'permission_callback' => '__return_true'
             ]
         );
+        register_rest_route(
+            $namespace, '/log', [
+                'methods'  => [ 'GET', 'POST' ],
+                'callback' => [ $this, 'log' ],
+                'permission_callback' => '__return_true'
+            ]
+        );
 
-
-
-
-//
-//        register_rest_route(
-//            $namespace, '/candidates/hero', [
-//                'methods'  => [ 'GET', 'POST' ],
-//                'callback' => [ $this, 'candidates_hero' ],
-//                'permission_callback' => '__return_true'
-//            ]
-//        );
 
     }
     public function candidates( WP_REST_Request $request ) {
@@ -114,117 +110,9 @@ class Zume_Stats_Endpoints
     public function location( WP_REST_Request $request ) {
         return DT_Ipstack_API::get_location_grid_meta_from_current_visitor();
     }
-
-//
-//
-//
-//
-//
-//
-//
-//    public function candidates_hero( WP_REST_Request $request ) {
-//        $params = dt_recursive_sanitize_array( $request->get_params() );
-//        $requested_range = $this->requested_range( $params );
-//        return Zume_Query::candidate_hero( $requested_range );
-//    }
-//
-//    public function endpoint_candidates( WP_REST_Request $request ) {
-//        $params = $request->get_params();
-//
-//        $value = 100;
-//        $goal = 90;
-//        $trend = 110;
-//
-//        $requested_range = $this->requested_range( $params );
-//        $stats = [
-//            'current_timestamp' => time(),
-//        ];
-//        $stats['requested_range'] = $requested_range;
-//        $stats['hero'] = [
-//            'key' => 'candidate',
-//            'label' => 'Candidates',
-//            'description' => 'Candidates are visitors',
-//            'value' => $value, // current value
-//            'goal' => $goal, // value set as goal
-//            'goal_color' => $this->get_valence( $value, $goal ),
-//            'trend' => $trend, // value from previous block of time
-//            'trend_percent' => $this->get_valence( $value, $trend ),
-//            'category' => 'candidate',
-//        ];
-//
-//        $stats['facts'][] = [
-//            'key' => 'visitors',
-//            'label' => 'Visitors',
-//            'description' => 'Visitors to all Zume properties.',
-//            'value' => 0,
-//            'goal' => 0,
-//            'trend' => 0,
-//            'category' => 'candidate',
-//        ];
-//        $stats['facts'][] = [
-//            'key' => 'registrations',
-//            'label' => 'Registrations',
-//            'description' => 'Registrations to all Zume properties.',
-//            'value' => 0,
-//            'goal' => 0,
-//            'trend' => 0,
-//            'category' => 'candidate',
-//        ];
-//
-//        return $stats;
-//
-//    }
-//    public function get_valence( $value, $compare ) {
-//        $percent = round( ( $value / $compare ) * 100, 0 );
-//
-//        $valence = 'valence-grey';
-//        if ( $percent > 120 ) {
-//            $valence = 'valence-darkgreen';
-//        } else if ( $percent > 110 ) {
-//            $valence = 'valence-green';
-//        } else if ( $percent < 80 ) {
-//            $valence = 'valence-red';
-//        } else if ( $percent < 90 ) {
-//            $valence = 'valence-darkred';
-//        }
-//
-//        return $valence;
-//    }
-//
-//    public function endpoint_list( WP_REST_Request $request ) {
-//
-//        $params = $request->get_params();
-//
-//        global $wpdb;
-//        $list = $wpdb->get_results( "SELECT post_title FROM $wpdb->posts WHERE post_type = 'contacts' LIMIT 100" );
-//
-//        return $list;
-//    }
-//    public function requested_range( $params ) {
-//        $requested_days = 30;
-//        if ( isset( $params['days'] ) && ! empty( $params['days'] )  ) {
-//            $requested_days = absint( $params['days'] );
-//        }
-//        $days = $requested_days + 1;
-//        $compare_days = $requested_days * 2 + 1;
-//        $filter = 'none';
-//        if ( isset( $params['filter'] ) && ! empty( $params['filter'] )  ) {
-//            $filter = sanitize_text_field( $params['filter'] );
-//        }
-//        $range = [
-//            'filter' => $filter,
-//            'days' => $requested_days,
-//            'end' => date( 'Y-m-d', strtotime( 'yesterday' ) ),
-//            'end_time' => strtotime( 'yesterday' ),
-//            'start' => date( 'Y-m-d', strtotime( '-' . $days . ' days' ) ),
-//            'start_time' => strtotime( '-' . $days . ' days' ),
-//            'compare_end' => date( 'Y-m-d', strtotime( '-' . $days  . ' days' ) ),
-//            'compare_end_time' => strtotime( '-' . $days  . ' days' ),
-//            'compare_start' => date( 'Y-m-d', strtotime( '-' . $compare_days . ' days' ) ),
-//            'compare_start_time' => strtotime( '-' . $compare_days . ' days' ),
-//        ];
-//        return $range;
-//    }
+    public function log( WP_REST_Request $request ) {
+        return Zume_Query::log( dt_recursive_sanitize_array( $request->get_params() ) );
+    }
 
     public function authorize_url( $authorized ){
         if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), $this->namespace  ) !== false ) {

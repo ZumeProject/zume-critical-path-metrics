@@ -69,7 +69,7 @@ class Zume_Coaching_Types extends Zume_Chart_Base
             window.user_id = '<?php echo get_current_user_id() ?>'
 
             //  0 = Candidate
-            //  1 = Pre-Training
+            //  1 = Registrant
             //  2 = Active Training
             //  3 = Post-Training
             //  4 = L1 Practitioner
@@ -104,7 +104,7 @@ class Zume_Coaching_Types extends Zume_Chart_Base
 
 
 
-                    // Pre-Training
+                    // Registrant
                     {
                         "value": 1,
                         "subtype": "made_a_plan",
@@ -422,7 +422,7 @@ class Zume_Coaching_Types extends Zume_Chart_Base
                             </div>
                             <div class="cell small-6">
                                 0 = Candidate<br>
-                                1 = Pre-Training<br>
+                                1 = Registrant<br>
                                 2 = Active Training<br>
                                 3 = Post-Training<br>
                                 4 = L1 Practitioner<br>
@@ -435,7 +435,7 @@ class Zume_Coaching_Types extends Zume_Chart_Base
                     `)
                 window.stage = {
                     0: 'Candidate',
-                    1: 'Pre-Training',
+                    1: 'Registrant',
                     2: 'Active Training',
                     3: 'Post-Training',
                     4: 'L1 Practitioner',

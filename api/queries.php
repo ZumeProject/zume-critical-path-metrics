@@ -3,8 +3,6 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 class Zume_Query {
 
-
-
     public static function candidates( $params ) {
         global $wpdb;
 
@@ -309,6 +307,30 @@ class Zume_Query {
             'compare_start_time' => strtotime( '-' . $compare_days . ' days' ),
         ];
         return $range;
+    }
+
+    public static function log( $params ) {
+
+        $time = strtotime( 'Today -'.$params['days_ago'].' days' );
+
+        $contact_id = Disciple_Tools_Users::get_contact_for_user($params['user_id']);
+
+        dt_write_log(hash('sha256', maybe_serialize($params)  . time() ),);
+
+        return dt_report_insert( [
+            'type' => 'zume',
+            'subtype' => $params['subtype'],
+            'post_id' => $contact_id,
+            'value' => $params['value'],
+            'grid_id' => $params['grid_id'],
+            'label' => $params['label'],
+            'lat' => $params['lat'],
+            'lng' => $params['lng'],
+            'level' => $params['level'],
+            'user_id' => $params['user_id'],
+            'time_end' => $time,
+            'hash' => hash('sha256', maybe_serialize($params)  . time() ),
+        ] );
     }
 
 }
