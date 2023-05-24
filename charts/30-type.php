@@ -151,157 +151,157 @@ class Zume_Coaching_Types extends Zume_Chart_Base
                     },
                     {
                         "value": 2,
-                        "subtype": "1",
+                        "subtype": "training_item_01",
                         "description": "God Uses Ordinary People"
                     },
                     {
                         "value": 2,
-                        "subtype": "2",
+                        "subtype": "training_item_02",
                         "description": "Simple Definition of Disciple and Church"
                     },
                     {
                         "value": 2,
-                        "subtype": "3",
+                        "subtype": "training_item_03",
                         "description": "Spiritual Breathing is Hearing and Obeying God"
                     },
                     {
                         "value": 2,
-                        "subtype": "4",
+                        "subtype": "training_item_04",
                         "description": "SOAPS Bible Reading"
                     },
                     {
                         "value": 2,
-                        "subtype": "5",
+                        "subtype": "training_item_05",
                         "description": "Accountability Groups"
                     },
                     {
                         "value": 2,
-                        "subtype": "6",
+                        "subtype": "training_item_06",
                         "description": "Consumer vs Producer Lifestyle"
                     },
                     {
                         "value": 2,
-                        "subtype": "7",
+                        "subtype": "training_item_07",
                         "description": "How to Spend an Hour in Prayer"
                     },
                     {
                         "value": 2,
-                        "subtype": "8",
+                        "subtype": "training_item_08",
                         "description": "Relational Stewardship – List of 100"
                     },
                     {
                         "value": 2,
-                        "subtype": "9",
+                        "subtype": "training_item_09",
                         "description": "The Kingdom Economy"
                     },
                     {
                         "value": 2,
-                        "subtype": "10",
+                        "subtype": "training_item_10",
                         "description": "The Gospel and How to Share It"
                     },
                     {
                         "value": 2,
-                        "subtype": "11",
+                        "subtype": "training_item_11",
                         "description": "Baptism and How To Do It"
                     },
                     {
                         "value": 2,
-                        "subtype": "12",
+                        "subtype": "training_item_12",
                         "description": "Prepare Your 3-Minute Testimony"
                     },
                     {
                         "value": 2,
-                        "subtype": "13",
+                        "subtype": "training_item_13",
                         "description": "Vision Casting the Greatest Blessing"
                     },
                     {
                         "value": 2,
-                        "subtype": "14",
+                        "subtype": "training_item_14",
                         "description": "Duckling Discipleship – Leading Immediately"
                     },
                     {
                         "value": 2,
-                        "subtype": "15",
+                        "subtype": "training_item_15",
                         "description": "Eyes to See Where the Kingdom Isn’t"
                     },
                     {
                         "value": 2,
-                        "subtype": "16",
+                        "subtype": "training_item_16",
                         "description": "The Lord’s Supper and How To Lead It"
                     },
                     {
                         "value": 2,
-                        "subtype": "17",
+                        "subtype": "training_item_17",
                         "description": "Prayer Walking and How To Do It"
                     },
                     {
                         "value": 2,
-                        "subtype": "18",
+                        "subtype": "training_item_18",
                         "description": "A Person of Peace and How To Find One"
                     },
                     {
                         "value": 2,
-                        "subtype": "19",
+                        "subtype": "training_item_19",
                         "description": "The BLESS Prayer Pattern"
                     },
                     {
                         "value": 2,
-                        "subtype": "20",
+                        "subtype": "training_item_20",
                         "description": "Faithfulness is Better Than Knowledge"
                     },
                     {
                         "value": 2,
-                        "subtype": "21",
+                        "subtype": "training_item_21",
                         "description": "3/3 Group Meeting Pattern"
                     },
                     {
                         "value": 2,
-                        "subtype": "22",
+                        "subtype": "training_item_22",
                         "description": "Training Cycle for Maturing Disciples"
                     },
                     {
                         "value": 2,
-                        "subtype": "23",
+                        "subtype": "training_item_23",
                         "description": "Leadership Cells"
                     },
                     {
                         "value": 2,
-                        "subtype": "24",
+                        "subtype": "training_item_24",
                         "description": "Expect Non-Sequential Growth"
                     },
                     {
                         "value": 2,
-                        "subtype": "25",
+                        "subtype": "training_item_25",
                         "description": "Pace of Multiplication Matters"
                     },
                     {
                         "value": 2,
-                        "subtype": "26",
+                        "subtype": "training_item_26",
                         "description": "Always Part of Two Churches"
                     },
                     {
                         "value": 2,
-                        "subtype": "27",
+                        "subtype": "training_item_27",
                         "description": "Coaching Checklist"
                     },
                     {
                         "value": 2,
-                        "subtype": "28",
+                        "subtype": "training_item_28",
                         "description": "Leadership in Networks"
                     },
                     {
                         "value": 2,
-                        "subtype": "29",
+                        "subtype": "training_item_29",
                         "description": "Peer Mentoring Groups"
                     },
                     {
                         "value": 2,
-                        "subtype": "30",
+                        "subtype": "training_item_30",
                         "description": "Four Fields Tool"
                     },
                     {
                         "value": 2,
-                        "subtype": "31",
+                        "subtype": "training_item_31",
                         "description": "Generational Mapping"
                     },
 
@@ -368,10 +368,10 @@ class Zume_Coaching_Types extends Zume_Chart_Base
 
                 ]
 
-
             jQuery(document).ready(function(){
                 "use strict";
                 let chart = jQuery('#chart')
+
                 chart.empty().html(`
                         <div id="zume-path">
 
@@ -383,8 +383,17 @@ class Zume_Coaching_Types extends Zume_Chart_Base
                                         <th>Subtype</th>
                                         <th>Description</th>
                                         <th>
-                                            <select style="float:left; width:60%;"><option>today</option></select>
-                                            <input style="float:left; width:35%;" type="text" placeholder="UseID" value="${window.user_id}">
+                                            <select id="days_ago" style="float:left; width:60%;">
+                                                <option value="0">today</option>
+                                                <option value="3">3 Days Ago</option>
+                                                <option value="7">7 Days Ago</option>
+                                                <option value="10">10 Days Ago</option>
+                                                <option value="14">14 Days Ago</option>
+                                                <option value="18">18 Days Ago</option>
+                                                <option value="24">24 Days Ago</option>
+                                                <option value="30">30 Days Ago</option>
+                                            </select>
+                                            <input id="user_id" style="float:left; width:35%;" type="text" placeholder="UseID" value="${window.user_id}">
                                         </th>
                                     </tr>
                                 </thead>
@@ -458,13 +467,15 @@ class Zume_Coaching_Types extends Zume_Chart_Base
                 });
 
                 jQuery.get('https://zume5.training/coaching/wp-json/zume_stats/v1/location', function(data){
-                    console.log(data)
+                    // console.log(data)
                     window.user_location = data
 
                     let buttons = jQuery('.button.add')
                     buttons.on('click', function(){
                         let subtype = jQuery(this).data('subtype')
                         let value = jQuery(this).data('value')
+                        let days_ago = jQuery('#days_ago').val()
+                        let user_id = jQuery('#user_id').val()
 
                         let log_data = {
                             type: 'zume',
@@ -475,16 +486,41 @@ class Zume_Coaching_Types extends Zume_Chart_Base
                             lat: data.lat,
                             lng: data.lng,
                             level: data.level,
-                            user_id: window.user_id,
+                            user_id: user_id,
+                            days_ago: days_ago,
                         }
                         console.log(log_data)
-                    })
+                        makePostRequest( 'POST', 'log', log_data ).then( (response) => {
+                            console.log(response)
 
+                        })
+                    })
 
                     buttons.removeAttr('disabled')
                     jQuery('.loading-spinner').removeClass('active')
-
                 })
+
+                function makePostRequest(type, url, data, base = "zume_stats/v1/") {
+                    //make sure base has a trailing slash if url does not start with one
+                    if ( !base.endsWith('/') && !url.startsWith('/')){
+                        base += '/'
+                    }
+                    const options = {
+                        type: type,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        url: url.startsWith("http") ? url : `${wpApiShare.root}${base}${url}`,
+                        beforeSend: (xhr) => {
+                            xhr.setRequestHeader("X-WP-Nonce", wpApiShare.nonce);
+                        },
+                    };
+
+                    if (data && !window.lodash.isEmpty(data)) {
+                        options.data = type === "GET" ? data : JSON.stringify(data);
+                    }
+
+                    return jQuery.ajax(options);
+                }
 
             })
 
