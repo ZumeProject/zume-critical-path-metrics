@@ -104,6 +104,7 @@ class Zume_Path_Goals extends Zume_Chart_Base
                     window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
                         data.label = 'Fully Trained Trainees'
                         data.key = 'full_trained_trainees'
+                        data.link = window.site_info.site_url + '/zume_app/heatmap_trainees'
                         data.description = 'Trainees who have completed the full Zúme training course and have recorded their progress.'
                         jQuery('.trainees_full').html(window.template_map_list(data))
                         window.click_listener(data)
@@ -113,6 +114,7 @@ class Zume_Path_Goals extends Zume_Chart_Base
                     window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
                         data.label = 'Practitioners'
                         data.key = 'practitioners'
+                        data.link = window.site_info.site_url + '/zume_app/heatmap_practitioners'
                         data.description = 'Disciple making movement practitioners of all stages (Partial, Completed, Multiplying). These are those who have indicated that they are seeking movement with multiplicative methods and want to participate in the Zúme Community.'
                         jQuery('.practitioners').html(window.template_map_list(data))
                         window.click_listener(data)
@@ -122,6 +124,7 @@ class Zume_Path_Goals extends Zume_Chart_Base
                     window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
                         data.label = 'Churches'
                         data.key = 'churches'
+                        data.link = window.site_info.site_url + '/zume_app/heatmap_churches'
                         data.description = 'These are the total number of churches reported by all the practitioners of all stages in the Zúme Community.'
                         jQuery('.churches').html(window.template_map_list(data))
                         window.click_listener(data)
@@ -149,7 +152,7 @@ class Zume_Path_Goals extends Zume_Chart_Base
                     jQuery('.zume-map.'+data.key).click(function(){
                         jQuery('#modal-full').foundation('open')
                         jQuery('#modal-full-title').empty().html(`${data.label}<hr>`)
-                        jQuery('#modal-full-content').empty().html('<iframe class="map-iframe" width="100%" height="2500" src="https://zume5.training/coaching/zume_app/heatmap_churches/" frameborder="0" style="border:0" allowfullscreen></iframe>')
+                        jQuery('#modal-full-content').empty().html(`<iframe class="map-iframe" width="100%" height="2500" src="${data.link}" frameborder="0" style="border:0" allowfullscreen></iframe>`)
                         jQuery('.map-iframe').prop('src', jQuery(this).data('link')).prop('height', window.innerHeight - 150)
 
                     })

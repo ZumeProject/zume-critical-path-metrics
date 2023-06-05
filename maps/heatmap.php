@@ -2524,8 +2524,8 @@ class Zume_App_Heatmap {
 
 //        set_transient( __METHOD__ . $administrative_level, $list, HOUR_IN_SECONDS . 6 );
 
-        dt_write_log(__METHOD__);
-        dt_write_log($list);
+//        dt_write_log(__METHOD__);
+//        dt_write_log($list);
 
             return $list;
     }

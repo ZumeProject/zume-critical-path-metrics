@@ -76,6 +76,14 @@ abstract class Zume_Chart_Base
         <script>
             jQuery(document).ready(function($) {
 
+                window.site_info = {
+                    'site_url': '<?php echo site_url(); ?>',
+                    'rest_url': '<?php echo esc_url_raw( rest_url() ); ?>',
+                    'plugin_uri': '<?php echo plugin_dir_url( __DIR__ ); ?>',
+                    'nonce': '<?php echo wp_create_nonce( 'wp_rest' ); ?>',
+                    'current_user_login': '<?php echo wp_get_current_user()->user_login; ?>',
+                    'current_user_id': '<?php echo get_current_user_id(); ?>'
+                };
                 window.API_get = (url, callback ) => {
                     return $.get(url, callback);
                 }

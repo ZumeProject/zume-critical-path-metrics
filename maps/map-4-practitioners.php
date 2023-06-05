@@ -9,7 +9,7 @@ class Zume_Public_Heatmap_Practitioner extends DT_Magic_Url_Base
 {
     public $page_title = 'Zúme Practitioner Map';
     public $root = "zume_app";
-    public $type = 'heatmap_practitioner';
+    public $type = 'heatmap_practitioners';
     public $type_name = 'Practitioner';
     public $post_type = 'contacts';
     private $meta_key = '';

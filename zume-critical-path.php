@@ -104,6 +104,13 @@ class Zume_Critical_Path {
         require_once ('stats/loader.php');
         require_once ('stats-alltime/loader.php');
 
+        require_once ('maps/cluster-1-last100.php');
+        require_once ('maps/heatmap.php');
+        require_once ('maps/map-2-network-activities.php');
+        require_once ('maps/map-3-trainees.php');
+        require_once ('maps/map-4-practitioners.php');
+        require_once ('maps/map-5-churches.php');
+
         if ( is_admin() ) {
             require_once( 'admin/admin-menu-and-tabs.php' ); // adds starter admin page and section for plugin
         }
