@@ -4,7 +4,7 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 class Zume_Trainee_Critical_Path extends Zume_Chart_Base
 {
     //slug and title of the top menu folder
-    public $base_slug = 'trainee_journey'; // lowercase
+    public $base_slug = 'trainee_critical_path'; // lowercase
     public $slug = ''; // lowercase
     public $title;
     public $base_title;
@@ -17,7 +17,7 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Trainee Journey', 'disciple_tools' );
+        $this->base_title = __( 'Critical Path', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path/$this->base_slug" === $url_path ) {
@@ -80,11 +80,11 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
                                 <div class="cell small-6">
                                     <span style="float: right;">
                                         <select id="range-filter">
+                                            <option value="-1">All Time</option>
                                             <option value="30">Last 30 days</option>
                                             <option value="7">Last 7 days</option>
                                             <option value="90">Last 90 days</option>
                                             <option value="365">Last 1 Year</option>
-                                            <option value="-1">All Time</option>
                                         </select>
                                     </span>
                                 </div>
@@ -92,51 +92,75 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
                             <hr>
                             <span class="loading-spinner active"></span>
 
-                            <div class="grid-y zume-cards critical-path" id="zume-cards">
-                                <div class="candidates"></div>
-                                <div class="pre_training_trainees"></div>
-                                <div class="active_training_trainees"></div>
-                                <div class="post_training_trainees"></div>
-                                <div class="l1_practitioners"></div>
-                                <div class="l2_practitioners"></div>
-                                <div class="l3_practitioners"></div>
+                            <div class="grid-y critical-path" id="zume-cards">
+                                <div class="critical-path-element registrants"><span class="loading-spinner active"></span></div>
+                                <div class="critical-path-element active_training_trainees"><span class="loading-spinner active"></span></div>
+                                <div class="critical-path-element post_training_trainees"><span class="loading-spinner active"></span></div>
+                                <div class="critical-path-element s1_practitioners"><span class="loading-spinner active"></span></div>
+                                <div class="critical-path-element s2_practitioners"><span class="loading-spinner active"></span></div>
+                                <div class="critical-path-element s3_practitioners"><span class="loading-spinner active"></span></div>
                             </div>
 
                         </div>
                     `)
 
                     window.load = ( filter ) => {
-                        window.API_post( window.site_url+'candidates?filter='+filter, ( data ) => {
-                            jQuery('.candidates').html(window.template_trio(data))
+                        window.spin_add()
+                        window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
+                            data.label = 'Registrants'
+                            data.link = 'registrants'
+                            jQuery('.registrants').html(window.template_map_list(data))
+                            window.click_listener( data.key, data.link )
+                            window.spin_remove()
                         })
-                        window.API_post( window.site_url+'pre_training_trainees?filter='+filter, ( data ) => {
-                            jQuery('.pre_training_trainees').html(window.template_trio(data))
+                        window.spin_add()
+                        window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
+                            data.label = 'Active Training Trainees'
+                            data.link = 'active'
+                            jQuery('.active_training_trainees').html(window.template_map_list(data))
+                            window.click_listener( data.key, data.link )
+                            window.spin_remove()
                         })
-                        window.API_post( window.site_url+'active_training_trainees?filter='+filter, ( data ) => {
-                            jQuery('.active_training_trainees').html(window.template_trio(data))
+                        window.spin_add()
+                        window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
+                            data.label = 'Post Training Trainees'
+                            data.link = 'post'
+                            jQuery('.post_training_trainees').html(window.template_map_list(data))
+                            window.click_listener( data.key, data.link )
+                            window.spin_remove()
                         })
-                        window.API_post( window.site_url+'post_training_trainees?filter='+filter, ( data ) => {
-                            jQuery('.post_training_trainees').html(window.template_trio(data))
+                        window.spin_add()
+                        window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
+                            data.label = '(S1) Partial Practitioners'
+                            data.link = 's1_practitioners'
+                            jQuery('.s1_practitioners').html(window.template_map_list(data))
+                            window.click_listener( data.key, data.link )
+                            window.spin_remove()
                         })
-                        window.API_post( window.site_url+'l1_practitioners?filter='+filter, ( data ) => {
-                            jQuery('.l1_practitioners').html(window.template_trio(data))
+                        window.spin_add()
+                        window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
+                            data.label = '(S2) Completed Practitioners'
+                            data.link = 's2_practitioners'
+                            jQuery('.s2_practitioners').html(window.template_map_list(data))
+                            window.click_listener( data.key, data.link )
+                            window.spin_remove()
                         })
-                        window.API_post( window.site_url+'l2_practitioners?filter='+filter, ( data ) => {
-                            jQuery('.l2_practitioners').html(window.template_trio(data))
-                        })
-                        window.API_post( window.site_url+'l3_practitioners?filter='+filter, ( data ) => {
-                            jQuery('.l3_practitioners').html(window.template_trio(data))
+                        window.spin_add()
+                        window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
+                            data.label = '(S3) Multiplying Practitioners'
+                            data.link = 's3_practitioners'
+                            jQuery('.s3_practitioners').html(window.template_map_list(data))
+                            window.click_listener( data.key, data.link )
+                            window.spin_remove()
                         })
                     }
                     window.setup_filter()
 
-
-                    jQuery('.zume-trio-card-content').click(function(){
-                        let link = jQuery(this).data('link')
-                        window.location.href = '/coaching/zume-path/' + link
-                    })
-
-                    jQuery('.loading-spinner').delay(3000).removeClass('active')
+                    window.click_listener = (key, link) => {
+                        jQuery('.zume-list.'+key).click(function(){
+                            window.location.href = '/coaching/zume-path/' + link
+                        })
+                    }
                 })
 
             </script>

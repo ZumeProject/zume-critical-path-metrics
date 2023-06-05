@@ -21,16 +21,23 @@ class Zume_Stats_Endpoints
         $namespace = $this->namespace;
 
         register_rest_route(
-            $namespace, '/candidates', [
+            $namespace, '/sample', [
                 'methods'  => [ 'GET', 'POST' ],
-                'callback' => [ $this, 'candidates' ],
+                'callback' => [ $this, 'sample' ],
                 'permission_callback' => '__return_true'
             ]
         );
         register_rest_route(
-            $namespace, '/pre_training_trainees', [
+            $namespace, '/anonymous', [
                 'methods'  => [ 'GET', 'POST' ],
-                'callback' => [ $this, 'pre_training_trainees' ],
+                'callback' => [ $this, 'anonymous' ],
+                'permission_callback' => '__return_true'
+            ]
+        );
+        register_rest_route(
+            $namespace, '/registrants', [
+                'methods'  => [ 'GET', 'POST' ],
+                'callback' => [ $this, 'registrants' ],
                 'permission_callback' => '__return_true'
             ]
         );
@@ -49,26 +56,75 @@ class Zume_Stats_Endpoints
             ]
         );
         register_rest_route(
-            $namespace, '/l1_practitioners', [
+            $namespace, '/s1_practitioners', [
                 'methods'  => [ 'GET', 'POST' ],
-                'callback' => [ $this, 'l1_practitioners' ],
+                'callback' => [ $this, 's1_practitioners' ],
                 'permission_callback' => '__return_true'
             ]
         );
         register_rest_route(
-            $namespace, '/l2_practitioners', [
+            $namespace, '/s2_practitioners', [
                 'methods'  => [ 'GET', 'POST' ],
-                'callback' => [ $this, 'l2_practitioners' ],
+                'callback' => [ $this, 's2_practitioners' ],
                 'permission_callback' => '__return_true'
             ]
         );
         register_rest_route(
-            $namespace, '/l3_practitioners', [
+            $namespace, '/s3_practitioners', [
                 'methods'  => [ 'GET', 'POST' ],
-                'callback' => [ $this, 'l3_practitioners' ],
+                'callback' => [ $this, 's3_practitioners' ],
                 'permission_callback' => '__return_true'
             ]
         );
+
+
+        register_rest_route(
+            $namespace, '/training_elements', [
+                'methods'  => [ 'GET', 'POST' ],
+                'callback' => [ $this, 'training_elements' ],
+                'permission_callback' => '__return_true'
+            ]
+        );
+
+
+
+        register_rest_route(
+            $namespace, '/trainees/some', [
+                'methods'  => [ 'GET', 'POST' ],
+                'callback' => [ $this, 'trainees_some' ],
+                'permission_callback' => '__return_true'
+            ]
+        );
+        register_rest_route(
+            $namespace, '/trainees/full', [
+                'methods'  => [ 'GET', 'POST' ],
+                'callback' => [ $this, 'trainees_full' ],
+                'permission_callback' => '__return_true'
+            ]
+        );
+        register_rest_route(
+            $namespace, '/trainees/list', [
+                'methods'  => [ 'GET', 'POST' ],
+                'callback' => [ $this, 'trainees_list' ],
+                'permission_callback' => '__return_true'
+            ]
+        );
+        register_rest_route(
+            $namespace, '/practitioners', [
+                'methods'  => [ 'GET', 'POST' ],
+                'callback' => [ $this, 'practitioners' ],
+                'permission_callback' => '__return_true'
+            ]
+        );
+        register_rest_route(
+            $namespace, '/churches', [
+                'methods'  => [ 'GET', 'POST' ],
+                'callback' => [ $this, 'churches' ],
+                'permission_callback' => '__return_true'
+            ]
+        );
+
+
         register_rest_route(
             $namespace, '/location', [
                 'methods'  => [ 'GET', 'POST' ],
@@ -86,11 +142,14 @@ class Zume_Stats_Endpoints
 
 
     }
-    public function candidates( WP_REST_Request $request ) {
-        return Zume_Query::candidates( dt_recursive_sanitize_array( $request->get_params() ) );
+    public function sample( WP_REST_Request $request ) {
+        return Zume_Query::sample( dt_recursive_sanitize_array( $request->get_params() ) );
     }
-    public function pre_training_trainees( WP_REST_Request $request ) {
-        return Zume_Query::pre_training_trainees( dt_recursive_sanitize_array( $request->get_params() ) );
+    public function anonymous( WP_REST_Request $request ) {
+        return Zume_Query::anonymous( dt_recursive_sanitize_array( $request->get_params() ) );
+    }
+    public function registrants( WP_REST_Request $request ) {
+        return Zume_Query::registrants( dt_recursive_sanitize_array( $request->get_params() ) );
     }
     public function active_training_trainees( WP_REST_Request $request ) {
         return Zume_Query::active_training_trainees( dt_recursive_sanitize_array( $request->get_params() ) );
@@ -98,15 +157,38 @@ class Zume_Stats_Endpoints
     public function post_training_trainees( WP_REST_Request $request ) {
         return Zume_Query::post_training_trainees( dt_recursive_sanitize_array( $request->get_params() ) );
     }
-    public function l1_practitioners( WP_REST_Request $request ) {
-        return Zume_Query::l1_practitioners( dt_recursive_sanitize_array( $request->get_params() ) );
+    public function s1_practitioners( WP_REST_Request $request ) {
+        return Zume_Query::s1_practitioners( dt_recursive_sanitize_array( $request->get_params() ) );
     }
-    public function l2_practitioners( WP_REST_Request $request ) {
-        return Zume_Query::l2_practitioners( dt_recursive_sanitize_array( $request->get_params() ) );
+    public function s2_practitioners( WP_REST_Request $request ) {
+        return Zume_Query::s2_practitioners( dt_recursive_sanitize_array( $request->get_params() ) );
     }
-    public function l3_practitioners( WP_REST_Request $request ) {
-        return Zume_Query::l3_practitioners( dt_recursive_sanitize_array( $request->get_params() ) );
+    public function s3_practitioners( WP_REST_Request $request ) {
+        return Zume_Query::s3_practitioners( dt_recursive_sanitize_array( $request->get_params() ) );
     }
+    public function training_elements( WP_REST_Request $request ) {
+        return Zume_Query::training_elements( dt_recursive_sanitize_array( $request->get_params() ) );
+    }
+
+    public function trainees( WP_REST_Request $request ) {
+        return Zume_Query::trainees( dt_recursive_sanitize_array( $request->get_params() ) );
+    }
+    public function trainees_some( WP_REST_Request $request ) {
+        return Zume_Query::trainees_some( dt_recursive_sanitize_array( $request->get_params() ) );
+    }
+    public function trainees_full( WP_REST_Request $request ) {
+        return Zume_Query::trainees_full( dt_recursive_sanitize_array( $request->get_params() ) );
+    }
+    public function trainees_list( WP_REST_Request $request ) {
+        return Zume_Query::trainees_list( dt_recursive_sanitize_array( $request->get_params() ) );
+    }
+    public function practitioners( WP_REST_Request $request ) {
+        return Zume_Query::practitioners( dt_recursive_sanitize_array( $request->get_params() ) );
+    }
+    public function churches( WP_REST_Request $request ) {
+        return Zume_Query::churches( dt_recursive_sanitize_array( $request->get_params() ) );
+    }
+
     public function location( WP_REST_Request $request ) {
         return DT_Ipstack_API::get_location_grid_meta_from_current_visitor();
     }

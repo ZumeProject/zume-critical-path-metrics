@@ -57,6 +57,15 @@ class Zume_Path_Active extends Zume_Chart_Base
     public function wp_head() {
         $this->js_api();
         ?>
+        <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+        <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+        <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+        <style>
+            #chartdiv {
+                width: 100%;
+                height: 800px;
+            }
+        </style>
         <script>
             window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
             jQuery(document).ready(function(){
@@ -68,291 +77,287 @@ class Zume_Path_Active extends Zume_Chart_Base
                             <div class="grid-x">
                                 <div class="cell small-6"><h1>${title}</h1></div>
                                 <div class="cell small-6">
+                                </div>
+                            </div>
+                            <hr>
+                            <div id="hero"><span class="loading-spinner active"></span></div>
+                            <div class="grid-x grid-margin-x grid-margin-y">
+                                 <div class="cell medium-3 needs_coach"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 inactive"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 "><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 "><span class="loading-spinner active"></span></div>
+                            </div>
+                            <hr>
+                            <div class="grid-x">
+                                <div class="cell small-6">
+                                    <h2>Progress Indicators</h2>
+                                </div>
+                                <div class="cell small-6">
                                     <span style="float: right;">
-                                         <select id="range-filter">
+                                        <select id="range-filter">
                                             <option value="30">Last 30 days</option>
                                             <option value="7">Last 7 days</option>
                                             <option value="90">Last 90 days</option>
                                             <option value="365">Last 1 Year</option>
-                                            <option value="-1">All Time</option>
                                         </select>
                                     </span>
+                                    <span class="loading-spinner active" style="float: right; margin:0 10px;"></span>
                                 </div>
                             </div>
-                            <hr>
-                            <span class="loading-spinner active"></span>
-                            <div class="grid-x">
-                                <div class="cell medium-6">
-                                    <div class="active_training_trainees"></div>
-                                </div>
-                                <div class="cell medium-6" style="padding:1em;">
-                                    <h3><strong>What is the Active Training stage?</strong></h3>
-                                    <p>
-                                        The Active Training stage is the stage where the user is actively going through the training.
-                                        The goal of this stage is to get the user to complete the training.
-                                    </p>
-                                </div>
+                            <div class="grid-x grid-margin-x grid-margin-y">
+                                 <div class="cell medium-6 first"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 second"><span class="loading-spinner active"></span></div>
+                            </div>
+                            <div class="grid-x grid-margin-x grid-margin-y">
+                                 <div class="cell"><h2>Remaining Progress</h2></div>
+                            </div>
+                            <div class="grid-x grid-margin-x grid-margin-y">
+                                 <div class="cell medium-6 third"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 fourth"><span class="loading-spinner active"></span></div>
                             </div>
                             <hr>
-                            <h2>Goals</h2>
-                            <div class="grid-x zume-goals"></div>
+                            <h2>Sessions</h2>
+                            <div class="grid-x grid-margin-x grid-margin-y">
+                                 <div class="cell medium-3 session1"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session2"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session3"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session4"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session5"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session6"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session7"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session8"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session9"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session10"><span class="loading-spinner active"></span></div>
+                            </div>
                             <hr>
-                            <h2>Trends</h2>
-                            <div class="grid-x zume-trends"></div>
-                            <hr>
-                            <h2>Session Goals</h2>
-                            <div class="grid-x zume-session-goals"></div>
-                            <hr>
-                            <h2>Session Trends</h2>
-                            <div class="grid-x zume-session-trends"></div>
+                            <h2>Engagements Per Training Element</h2>
+                            <div id="chartdiv"></div>
                         </div>
                     `)
-
                 window.load = ( filter ) => {
-                    window.API_post( window.site_url+'active_training_trainees?filter='+filter, ( data ) => {
-                        jQuery('.active_training_trainees').html(window.template_trio(data))
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Active Training Trainees'
+                        jQuery('#hero').html( window.template_map_list( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
                     })
+
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Has Coach'
+                        jQuery('.needs_coach').html( window.template_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Inactive Trainees'
+                        jQuery('.inactive').html( window.template_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'New Active Trainees'
+                        jQuery('.first').html( window.template_trio_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Total Check-ins'
+                        jQuery('.second').html( window.template_trio_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter+'&negative_stat=true', ( data ) => {
+                        data.label = 'Has No Coach'
+                        jQuery('.third').html( window.template_trio_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter+'&negative_stat=true', ( data ) => {
+                        data.label = 'Has No Updated Profile'
+                        jQuery('.fourth').html( window.template_trio_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Session 1'
+                        jQuery('.session1').html( window.template_trio_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Session 2'
+                        jQuery('.session2').html( window.template_trio_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Session 3'
+                        jQuery('.session3').html( window.template_trio_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Session 4'
+                        jQuery('.session4').html( window.template_trio_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Session 5'
+                        jQuery('.session5').html( window.template_trio_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Session 6'
+                        jQuery('.session6').html( window.template_trio_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Session 7'
+                        jQuery('.session7').html( window.template_trio_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Session 8'
+                        jQuery('.session8').html( window.template_trio_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Session 9'
+                        jQuery('.session9').html( window.template_trio_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Session 10'
+                        jQuery('.session10').html( window.template_trio_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+
+
+
+
+
+
+                    window.spin_add()
+                    window.API_get( window.site_url+'training_elements?filter='+filter, ( data ) => {
+                        am5.ready(function() {
+                            console.log(data)
+
+                            am5.array.each(am5.registry.rootElements, function(root) {
+                                if (root.dom.id == "chartdiv") {
+                                    root.dispose();
+                                }
+                            });
+
+                            if ( typeof root === 'undefined' ) {
+                                var root = am5.Root.new("chartdiv");
+                                root.setThemes([
+                                    am5themes_Animated.new(root)
+                                ]);
+
+                                var chart = root.container.children.push(am5xy.XYChart.new(root, {
+                                    panX: true,
+                                    panY: true,
+                                    wheelX: "panX",
+                                    wheelY: "zoomX",
+                                    pinchZoomX: true
+                                }));
+
+                                var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
+                                cursor.lineY.set("visible", false);
+                                var xRenderer = am5xy.AxisRendererX.new(root, { minGridDistance: 30 });
+                                xRenderer.labels.template.setAll({
+                                    rotation: -90,
+                                    centerY: am5.p50,
+                                    centerX: am5.p100,
+                                    paddingRight: 15
+                                });
+
+                                xRenderer.grid.template.setAll({
+                                    location: 1
+                                })
+
+                                var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+                                    maxDeviation: 0.3,
+                                    categoryField: "label",
+                                    renderer: xRenderer,
+                                    tooltip: am5.Tooltip.new(root, {})
+                                }));
+
+                                var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+                                    maxDeviation: 0.3,
+                                    renderer: am5xy.AxisRendererY.new(root, {
+                                        strokeOpacity: 0.1
+                                    })
+                                }));
+
+                                var series = chart.series.push(am5xy.ColumnSeries.new(root, {
+                                    name: "Series 1",
+                                    xAxis: xAxis,
+                                    yAxis: yAxis,
+                                    valueYField: "value",
+                                    sequencedInterpolation: true,
+                                    categoryXField: "label",
+                                    tooltip: am5.Tooltip.new(root, {
+                                        labelText: "{valueY}"
+                                    })
+                                }));
+
+                                series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5, strokeOpacity: 0 });
+
+                                xAxis.data.setAll(data);
+                                series.data.setAll(data);
+
+                                series.appear(1000);
+                                chart.appear(1000, 100);
+                            }
+                        })
+                        window.spin_remove()
+                    })
+
                 }
                 window.setup_filter()
 
-                let data = [
-                    {
-                        "title": "People",
-                        "value": '0',
-                        "description": "Description.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Check-ins",
-                        "value": '0',
-                        "description": "Description.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Has a Coach",
-                        "value": '0',
-                        "description": "Description.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Has a Profile",
-                        "value": '0',
-                        "description": "Description.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Session Progress",
-                        "value": '0',
-                        "description": "Description.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    }
-                ]
+                window.click_listener = (key) => {
+                    jQuery('.zume-list.'+key).click(function(){
+                        jQuery('#modal-large').foundation('open')
+                        jQuery('#modal-large-title').empty().html('Fact Label<hr>')
+                        jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
 
-                jQuery.each( data, function( key, value ) {
-                    jQuery('.zume-goals').append(`
-                            <!-- Zume Card-->
-                            <div class="cell medium-4 large-3" data-equalizer-watch>
-                                <div class="zume-card ${value.goal}">
-                                    <div class="zume-card-title">
-                                        ${value.title}
-                                    </div>
-                                    <div class="zume-card-content">
-                                        ${value.value}
-                                    </div>
-                                    <div class="zume-card-footer">
-                                        ${value.description}
-                                    </div>
-                                </div>
-                            </div><!-- card -->
-                        `)
-                })
-
-                jQuery.each( data, function( key, value ) {
-                    jQuery('.zume-trends').append(`
-                            <!-- Zume Card-->
-                            <div class="cell medium-4 large-3" data-equalizer-watch>
-                                <div class="zume-card ${value.trend}">
-                                    <div class="zume-card-title">
-                                        ${value.title}
-                                    </div>
-                                    <div class="zume-card-content">
-                                        ${value.value}
-                                    </div>
-                                    <div class="zume-card-footer">
-                                        ${value.description}
-                                    </div>
-                                </div>
-                            </div><!-- card -->
-                        `)
-                })
-
-                let path = [
-                    {
-                        "title": "Active Training Trainees",
-                        "link": "active",
-
-                        "value": '0',
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey',
-                    },
-                ]
-
-                jQuery('.zume-critical-path').empty()
-                jQuery.each( path, function( key, value ) {
-                    jQuery('.zume-critical-path').append(`
-                            <div class="cell zume-trio-card" style="margin:5px;">
-                                <div class="zume-trio-card-content" data-link="${value.link}">
-                                    <div class="zume-trio-card-title">
-                                        ${value.title}
-                                    </div>
-                                    <div class="zume-trio-card-value">
-                                        ${value.value}
-                                    </div>
-                                </div>
-                                <div class="zume-trio-card-footer">
-                                    <div class="grid-x">
-                                        <div class="cell small-6 zume-goal ${value.goal}">
-                                            GOAL
-                                        </div>
-                                        <div class="cell small-6 zume-trend ${value.trend}">
-                                            TREND
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `)
-                })
-
-                let sessions = [
-                    {
-                        "title": "Session 1",
-                        "value": 0,
-                        "description": "Session 1.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Session 2",
-                        "value": 0,
-                        "description": "Session 2.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Session 3",
-                        "value": 0,
-                        "description": "Session 3.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Session 4",
-                        "value": 0,
-                        "description": "Session 4.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Session 5",
-                        "value": 0,
-                        "description": "Session 5.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Session 6",
-                        "value": 0,
-                        "description": "Session 6.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Session 7",
-                        "value": 0,
-                        "description": "Session 7.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Session 8",
-                        "value": 0,
-                        "description": "Session 8.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Session 9",
-                        "value": 0,
-                        "description": "Session 9.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Session 10",
-                        "value": 0,
-                        "description": "Session 10.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    }
-                ]
-
-                jQuery.each( sessions, function( key, value ) {
-                    jQuery('.zume-session-goals').append(`
-                            <div class="cell medium-4 large-3">
-                                <div class="zume-card ${value.goal}">
-                                    <div class="zume-card-title">
-                                        ${value.title}
-                                    </div>
-                                    <div class="zume-card-content">
-                                        ${value.value}
-                                    </div>
-                                    <div class="zume-card-footer">
-                                        ${value.description}
-                                    </div>
-                                </div>
-                            </div><!-- card -->
-                        `)
-                })
-
-                jQuery.each( sessions, function( key, value ) {
-                    jQuery('.zume-session-trends').append(`
-                            <div class="cell medium-4 large-3">
-                                <div class="zume-card ${value.trend}">
-                                    <div class="zume-card-title">
-                                        ${value.title}
-                                    </div>
-                                    <div class="zume-card-content">
-                                        ${value.value}
-                                    </div>
-                                    <div class="zume-card-footer">
-                                        ${value.description}
-                                    </div>
-                                </div>
-                            </div><!-- card -->
-                        `)
-                })
-
-                jQuery('.zume-card').click(function(){
-                    jQuery('#modal-large').foundation('open')
-
-                    jQuery('#modal-large-title').empty().html('Fact Label<hr>')
-
-                    jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
-                    jQuery.get('https://zume5.training/coaching/wp-json/zume_stats/v1/stats_list?days=365&range=true&all_time=true', function(data){
-                        jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
-                        jQuery.each(data, function(i,v)  {
-                            jQuery('#zume-list-modal').append( '<tr><td><a href="">' + v.post_title + '</a></td></tr>')
+                        window.API_get( window.site_url+'trainees/list', ( data ) => {
+                            jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
+                            jQuery.each(data, function(i,v)  {
+                                jQuery('#zume-list-modal').append( '<tr><td><a href="#">' + v.display_name + '</a></td></tr>')
+                            })
+                            jQuery('.loading-spinner').removeClass('active')
                         })
-                        jQuery('.loading-spinner').removeClass('active')
                     })
-                })
-
-                jQuery('.loading-spinner').delay(3000).removeClass('active')
+                }
             })
 
         </script>

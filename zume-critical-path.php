@@ -307,3 +307,165 @@ if ( !function_exists( 'dt_hook_ajax_notice_handler' ) ){
 //        }
 //    }
 //} );
+
+
+    function zume_elements() {
+        $items = [
+            "training_item_01" => [
+                "value" => 2,
+                "subtype" => "training_item_01",
+                "label" => "God Uses Ordinary People"
+            ],
+            "training_item_02" => [
+                "value" => 2,
+                "subtype" => "training_item_02",
+                "label" => "Simple Definition of Disciple and Church"
+            ],
+            "training_item_03" => [
+                "value" => 2,
+                "subtype" => "training_item_03",
+                "label" => "Spiritual Breathing is Hearing and Obeying God"
+            ],
+            "training_item_04" => [
+                "value" => 2,
+                "subtype" => "training_item_04",
+                "label" => "SOAPS Bible Reading"
+            ],
+            "training_item_05" => [
+                "value" => 2,
+                "subtype" => "training_item_05",
+                "label" => "Accountability Groups"
+            ],
+            "training_item_06" => [
+                "value" => 2,
+                "subtype" => "training_item_06",
+                "label" => "Consumer vs Producer Lifestyle"
+            ],
+            "training_item_07" => [
+                "value" => 2,
+                "subtype" => "training_item_07",
+                "label" => "How to Spend an Hour in Prayer"
+            ],
+            "training_item_08" => [
+                "value" => 2,
+                "subtype" => "training_item_08",
+                "label" => "Relational Stewardship – List of 100"
+            ],
+            "training_item_09" => [
+                "value" => 2,
+                "subtype" => "training_item_09",
+                "label" => "The Kingdom Economy"
+            ],
+            "training_item_10" => [
+                "value" => 2,
+                "subtype" => "training_item_10",
+                "label" => "The Gospel and How to Share It"
+            ],
+            "training_item_11" => [
+                "value" => 2,
+                "subtype" => "training_item_11",
+                "label" => "Baptism and How To Do It"
+            ],
+            "training_item_12" => [
+                "value" => 2,
+                "subtype" => "training_item_12",
+                "label" => "Prepare Your 3-Minute Testimony"
+            ],
+            "training_item_13" => [
+                "value" => 2,
+                "subtype" => "training_item_13",
+                "label" => "Vision Casting the Greatest Blessing"
+            ],
+            "training_item_14" => [
+                "value" => 2,
+                "subtype" => "training_item_14",
+                "label" => "Duckling Discipleship – Leading Immediately"
+            ],
+            "training_item_15" => [
+                "value" => 2,
+                "subtype" => "training_item_15",
+                "label" => "Eyes to See Where the Kingdom Isn’t"
+            ],
+            "training_item_16" => [
+                "value" => 2,
+                "subtype" => "training_item_16",
+                "label" => "The Lord’s Supper and How To Lead It"
+            ],
+            "training_item_17" => [
+                "value" => 2,
+                "subtype" => "training_item_17",
+                "label" => "Prayer Walking and How To Do It"
+            ],
+            "training_item_18" => [
+                "value" => 2,
+                "subtype" => "training_item_18",
+                "label" => "A Person of Peace and How To Find One"
+            ],
+            "training_item_19" => [
+                "value" => 2,
+                "subtype" => "training_item_19",
+                "label" => "The BLESS Prayer Pattern"
+            ],
+            "training_item_20" => [
+                "value" => 2,
+                "subtype" => "training_item_20",
+                "label" => "Faithfulness is Better Than Knowledge"
+            ],
+            "training_item_21" => [
+                "value" => 2,
+                "subtype" => "training_item_21",
+                "label" => "3/3 Group Meeting Pattern"
+            ],
+            "training_item_22" => [
+                "value" => 2,
+                "subtype" => "training_item_22",
+                "label" => "Training Cycle for Maturing Disciples"
+            ],
+            "training_item_23" => [
+                "value" => 2,
+                "subtype" => "training_item_23",
+                "label" => "Leadership Cells"
+            ],
+            "training_item_24" => [
+                "value" => 2,
+                "subtype" => "training_item_24",
+                "label" => "Expect Non-Sequential Growth"
+            ],
+            "training_item_25" => [
+                "value" => 2,
+                "subtype" => "training_item_25",
+                "label" => "Pace of Multiplication Matters"
+            ],
+            "training_item_26" => [
+                "value" => 2,
+                "subtype" => "training_item_26",
+                "label" => "Always Part of Two Churches"
+            ],
+            "training_item_27" => [
+                "value" => 2,
+                "subtype" => "training_item_27",
+                "label" => "Coaching Checklist"
+            ],
+            "training_item_28" => [
+                "value" => 2,
+                "subtype" => "training_item_28",
+                "label" => "Leadership in Networks"
+            ],
+            "training_item_29" => [
+                "value" => 2,
+                "subtype" => "training_item_29",
+                "label" => "Peer Mentoring Groups"
+            ],
+            "training_item_30" => [
+                "value" => 2,
+                "subtype" => "training_item_30",
+                "label" => "Four Fields Tool"
+            ],
+            "training_item_31" => [
+                "value" => 2,
+                "subtype" => "training_item_31",
+                "label" => "Generational Mapping"
+            ]
+        ];
+        return $items;
+    }

@@ -8,13 +8,13 @@ add_filter( 'zume_range_stats', function( $stats, $request_range  ) {
 
 
     $stats[] = [
-        'key' => 'pre_training_trainees',
-        'label' => 'Pre-Training Trainees',
+        'key' => 'registrants',
+        'label' => 'Registrants',
         'description' => '',
         'value' => 0,
         'goal' => 0,
         'trend' => 0,
-        'category' => 'pre_training_trainees',
+        'category' => 'registrants',
         'type' => 'number',
         'public' => true,
     ];

@@ -79,32 +79,32 @@ class Zume_Path_Concept extends Zume_Chart_Base
                             <div class="grid-x">
                                 <div class="cell small-12">
                                     <h1 style="background-color: lightgrey; padding: 1em;"><strong>FUNNEL RELATIONSHIPS</strong></h1>
-                                    <img src="<?php  echo plugin_dir_url(__DIR__) . '/images/funnel-relationships.png' ?>" />
+                                    <img src="<?php  echo plugin_dir_url(__DIR__) . 'images/funnel-relationships.png' ?>" />
                                 </div>
                                 <div class="cell"><hr></div>
                                 <div class="cell small-12">
                                     <h1 style="background-color: lightgrey; padding: 1em;"><strong>STAGE SUMMARIES</strong></h1>
                                     <div class="grid-x grid-padding-x grid-margin-x grid-margin-y">
-                                        <div class="cell small-3 center tile">
-                                            <img src="<?php  echo plugin_dir_url(__DIR__) . '/images/stage-candidate.png' ?>" />
+                                        <div class="cell small-4 center tile">
+                                            <img src="<?php  echo plugin_dir_url(__DIR__) . 'images/stage-anonymous.png' ?>" />
                                         </div>
-                                        <div class="cell small-3 center tile">
-                                            <img src="<?php  echo plugin_dir_url(__DIR__) . '/images/stage-pre.png' ?>" />
+                                        <div class="cell small-4 center tile">
+                                            <img src="<?php  echo plugin_dir_url(__DIR__) . 'images/stage-registrant.png' ?>" />
                                         </div>
-                                        <div class="cell small-3 center tile">
-                                            <img src="<?php  echo plugin_dir_url(__DIR__) . '/images/stage-active.png' ?>" />
+                                        <div class="cell small-4 center tile">
+                                            <img src="<?php  echo plugin_dir_url(__DIR__) . 'images/stage-active.png' ?>" />
                                         </div>
-                                        <div class="cell small-3 center tile">
-                                            <img src="<?php  echo plugin_dir_url(__DIR__) . '/images/stage-post.png' ?>" />
+                                        <div class="cell small-4 center tile">
+                                            <img src="<?php  echo plugin_dir_url(__DIR__) . 'images/stage-post.png' ?>" />
                                         </div>
-                                        <div class="cell small-3 center tile">
-                                            <img src="<?php  echo plugin_dir_url(__DIR__) . '/images/stage-l1.png' ?>" />
+                                        <div class="cell small-4 center tile">
+                                            <img src="<?php  echo plugin_dir_url(__DIR__) . 'images/stage-s1.png' ?>" />
                                         </div>
-                                        <div class="cell small-3 center tile">
-                                            <img src="<?php  echo plugin_dir_url(__DIR__) . '/images/stage-l2.png' ?>" />
+                                        <div class="cell small-4 center tile">
+                                            <img src="<?php  echo plugin_dir_url(__DIR__) . 'images/stage-s2.png' ?>" />
                                         </div>
-                                        <div class="cell small-3 center tile">
-                                            <img src="<?php  echo plugin_dir_url(__DIR__) . '/images/stage-l3.png' ?>" />
+                                        <div class="cell small-4 center tile">
+                                            <img src="<?php  echo plugin_dir_url(__DIR__) . 'images/stage-s3.png' ?>" />
                                         </div>
                                     </div>
                                     <style>.cell.tile { border: 1px solid grey; border-radius: 10px; padding: 1em; }</style>
@@ -112,7 +112,7 @@ class Zume_Path_Concept extends Zume_Chart_Base
                                 <div class="cell"><hr></div>
                                 <div class="cell small-12">
                                     <h1 style="background-color: lightgrey; padding: 1em;"><strong>DIFFICULTY OVER TIME</strong></h1>
-                                    <img src="<?php  echo plugin_dir_url(__DIR__) . '/images/difficult-vs-time.png' ?>" />
+                                    <img src="<?php  echo plugin_dir_url(__DIR__) . 'images/difficulty-vs-time.png' ?>" />
                                 </div>
                                 <div class="cell"><hr></div>
                                 <div class="cell">

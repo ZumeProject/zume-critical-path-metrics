@@ -72,84 +72,80 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
             window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
             jQuery(document).ready(function(){
                 "use strict";
+
                 let chart = jQuery('#chart')
                 let title = '<?php echo $this->base_title ?>'
                 chart.empty().html(`
                         <div id="zume-path">
                             <div class="grid-x">
-                                <div class="cell small-6"><h1>Coaching ${title}</h1></div>
+                                <div class="cell small-6"><h1>${title}</h1></div>
                                 <div class="cell small-6">
                                     <span style="float: right;">
                                         <select id="range-filter">
+                                            <option value="-1">All Time</option>
                                             <option value="30">Last 30 days</option>
                                             <option value="7">Last 7 days</option>
                                             <option value="90">Last 90 days</option>
                                             <option value="365">Last 1 Year</option>
-                                            <option value="-1">All Time</option>
                                         </select>
                                     </span>
+                                    <span class="loading-spinner active" style="float: right; margin:0 10px;"></span>
                                 </div>
                             </div>
                             <hr>
-                            <span class="loading-spinner active"></span>
-                            <div class="grid-x zume-goals"></div>
+                            <div class="grid-x grid-margin-x grid-margin-y">
+                                 <div class="cell medium-3 first"></div>
+                                 <div class="cell medium-3 second"></div>
+                                 <div class="cell medium-3 third"></div>
+                                 <div class="cell medium-3 fourth"></div>
+                            </div>
                         </div>
                     `)
 
-                let data = [
-                    {
-                        "title": "Active Coaches",
-                        "value": 100,
-                        "link": 'label',
-                        "description": "Description.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Users in Coaching",
-                        "value": 100,
-                        "link": 'label',
-                        "description": "Description.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Engagements",
-                        "value": 100,
-                        "link": 'label',
-                        "description": "Description.",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                ]
+                window.load = ( filter ) => {
 
-                jQuery.each( data, function( key, value ) {
-                    jQuery('.zume-goals').append(`
-                            <!-- Zume Card-->
-                            <div class="cell medium-4 large-3" data-equalizer-watch>
-                                <div class="zume-card ${value.goal}" data-link="${value.link}">
-                                    <div class="zume-card-title">
-                                        ${value.title}
-                                    </div>
-                                    <div class="zume-card-content">
-                                        ${value.value}
-                                    </div>
-                                    <div class="zume-card-footer">
-                                        ${value.description}
-                                    </div>
-                                </div>
-                            </div><!-- card -->
-                        `)
-                })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Active Coaches'
+                        jQuery('.first').html( window.template_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Users in Coaching'
+                        jQuery('.second').html( window.template_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Engagements'
+                        jQuery('.third').html( window.template_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
 
-                jQuery('.zume-trio-card-content').click(function(){
-                    let link = jQuery(this).data('link')
-                    window.location.href = '/coaching/zume-path/' + link
-                })
 
-                jQuery('.loading-spinner').delay(3000).removeClass('active')
+                }
+                window.setup_filter()
+
+                window.click_listener = (key) => {
+                    jQuery('.zume-list.'+key).click(function(){
+                        jQuery('#modal-large').foundation('open')
+                        jQuery('#modal-large-title').empty().html('Fact Label<hr>')
+                        jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
+
+                        window.API_get( window.site_url+'trainees/list', ( data ) => {
+                            jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
+                            jQuery.each(data, function(i,v)  {
+                                jQuery('#zume-list-modal').append( '<tr><td><a href="#">' + v.display_name + '</a></td></tr>')
+                            })
+                            jQuery('.loading-spinner').removeClass('active')
+                        })
+                    })
+                }
             })
-
         </script>
         <?php
     }

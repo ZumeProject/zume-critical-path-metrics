@@ -85,50 +85,75 @@ class Zume_Path_Goals extends Zume_Chart_Base
                                             <option value="90">Last 90 days</option>
                                             <option value="365">Last 1 Year</option>
                                         </select>
+                                        <span class="loading-spinner active"></span>
                                     </span>
                                 </div>
                             </div>
                             <hr>
-                            <span class="loading-spinner active"></span>
-                            <div class="grid-x">
-                                <div class="cell medium-6">
-                                    <div class="post_training_trainees zume-critical-path"></div>
-                                </div>
-                                <div class="cell medium-6" style="padding:1em;">
-                                    <h3><strong>What are Trainees?</strong></h3>
-                                    <p>
-                                        Blah blah blah.
-                                    </p>
-
-                                </div>
+                            <div class="grid-x critical-path">
+                                <div class="cell"><div class="trainees_full zume-critical-path"><span class="loading-spinner active"></span></div></div>
+                                <div class="cell"><div class="practitioners zume-critical-path"><span class="loading-spinner active"></span></div></div>
+                                <div class="cell"><div class="churches zume-critical-path"><span class="loading-spinner active"></span></div></div>
                             </div>
                         </div>
                     `)
 
                 window.load = ( filter ) => {
-                    window.API_post( window.site_url+'post_training_trainees?filter='+filter, ( data ) => {
-                        jQuery('.post_training_trainees').html(window.template_single(data))
-                        jQuery('.zume-card-title.post_training_trainees').html('Trainees')
+
+                    window.spin_add()
+                    window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Fully Trained Trainees'
+                        data.key = 'full_trained_trainees'
+                        data.description = 'Trainees who have completed the full Zúme training course and have recorded their progress.'
+                        jQuery('.trainees_full').html(window.template_map_list(data))
+                        window.click_listener(data)
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Practitioners'
+                        data.key = 'practitioners'
+                        data.description = 'Disciple making movement practitioners of all stages (Partial, Completed, Multiplying). These are those who have indicated that they are seeking movement with multiplicative methods and want to participate in the Zúme Community.'
+                        jQuery('.practitioners').html(window.template_map_list(data))
+                        window.click_listener(data)
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Churches'
+                        data.key = 'churches'
+                        data.description = 'These are the total number of churches reported by all the practitioners of all stages in the Zúme Community.'
+                        jQuery('.churches').html(window.template_map_list(data))
+                        window.click_listener(data)
+                        window.spin_remove()
                     })
                 }
                 window.setup_filter()
 
 
+                window.click_listener = (data ) => {
+                    jQuery('.zume-list.'+data.key).click(function(){
+                        jQuery('#modal-large').foundation('open')
+                        jQuery('#modal-large-title').empty().html(`${data.label}<hr>`)
+                        jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
 
-                jQuery('.zume-card').click(function(){
-                    jQuery('#modal-large').foundation('open')
-
-                    jQuery('#modal-large-title').empty().html('Fact Label<hr>')
-
-                    jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
-                    jQuery.get('https://zume5.training/coaching/wp-json/zume_stats/v1/stats_list?days=365&range=true&all_time=true', function(data){
-                        jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
-                        jQuery.each(data, function(i,v)  {
-                            jQuery('#zume-list-modal').append( '<tr><td><a href="">' + v.post_title + '</a></td></tr>')
+                        window.API_get( window.site_url+'trainees/list', ( data_list ) => {
+                            jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
+                            jQuery('#zume-list-modal').append( `<tr><td><strong>Name</strong></td><td><strong>Registered</strong></td></tr>`)
+                            jQuery.each(data_list, function(i,v)  {
+                                jQuery('#zume-list-modal').append( `<tr><td><a href="#">${ v.display_name }</a></td><td>${v.user_registered}</td></tr>`)
+                            })
+                            jQuery('.loading-spinner').removeClass('active')
                         })
-                        jQuery('.loading-spinner').removeClass('active')
                     })
-                })
+                    jQuery('.zume-map.'+data.key).click(function(){
+                        jQuery('#modal-full').foundation('open')
+                        jQuery('#modal-full-title').empty().html(`${data.label}<hr>`)
+                        jQuery('#modal-full-content').empty().html('<iframe class="map-iframe" width="100%" height="2500" src="https://zume5.training/coaching/zume_app/heatmap_churches/" frameborder="0" style="border:0" allowfullscreen></iframe>')
+                        jQuery('.map-iframe').prop('src', jQuery(this).data('link')).prop('height', window.innerHeight - 150)
+
+                    })
+                }
 
                 jQuery('.loading-spinner').removeClass('active')
             })
@@ -151,6 +176,9 @@ class Zume_Path_Goals extends Zume_Chart_Base
             }
             #-menu {
                 font-weight: 700;
+            }
+            .zume-cards {
+                max-width: 700px;
             }
         </style>
         <?php

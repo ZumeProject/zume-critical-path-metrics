@@ -29,14 +29,14 @@ class Zume_Metrics_Base {
             require_once ('01-goals.php');
             require_once ('02-concepts.php');
 
-            require_once ('10-trainee-journey.php');
-            require_once ('11-candidate.php');
-            require_once ('12-pre-training.php');
+            require_once ('10-trainee-critical-path.php');
+            require_once ('11-anonymous.php');
+            require_once ('12-registrants.php');
             require_once ('13-active-training.php');
             require_once ('14-post-training.php');
-            require_once ('15-l1-practitioner.php');
-            require_once ('16-l2-practitioner.php');
-            require_once ('17-l3-practitioner.php');
+            require_once ('15-s1-practitioner.php');
+            require_once ('16-s2-practitioner.php');
+            require_once ('17-s3-practitioner.php');
 
             require_once ('20-overview.php');
             require_once ('21-facilitator.php');

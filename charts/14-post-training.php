@@ -61,6 +61,7 @@ class Zume_Path_Post extends Zume_Chart_Base
             window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
             jQuery(document).ready(function(){
                 "use strict";
+
                 let chart = jQuery('#chart')
                 let title = '<?php echo $this->base_title ?>'
                 chart.empty().html(`
@@ -68,184 +69,106 @@ class Zume_Path_Post extends Zume_Chart_Base
                             <div class="grid-x">
                                 <div class="cell small-6"><h1>${title}</h1></div>
                                 <div class="cell small-6">
+
+                                </div>
+                            </div>
+                            <hr>
+                            <div id="hero"><span class="loading-spinner active"></span></div>
+                            <div class="grid-x grid-margin-x grid-margin-y">
+                                 <div class="cell medium-3 needs_coach"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 needs_plan"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 "><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 "><span class="loading-spinner active"></span></div>
+                            </div>
+                            <hr>
+                            <div class="grid-x">
+                                <div class="cell small-6">
+                                    <h2>Progress Indicators</h2>
+                                </div>
+                                <div class="cell small-6">
                                     <span style="float: right;">
-                                         <select id="range-filter">
+                                        <select id="range-filter">
                                             <option value="30">Last 30 days</option>
                                             <option value="7">Last 7 days</option>
                                             <option value="90">Last 90 days</option>
                                             <option value="365">Last 1 Year</option>
-                                            <option value="-1">All Time</option>
                                         </select>
                                     </span>
+                                    <span class="loading-spinner active" style="float: right; margin:0 10px;"></span>
                                 </div>
                             </div>
-                            <hr>
-
-                            <span class="loading-spinner active"></span>
-
-                            <div class="grid-x">
-                                <div class="cell medium-6">
-                                    <div class="post_training_trainees"></div>
-                                </div>
-                                <div class="cell medium-6" style="padding:1em;">
-                                    <h3><strong>What is the Post-Training stage?</strong></h3>
-                                    <p>
-                                         The Post-Training stage is the time after a person has completed the training. This stage is
-                                            primarily focused on the 3-month plan and beginning to practice Zúme skills.
-                                    </p>
-                                    <p>
-                                       The top goal is get a coach and to start growing the disciple making lifestyle and finish the 3-month plan.
-                                    </p>
-                                </div>
+                            <div class="grid-x grid-margin-x grid-margin-y">
+                                 <div class="cell medium-6 first"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 second"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 third"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 fourth"><span class="loading-spinner active"></span></div>
                             </div>
-                            <hr>
-                            <h2>Goals</h2>
-                            <div class="grid-x zume-goals"  data-equalizer data-equalize-by-row></div>
-                            <hr>
-                            <h2>Trends</h2>
-                            <div class="grid-x zume-trends"  data-equalizer data-equalize-by-row></div>
                         </div>
                     `)
 
                 window.load = ( filter ) => {
-                    window.API_post( window.site_url+'post_training_trainees?filter='+filter, ( data ) => {
-                        jQuery('.post_training_trainees').html(window.template_trio(data))
+                    window.spin_add()
+                    window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Post-Training Trainees'
+                        jQuery('#hero').html(window.template_map_list(data))
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Needs Coach'
+                        jQuery('.needs_coach').html(window.template_single(data))
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'Needs 3-Month Plan'
+                        jQuery('.needs_plan').html(window.template_single(data))
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+
+
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'New Trainees'
+                        jQuery('.first').html( window.template_trio_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'New 3-Month Plans'
+                        jQuery('.second').html( window.template_trio_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
+                        data.label = 'New Coaching Requests'
+                        jQuery('.third').html( window.template_trio_single( data ) )
+                        window.click_listener( data.key )
+                        window.spin_remove()
                     })
                 }
                 window.setup_filter()
 
+                window.click_listener = (key) => {
+                    jQuery('.zume-list.'+key).click(function(){
+                        jQuery('#modal-large').foundation('open')
+                        jQuery('#modal-large-title').empty().html('Fact Label<hr>')
+                        jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
 
-
-
-
-                let data = [
-                    {
-                        "title": "People",
-                        "value": 0,
-                        "description": "Number of People in the Post-Training Phase",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "3-Month Plans",
-                        "value": 0,
-                        "description": "Active 3-Month Plans",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Check-ins",
-                        "value": 0,
-                        "description": "Check-ins",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Has a Coach",
-                        "value": 0,
-                        "description": "Has a Coach",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    },
-                    {
-                        "title": "Actively being Coached",
-                        "value": 0,
-                        "description": "Actively being Coached",
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey'
-                    }
-                ]
-
-                jQuery.each( data, function( key, value ) {
-                    jQuery('.zume-goals').append(`
-                            <!-- Zume Card-->
-                            <div class="cell medium-4 large-3" data-equalizer-watch>
-                                <div class="zume-card ${value.goal}">
-                                    <div class="zume-card-title">
-                                        ${value.title}
-                                    </div>
-                                    <div class="zume-card-content">
-                                        ${value.value}
-                                    </div>
-                                    <div class="zume-card-footer">
-                                        ${value.description}
-                                    </div>
-                                </div>
-                            </div><!-- card -->
-                        `)
-                })
-
-                jQuery.each( data, function( key, value ) {
-                    jQuery('.zume-trends').append(`
-                            <!-- Zume Card-->
-                            <div class="cell medium-4 large-3" data-equalizer-watch>
-                                <div class="zume-card ${value.trend}">
-                                    <div class="zume-card-title">
-                                        ${value.title}
-                                    </div>
-                                    <div class="zume-card-content">
-                                        ${value.value}
-                                    </div>
-                                    <div class="zume-card-footer">
-                                        ${value.description}
-                                    </div>
-                                </div>
-                            </div><!-- card -->
-                        `)
-                })
-
-                let path = [
-                    {
-                        "title": "Post-Training Trainee",
-                        "link": "post",
-                        "value": '0',
-                        "goal": 'valence-grey',
-                        "trend": 'valence-grey',
-                    },
-                ]
-
-                jQuery('.zume-critical-path').empty()
-                jQuery.each( path, function( key, value ) {
-                    jQuery('.zume-critical-path').append(`
-                            <div class="cell zume-trio-card" style="margin:5px;">
-                                <div class="zume-trio-card-content" data-link="${value.link}">
-                                    <div class="zume-trio-card-title">
-                                        ${value.title}
-                                    </div>
-                                    <div class="zume-trio-card-value">
-                                        ${value.value}
-                                    </div>
-                                </div>
-                                <div class="zume-trio-card-footer">
-                                    <div class="grid-x">
-                                        <div class="cell small-6 zume-goal ${value.goal}">
-                                            GOAL
-                                        </div>
-                                        <div class="cell small-6 zume-trend ${value.trend}">
-                                            TREND
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `)
-                })
-
-                jQuery('.zume-card').click(function(){
-                    jQuery('#modal-large').foundation('open')
-
-                    jQuery('#modal-large-title').empty().html('Fact Label<hr>')
-
-                    jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
-                    jQuery.get('https://zume5.training/coaching/wp-json/zume_stats/v1/stats_list?days=365&range=true&all_time=true', function(data){
-                        jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
-                        jQuery.each(data, function(i,v)  {
-                            jQuery('#zume-list-modal').append( '<tr><td><a href="">' + v.post_title + '</a></td></tr>')
+                        window.API_get( window.site_url+'trainees/list', ( data ) => {
+                            jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
+                            jQuery.each(data, function(i,v)  {
+                                jQuery('#zume-list-modal').append( '<tr><td><a href="#">' + v.display_name + '</a></td></tr>')
+                            })
+                            jQuery('.loading-spinner').removeClass('active')
                         })
-                        jQuery('.loading-spinner').removeClass('active')
                     })
-                })
-
-                jQuery('.loading-spinner').delay(3000).removeClass('active')
+                }
             })
 
         </script>

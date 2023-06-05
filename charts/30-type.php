@@ -62,34 +62,36 @@ class Zume_Coaching_Types extends Zume_Chart_Base
         return $content;
     }
     public function wp_head() {
+        $user_list = $this->user_list();
+
         $this->js_api();
         ?>
         <script>
             window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
             window.user_id = '<?php echo get_current_user_id() ?>'
 
-            //  0 = Candidate
+            //  0 = Anonymous
             //  1 = Registrant
             //  2 = Active Training
             //  3 = Post-Training
-            //  4 = L1 Practitioner
-            //  5 = L2 Practitioner
-            //  6 = L3 Practitioner
+            //  4 = S1 (Partial)
+            //  5 = S2 (Complete)
+            //  6 = S3 (Multiplying)
 
                 let data = [
 
 
 
-                    // Candidate
+                    // Anonymous
                     {
                         "value": 0,
                         "subtype": "got_a_coach",
-                        "description": "Get a Coach Form (from an anonymous candidate)"
+                        "description": "Get a Coach Form (from an anonymous anonymous)"
                     },
                     {
                         "value": 0,
                         "subtype": "online_training",
-                        "description": "Join Online Training (from an anonymous candidate)"
+                        "description": "Join Online Training (from an anonymous anonymous)"
                     },
                     {
                         "value": 0,
@@ -326,7 +328,7 @@ class Zume_Coaching_Types extends Zume_Chart_Base
 
 
 
-                    // L1 Practitioner
+                    // S1 (Partial)
                     {
                         "value": 4,
                         "subtype": "new_report",
@@ -340,7 +342,7 @@ class Zume_Coaching_Types extends Zume_Chart_Base
 
 
 
-                    // L2 Practitioner
+                    // S2 (Complete)
                     {
                         "value": 5,
                         "subtype": "new_report",
@@ -354,7 +356,7 @@ class Zume_Coaching_Types extends Zume_Chart_Base
 
 
 
-                    // L3 Practitioner
+                    // S3 (Multiplying)
                     {
                         "value": 6,
                         "subtype": "new_report",
@@ -393,7 +395,10 @@ class Zume_Coaching_Types extends Zume_Chart_Base
                                                 <option value="24">24 Days Ago</option>
                                                 <option value="30">30 Days Ago</option>
                                             </select>
-                                            <input id="user_id" style="float:left; width:35%;" type="text" placeholder="UseID" value="${window.user_id}">
+                                            <select id="user_id" style="float:left; width:35%;">
+                                                <option value="${window.user_id}">Me</option>
+                                               <?php echo $this->user_list() ?>
+                                            </select>
                                         </th>
                                     </tr>
                                 </thead>
@@ -421,26 +426,26 @@ class Zume_Coaching_Types extends Zume_Chart_Base
                                 <strong>'hash' varchar(65) COLLATE DEFAULT NULL,</strong><br>
                             </div>
                             <div class="cell small-6">
-                                0 = Candidate<br>
+                                0 = Anonymous<br>
                                 1 = Registrant<br>
                                 2 = Active Training<br>
                                 3 = Post-Training<br>
-                                4 = L1 Practitioner<br>
-                                5 = L2 Practitioner<br>
-                                6 = L3 Practitioner<br>
+                                4 = S1 (Partial)<br>
+                                5 = S2 (Complete)<br>
+                                6 = S3 (Multiplying)<br>
                             </div>
                             </div>
 
                         </div>
                     `)
                 window.stage = {
-                    0: 'Candidate',
+                    0: 'Anonymous',
                     1: 'Registrant',
                     2: 'Active Training',
                     3: 'Post-Training',
-                    4: 'L1 Practitioner',
-                    5: 'L2 Practitioner',
-                    6: 'L3 Practitioner',
+                    4: 'S1 (Partial)',
+                    5: 'S2 (Complete)',
+                    6: 'S3 (Multiplying)',
                 }
                 jQuery.each( data, function( key, value ) {
                     jQuery('.zume-report-types').append(`
@@ -521,9 +526,7 @@ class Zume_Coaching_Types extends Zume_Chart_Base
 
                     return jQuery.ajax(options);
                 }
-
             })
-
         </script>
         <?php
     }
@@ -536,5 +539,22 @@ class Zume_Coaching_Types extends Zume_Chart_Base
         ];
     }
 
+    public function user_list() {
+        global $wpdb;
+        $users = $wpdb->get_results(
+            "SELECT ID, display_name
+                    FROM $wpdb->users
+                    JOIN $wpdb->usermeta ON $wpdb->users.ID = $wpdb->usermeta.user_id AND $wpdb->usermeta.meta_key = 'wp_3_capabilities'
+                    ", ARRAY_A
+        );
+
+        $html = '';
+        foreach( $users as $user ) {
+            $html .= '<option value="' . $user['ID'] . '">' . $user['display_name'] . '</option>';
+        }
+
+        return $html;
+
+    }
 }
 new Zume_Coaching_Types();

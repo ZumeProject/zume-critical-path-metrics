@@ -91,47 +91,179 @@ abstract class Zume_Chart_Base
                     })
                     window.load( window.filter )
                 }
-
-                window.template_trio = (value) => {
+                window.template_trio = ({key, link, label, goal_valence, trend_valence, value, description}) => {
                     return `
-                      <div class="cell zume-trio-card ${value.key}">
-                          <div class="zume-trio-card-content ${value.key}" data-link="${value.link}">
-                              <div class="zume-trio-card-title ${value.key}">
-                                  ${value.label}
-                              </div>
-                              <div class="zume-trio-card-value ${value.key}">
-                                  ${value.value}
-                              </div>
-                          </div>
-                          <div class="zume-trio-card-footer ${value.key}">
-                              <div class="grid-x">
-                                  <div class="cell small-6 zume-goal ${value.key} ${value.goal_valence}">
-                                      GOAL
+                    <div class="grid-x">
+                        <div class="cell zume-trio-card ${key}">
+                            <div class="zume-trio-card-content ${key}" data-link="${link}">
+                                <div class="zume-trio-card-title ${key}">
+                                  ${label}
+                                </div>
+                                <div class="zume-trio-card-value ${key}">
+                                  ${value}
+                                </div>
+                                <div>
+                                  <div class="${key} description">
+                                      ${description}
                                   </div>
-                                  <div class="cell small-6 zume-trend ${value.key} ${value.trend_valence}">
-                                      TREND
+                                </div>
+                            </div>
+                            <div class="zume-trio-card-footer ${key}">
+                                <div class="grid-x">
+                                    <div class="cell small-6 zume-goal ${key} ${goal_valence}">
+                                      GOALS
+                                    </div>
+                                    <div class="cell small-6 zume-trend ${key} ${trend_valence}">
+                                      TRENDS
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                }
+                window.template_trio_single = ({key, link, label, goal, goal_valence, goal_percent, trend, trend_valence, trend_percent, value, description}) => {
+                    return `
+                      <div class="grid-x"><div class="cell zume-trio-single-card" >
+                            <div class="zume-trio-single-top zume-list ${key}" data-link="${link}">
+                                <div class="zume-trio-single-top-title ${key}">
+                                    ${label}
+                                </div>
+                                <div class="zume-trio-single-top-value ${key}">
+                                    ${value}
+                                </div>
+                                <div>
+                                  <div class="zume-trio-single-top-description ${key}">
+                                      ${description}
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="zume-trio-single-left ${goal_valence} ${key}">
+                                <div class="zume-trio-single-top-title ${key}">
+                                    GOAL
+                                </div>
+                                <div class="zume-trio-single-sub-value ${key}">
+                                    ${goal_percent}%
+                                </div>
+                                <div class="zume-trio-single-top-description ${key}">
+                                     goal for this period ( ${goal} )
+                                 </div>
+                            </div>
+                            <div class="zume-trio-single-right ${trend_valence} ${key}">
+                                <div class="zume-trio-single-top-title ${key}">
+                                    TREND
+                                </div>
+                                <div class="zume-trio-single-sub-value ${key}">
+                                     ${trend_percent}%
+                                </div>
+                                <div class="zume-trio-single-top-description ${key}">
+                                      previous period ( ${trend} )
+                                  </div>
+                            </div>
+                      </div></div>
+                    `;
+                }
+                window.template_trio_hero = ({key, link, label, goal, goal_valence, goal_percent, trend, trend_valence, trend_percent, value, description}) => {
+                    return `
+                      <div class="grid-x"><div class="cell zume-trio-single-card" >
+                            <div class="zume-trio-single-top zume-list ${key}" data-key="${key}" data-link="${link}">
+                                <div class="zume-trio-hero-title ${key}">
+                                    ${label}
+                                </div>
+                                <div class="zume-trio-single-top-value ${key}">
+                                    ${value}
+                                </div>
+                                <div>
+                                  <div class="zume-trio-single-top-description ${key}">
+                                      ${description}
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="zume-trio-single-left ${goal_valence} ${key}">
+                                <div class="zume-trio-single-top-title ${key}">
+                                    GOAL
+                                </div>
+                                <div class="zume-trio-single-sub-value ${key}">
+                                    ${goal_percent}%
+                                </div>
+                                <div class="zume-trio-single-top-description ${key}">
+                                     goal for this period ( ${goal} )
+                                 </div>
+                            </div>
+                            <div class="zume-trio-single-right ${trend_valence} ${key}">
+                                <div class="zume-trio-single-top-title ${key}">
+                                    TREND
+                                </div>
+                                <div class="zume-trio-single-sub-value ${key}">
+                                     ${trend_percent}%
+                                </div>
+                                <div class="zume-trio-single-top-description ${key}">
+                                      previous period ( ${trend} )
+                                  </div>
+                            </div>
+                      </div></div>
+                    `;
+                }
+                window.template_map_list = ({key, link, label, value, description}) => {
+                    return `
+                      <div class="cell zume-trio-card ${key} medium-4 large-3" data-equalizer-watch>
+                          <div class="zume-card-content ${key}" >
+                              <div class="zume-trio-card-title ${key}">
+                                  ${label}
+                              </div>
+                              <div class="zume-trio-card-value ${key}">
+                                  ${value}
+                              </div>
+                              <div class="${key} description">
+                                  ${description}
+                               </div>
+                          </div>
+                          <div class="zume-trio-card-footer ${key}">
+                              <div class="grid-x">
+                                  <div class="cell small-6 zume-card-sub-left zume-list ${key}" data-link="${link}">
+                                      LIST
+                                  </div>
+                                  <div class="cell small-6 zume-card-sub-right zume-map ${key}">
+                                      MAP
                                   </div>
                               </div>
                           </div>
                       </div>
                     `;
                 }
-                window.template_single = (value) => {
+                window.template_single = ({key, valence, label, value, description}) => {
                     return `
-                        <div class="cell medium-4 large-3" data-equalizer-watch>
-                            <div class="zume-card ${value.key} ${value.valence}">
-                                <div class="zume-card-title ${value.key}">
-                                    ${value.label}
+                        <div class="grid-x">
+                        <div class="cell" data-equalizer-watch>
+                            <div class="zume-card zume-list ${key} ${valence}">
+                                <div class="zume-card-title ${key}">
+                                    ${label}
                                 </div>
-                                <div class="zume-card-content ${value.key}">
-                                    ${value.value}
+                                <div class="zume-card-value ${key}">
+                                    ${value}
                                 </div>
-                                <div class="zume-card-footer ${value.key}">
-                                    ${value.description}
+                                <div class="zume-card-footer ${key}">
+                                    ${description}
                                 </div>
                             </div>
-                        </div>
+                        </div></div>
                     `;
+                }
+                window.spin_add = () => {
+                    if ( typeof window.spin_count === 'undefined' ){
+                        window.spin_count = 0
+                    }
+                    window.spin_count++
+                    jQuery('.loading-spinner').addClass('active')
+                }
+                window.spin_remove = () => {
+                    if ( typeof window.spin_count === 'undefined' ){
+                        window.spin_count = 0
+                    }
+                    window.spin_count--
+                    if ( window.spin_count === 0 ) {
+                        jQuery('.loading-spinner').removeClass('active')
+                    }
                 }
             })
         </script>

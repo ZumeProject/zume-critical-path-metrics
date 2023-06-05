@@ -7,8 +7,8 @@ add_filter( 'zume_range_stats', function( $stats, $request_range ) {
     }
 
     $stats[] = [
-        'key' => 'l3_practitioners',
-        'label' => 'L3 Practitioners',
+        'key' => 's3_practitioners',
+        'label' => 'S3 (Multiplying)s',
         'description' => '',
         'value' => 0,
         'goal' => 0,
