@@ -78,11 +78,23 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
                 chart.empty().html(`
                         <div id="zume-path">
                             <div class="grid-x">
-                                <div class="cell small-6"><h1>${title}</h1></div>
+                                <div class="cell small-6"><h1>Coaching Overview</h1></div>
+                                <div class="cell small-6 right">Overview of the coaching engagement</div>
+                            </div>
+                            <hr>
+                            <div class="grid-x grid-margin-x grid-margin-y">
+                                 <div class="cell medium-3 active_coaches"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 total_people_in_coaching"><span class="loading-spinner active"></span></div>
+                            </div>
+                            <hr>
+                            <div class="grid-x">
+                                <div class="cell center"><h1 id="range-title">Last 30 Days</h1></div>
+                                <div class="cell small-6">
+                                    <h2>Progress Indicators</h2>
+                                </div>
                                 <div class="cell small-6">
                                     <span style="float: right;">
                                         <select id="range-filter">
-                                            <option value="-1">All Time</option>
                                             <option value="30">Last 30 days</option>
                                             <option value="7">Last 7 days</option>
                                             <option value="90">Last 90 days</option>
@@ -92,58 +104,55 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
                                     <span class="loading-spinner active" style="float: right; margin:0 10px;"></span>
                                 </div>
                             </div>
-                            <hr>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-3 first"></div>
-                                 <div class="cell medium-3 second"></div>
-                                 <div class="cell medium-3 third"></div>
-                                 <div class="cell medium-3 fourth"></div>
+                                 <div class="cell medium-3 new_coaching_requests"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 coaching_engagements"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 people_in_coaching"><span class="loading-spinner active"></span></div>
                             </div>
                         </div>
                     `)
 
-                window.load = ( filter ) => {
+                // totals
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "general", key: "active_coaches" }, ( data ) => {
+                    jQuery('.active_coaches').html(window.template_single_map(data))
+                    window.click_listener( data )
+                    window.spin_remove()
+                })
+
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "general", key: "total_people_in_coaching" }, ( data ) => {
+                    jQuery('.total_people_in_coaching').html(window.template_single_map(data))
+                    window.click_listener( data )
+                    window.spin_remove()
+                })
+
+                window.load = ( range ) => {
 
                     window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Active Coaches'
-                        jQuery('.first').html( window.template_single( data ) )
-                        window.click_listener( data.key )
+                    window.API_get( window.site_info.total_url, { stage: "early", key: "new_coaching_requests", range: range }, ( data ) => {
+                        jQuery('.new_coaching_requests').html(window.template_single(data))
+                        window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Users in Coaching'
-                        jQuery('.second').html( window.template_single( data ) )
-                        window.click_listener( data.key )
+                    window.API_get( window.site_info.total_url, { stage: "general", key: "coaching_engagements", range: range }, ( data ) => {
+                        jQuery('.coaching_engagements').html(window.template_single(data))
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Engagements'
-                        jQuery('.third').html( window.template_single( data ) )
-                        window.click_listener( data.key )
+                    window.API_get( window.site_info.total_url, { stage: "general", key: "people_in_coaching", range: range }, ( data ) => {
+                        jQuery('.people_in_coaching').html(window.template_single_map(data))
+                        window.click_listener( data )
                         window.spin_remove()
                     })
-
 
                 }
                 window.setup_filter()
 
-                window.click_listener = (key) => {
-                    jQuery('.zume-list.'+key).click(function(){
-                        jQuery('#modal-large').foundation('open')
-                        jQuery('#modal-large-title').empty().html('Fact Label<hr>')
-                        jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
-
-                        window.API_get( window.site_url+'trainees/list', ( data ) => {
-                            jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
-                            jQuery.each(data, function(i,v)  {
-                                jQuery('#zume-list-modal').append( '<tr><td><a href="#">' + v.display_name + '</a></td></tr>')
-                            })
-                            jQuery('.loading-spinner').removeClass('active')
-                        })
-                    })
+                window.click_listener = ( data ) => {
+                    window.load_list(data)
+                    window.load_map(data)
                 }
             })
         </script>

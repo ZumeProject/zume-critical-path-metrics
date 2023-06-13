@@ -67,203 +67,177 @@ class Zume_Path_Active extends Zume_Chart_Base
             }
         </style>
         <script>
-            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
             jQuery(document).ready(function(){
                 "use strict";
                 let chart = jQuery('#chart')
-                let title = '<?php echo $this->base_title ?>'
                 chart.empty().html(`
                         <div id="zume-path">
                             <div class="grid-x">
-                                <div class="cell small-6"><h1>${title}</h1></div>
+                                <div class="cell small-6"><h1>Active Training</h1></div>
                                 <div class="cell small-6">
                                 </div>
-                            </div>
-                            <hr>
-                            <div id="hero"><span class="loading-spinner active"></span></div>
-                            <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-3 needs_coach"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 inactive"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 "><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 "><span class="loading-spinner active"></span></div>
                             </div>
                             <hr>
                             <div class="grid-x">
+                                <div class="cell hero"><span class="loading-spinner active"></span></div>
+                            </div>
+                            <div class="grid-x grid-margin-x grid-margin-y">
+                                 <div class="cell medium-3 has_coach"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 inactive_trainees"><span class="loading-spinner active"></span></div>
+                            </div>
+                            <hr>
+                            <div class="grid-x">
+                                <div class="cell center"><h1 id="range-title">Last 30 Days</h1></div>
                                 <div class="cell small-6">
                                     <h2>Progress Indicators</h2>
                                 </div>
-                                <div class="cell small-6">
-                                    <span style="float: right;">
-                                        <select id="range-filter">
+                                <div class="cell small-6" style="float: right;">
+                                     <span>
+                                        <select id="range-filter" class="z-range-filter">
                                             <option value="30">Last 30 days</option>
                                             <option value="7">Last 7 days</option>
                                             <option value="90">Last 90 days</option>
                                             <option value="365">Last 1 Year</option>
                                         </select>
                                     </span>
-                                    <span class="loading-spinner active" style="float: right; margin:0 10px;"></span>
+                                    <span class="loading-spinner active float-spinner"></span>
                                 </div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-6 first"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-6 second"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 new_active_trainees"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 total_checkins"><span class="loading-spinner active"></span></div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
                                  <div class="cell"><h2>Remaining Progress</h2></div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-6 third"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-6 fourth"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 has_no_coach"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 has_no_updated_profile"><span class="loading-spinner active"></span></div>
                             </div>
                             <hr>
                             <h2>Sessions</h2>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-3 session1"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session2"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session3"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session4"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session5"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session6"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session7"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session8"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session9"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session10"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session_1"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session_2"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session_3"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session_4"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session_5"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session_6"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session_7"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session_8"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session_9"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 session_10"><span class="loading-spinner active"></span></div>
                             </div>
                             <hr>
                             <h2>Engagements Per Training Element</h2>
                             <div id="chartdiv"></div>
                         </div>
                     `)
-                window.load = ( filter ) => {
+                // totals
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "att", key: "total_att" }, ( data ) => {
+                    jQuery('.hero').html(window.template_map_list(data))
+                    window.click_listener( data )
+                    window.spin_remove()
+                })
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "att", key: "has_coach" }, ( data ) => {
+                    jQuery('.has_coach').html(window.template_single_list(data))
+                    window.click_listener( data )
+                    window.spin_remove()
+                })
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "att", key: "inactive_trainees" }, ( data ) => {
+                    jQuery('.inactive_trainees').html(window.template_single_list(data))
+                    window.click_listener( data )
+                    window.spin_remove()
+                })
+
+                // range
+                window.load = ( range ) => {
+                    // positive stats
                     window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Active Training Trainees'
-                        jQuery('#hero').html( window.template_map_list( data ) )
-                        window.click_listener( data.key )
+                    window.API_get( window.site_info.total_url, { stage: "att", key: "new_active_trainees", range: range }, ( data ) => {
+                        jQuery('.new_active_trainees').html(window.template_trio(data))
+                        window.click_listener( data )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_info.total_url, { stage: "att", key: "total_checkins", range: range }, ( data ) => {
+                        jQuery('.total_checkins').html(window.template_trio(data))
+                        window.click_listener( data )
+                        window.spin_remove()
+                    })
+
+                    // negative stats
+                    window.spin_add()
+                    window.API_get( window.site_info.total_url, { stage: "att", key: "has_no_coach", range: range, negative_stat: true }, ( data ) => {
+                        jQuery('.has_no_coach').html(window.template_trio(data))
+                        window.click_listener( data )
                         window.spin_remove()
                     })
 
                     window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Has Coach'
-                        jQuery('.needs_coach').html( window.template_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Inactive Trainees'
-                        jQuery('.inactive').html( window.template_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'New Active Trainees'
-                        jQuery('.first').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Total Check-ins'
-                        jQuery('.second').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter+'&negative_stat=true', ( data ) => {
-                        data.label = 'Has No Coach'
-                        jQuery('.third').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter+'&negative_stat=true', ( data ) => {
-                        data.label = 'Has No Updated Profile'
-                        jQuery('.fourth').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Session 1'
-                        jQuery('.session1').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Session 2'
-                        jQuery('.session2').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Session 3'
-                        jQuery('.session3').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Session 4'
-                        jQuery('.session4').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Session 5'
-                        jQuery('.session5').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Session 6'
-                        jQuery('.session6').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Session 7'
-                        jQuery('.session7').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Session 8'
-                        jQuery('.session8').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Session 9'
-                        jQuery('.session9').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Session 10'
-                        jQuery('.session10').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
+                    window.API_get( window.site_info.total_url, { stage: "att", key: "has_no_updated_profile", range: range, negative_stat: true }, ( data ) => {
+                        jQuery('.has_no_updated_profile').html(window.template_trio(data))
+                        window.click_listener( data )
                         window.spin_remove()
                     })
 
 
 
-
-
-
                     window.spin_add()
+                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_1", range: range }, ( data ) => {
+                        jQuery('.session_1').html(window.template_trio(data))
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_2", range: range }, ( data ) => {
+                        jQuery('.session_2').html(window.template_trio(data))
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_3", range: range }, ( data ) => {
+                        jQuery('.session_3').html(window.template_trio(data))
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_4", range: range }, ( data ) => {
+                        jQuery('.session_4').html(window.template_trio(data))
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_5", range: range }, ( data ) => {
+                        jQuery('.session_5').html(window.template_trio(data))
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_6", range: range }, ( data ) => {
+                        jQuery('.session_6').html(window.template_trio(data))
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_7", range: range }, ( data ) => {
+                        jQuery('.session_7').html(window.template_trio(data))
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_8", range: range }, ( data ) => {
+                        jQuery('.session_8').html(window.template_trio(data))
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_9", range: range }, ( data ) => {
+                        jQuery('.session_9').html(window.template_trio(data))
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_10", range: range }, ( data ) => {
+                        jQuery('.session_10').html(window.template_trio(data))
+                        window.spin_remove()
+                    })
+
+
                     window.API_get( window.site_url+'training_elements?filter='+filter, ( data ) => {
                         am5.ready(function() {
                             console.log(data)
@@ -337,27 +311,18 @@ class Zume_Path_Active extends Zume_Chart_Base
                                 chart.appear(1000, 100);
                             }
                         })
-                        window.spin_remove()
                     })
 
                 }
                 window.setup_filter()
 
-                window.click_listener = (key) => {
-                    jQuery('.zume-list.'+key).click(function(){
-                        jQuery('#modal-large').foundation('open')
-                        jQuery('#modal-large-title').empty().html('Fact Label<hr>')
-                        jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
-
-                        window.API_get( window.site_url+'trainees/list', ( data ) => {
-                            jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
-                            jQuery.each(data, function(i,v)  {
-                                jQuery('#zume-list-modal').append( '<tr><td><a href="#">' + v.display_name + '</a></td></tr>')
-                            })
-                            jQuery('.loading-spinner').removeClass('active')
-                        })
-                    })
+                window.click_listener = ( data ) => {
+                    window.load_list(data)
+                    window.load_map(data)
+                    window.load_redirect(data)
                 }
+
+
             })
 
         </script>

@@ -58,7 +58,6 @@ class Zume_Path_S1 extends Zume_Chart_Base
         $this->js_api();
         ?>
         <script>
-            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
             jQuery(document).ready(function(){
                 "use strict";
 
@@ -67,19 +66,21 @@ class Zume_Path_S1 extends Zume_Chart_Base
                 chart.empty().html(`
                         <div id="zume-path">
                             <div class="grid-x">
-                                <div class="cell small-6"><h1>${title}</h1></div>
-                                <div class="cell small-6"></div>
-                            </div>
-                            <hr>
-                            <div id="hero"><span class="loading-spinner active"></span></div>
-                            <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-3 all_churches"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 all_locations"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 all_reports"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 "><span class="loading-spinner active"></span></div>
+                                <div class="cell small-6"><h1>Stage 1 - Partial Practitioner</h1></div>
+                                <div class="cell small-6 right">Learning through doing. Implementing partial checklist / 4-fields</div>
                             </div>
                             <hr>
                             <div class="grid-x">
+                                <div class="cell hero"><span class="loading-spinner active"></span></div>
+                            </div>
+                            <div class="grid-x grid-margin-x grid-margin-y">
+                                 <div class="cell medium-3 total_churches"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 total_locations"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 total_active_reporters"><span class="loading-spinner active"></span></div>
+                            </div>
+                            <hr>
+                            <div class="grid-x">
+                                <div class="cell center"><h1 id="range-title">Last 30 Days</h1></div>
                                 <div class="cell small-6">
                                     <h2>Progress Indicators</h2>
                                 </div>
@@ -96,110 +97,94 @@ class Zume_Path_S1 extends Zume_Chart_Base
                                 </div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-6 first"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-6 second"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-6 third"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-6 fourth"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 new_practitioners"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 new_reporters"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 new_churches"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 new_locations"><span class="loading-spinner active"></span></div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
                                  <div class="cell"><h2>Remaining Progress</h2></div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
                                  <div class="cell medium-6 has_no_coach"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-6 has_no_report"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 has_not_reported"><span class="loading-spinner active"></span></div>
                             </div>
                         </div>
                     `)
 
-                window.load = ( filter ) => {
+                // totals
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "s1", key: "total_s1" }, ( data ) => {
+                    jQuery('.hero').html(window.template_map_list(data))
+                    window.click_listener( data )
+                    window.spin_remove()
+                })
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "s1", key: "total_churches" }, ( data ) => {
+                    jQuery('.total_churches').html(window.template_single(data))
+                    window.click_listener( data )
+                    window.spin_remove()
+                })
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "s1", key: "total_locations" }, ( data ) => {
+                    jQuery('.total_locations').html(window.template_single(data))
+                    window.click_listener( data )
+                    window.spin_remove()
+                })
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "s1", key: "total_active_reporters" }, ( data ) => {
+                    jQuery('.total_active_reporters').html(window.template_single(data))
+                    window.click_listener( data )
+                    window.spin_remove()
+                })
+
+                window.load = ( range ) => {
+
                     window.spin_add()
-                    window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Stage 1 - Partial Practitioners'
-                        jQuery('#hero').html(window.template_map_list(data))
+                    window.API_get( window.site_info.total_url, { stage: "s1", key: "new_practitioners", range: range }, ( data ) => {
+                        jQuery('.new_practitioners').html( window.template_trio( data ) )
+                        window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Churches'
-                        jQuery('.all_churches').html(window.template_single(data))
+                    window.API_get( window.site_info.total_url, { stage: "s1", key: "new_reporters", range: range }, ( data ) => {
+                        jQuery('.new_reporters').html( window.template_trio( data ) )
+                        window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Locations'
-                        jQuery('.all_locations').html(window.template_single(data))
+                    window.API_get( window.site_info.total_url, { stage: "s1", key: "new_churches", range: range }, ( data ) => {
+                        jQuery('.new_churches').html( window.template_trio( data ) )
+                        window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Active Reporters'
-                        jQuery('.all_reports').html(window.template_single(data))
+                    window.API_get( window.site_info.total_url, { stage: "s1", key: "new_locations", range: range }, ( data ) => {
+                        jQuery('.new_locations').html( window.template_trio( data ) )
+                        window.click_listener( data )
                         window.spin_remove()
                     })
 
-
                     window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'New Practitioners'
-                        jQuery('.first').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
+                    window.API_get( window.site_info.total_url, { stage: "s1", key: "has_no_coach", range: range, negative_stat: true }, ( data ) => {
+                        jQuery('.has_no_coach').html( window.template_trio( data ) )
+                        window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'New Reporters'
-                        jQuery('.second').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'New Churches'
-                        jQuery('.third').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'New Locations'
-                        jQuery('.fourth').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-
-
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Has No Coach'
-                        jQuery('.has_no_coach').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Has Not Reported'
-                        jQuery('.has_no_report').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
+                    window.API_get( window.site_info.total_url, { stage: "s1", key: "has_not_reported", range: range, negative_stat: true }, ( data ) => {
+                        jQuery('.has_not_reported').html( window.template_trio( data ) )
+                        window.click_listener( data )
                         window.spin_remove()
                     })
 
                 }
                 window.setup_filter()
 
-                window.click_listener = (key) => {
-                    jQuery('.zume-list.'+key).click(function(){
-                        jQuery('#modal-large').foundation('open')
-                        jQuery('#modal-large-title').empty().html('Fact Label<hr>')
-                        jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
-
-                        window.API_get( window.site_url+'trainees/list', ( data ) => {
-                            jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
-                            jQuery.each(data, function(i,v)  {
-                                jQuery('#zume-list-modal').append( '<tr><td><a href="#">' + v.display_name + '</a></td></tr>')
-                            })
-                            jQuery('.loading-spinner').removeClass('active')
-                        })
-                    })
+                window.click_listener = ( data ) => {
+                    window.load_list(data)
+                    window.load_map(data)
+                    window.load_redirect(data)
                 }
             })
 

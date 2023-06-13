@@ -607,4 +607,12 @@ class Zume_Query {
         ] );
     }
 
+    public static function set_array( $params ) {
+        $array = [];
+        foreach ( $params as $key => $value ) {
+            $array[$key] = $value;
+        }
+        return $array;
+    }
+
 }

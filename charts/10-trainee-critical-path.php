@@ -104,61 +104,52 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
                         </div>
                     `)
 
-                    window.load = ( filter ) => {
+                    window.load = ( range ) => {
                         window.spin_add()
-                        window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
-                            data.label = 'Registrants'
-                            data.link = 'registrants'
+                        window.API_get( window.site_info.total_url, { stage: "registrants", key: "total_registrants", range: range }, ( data ) => {
                             jQuery('.registrants').html(window.template_map_list(data))
-                            window.click_listener( data.key, data.link )
+                            window.click_listener(data)
                             window.spin_remove()
                         })
                         window.spin_add()
-                        window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
-                            data.label = 'Active Training Trainees'
-                            data.link = 'active'
+                        window.API_get( window.site_info.total_url, { stage: "att", key: "total_att", range: range }, ( data ) => {
                             jQuery('.active_training_trainees').html(window.template_map_list(data))
-                            window.click_listener( data.key, data.link )
+                            window.click_listener(data)
                             window.spin_remove()
                         })
                         window.spin_add()
-                        window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
-                            data.label = 'Post Training Trainees'
-                            data.link = 'post'
+                        window.API_get( window.site_info.total_url, { stage: "ptt", key: "total_ptt", range: range }, ( data ) => {
                             jQuery('.post_training_trainees').html(window.template_map_list(data))
-                            window.click_listener( data.key, data.link )
+                            window.click_listener(data)
                             window.spin_remove()
                         })
                         window.spin_add()
-                        window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
-                            data.label = '(S1) Partial Practitioners'
-                            data.link = 's1_practitioners'
+                        window.API_get( window.site_info.total_url, { stage: "s1", key: "total_s1", range: range }, ( data ) => {
                             jQuery('.s1_practitioners').html(window.template_map_list(data))
-                            window.click_listener( data.key, data.link )
+                            window.click_listener(data)
                             window.spin_remove()
                         })
                         window.spin_add()
-                        window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
-                            data.label = '(S2) Completed Practitioners'
-                            data.link = 's2_practitioners'
+                        window.API_get( window.site_info.total_url, { stage: "s2", key: "total_s2", range: range }, ( data ) => {
                             jQuery('.s2_practitioners').html(window.template_map_list(data))
-                            window.click_listener( data.key, data.link )
+                            window.click_listener(data)
                             window.spin_remove()
                         })
                         window.spin_add()
-                        window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
-                            data.label = '(S3) Multiplying Practitioners'
-                            data.link = 's3_practitioners'
+                        window.API_get( window.site_info.total_url, { stage: "s3", key: "total_s3", range: range }, ( data ) => {
                             jQuery('.s3_practitioners').html(window.template_map_list(data))
-                            window.click_listener( data.key, data.link )
+                            window.click_listener(data)
                             window.spin_remove()
                         })
                     }
                     window.setup_filter()
 
-                    window.click_listener = (key, link) => {
-                        jQuery('.zume-list.'+key).click(function(){
-                            window.location.href = '/coaching/zume-path/' + link
+                    window.click_listener = ( data ) => {
+                        window.load_list(data)
+                        window.load_map(data)
+                        window.load_redirect(data)
+                        jQuery('.z-card-main.hover.'+data.key).click(function(){
+                            window.location.href = data.link
                         })
                     }
                 })

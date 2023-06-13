@@ -60,27 +60,24 @@ class Zume_Coaching_Facilitator extends Zume_Chart_Base
         $this->js_api();
         ?>
         <script>
-            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
             jQuery(document).ready(function(){
                 "use strict";
 
                 let chart = jQuery('#chart')
-                let title = '<?php echo $this->base_title ?>'
                 chart.empty().html(`
                         <div id="zume-path">
                             <div class="grid-x">
-                                <div class="cell small-6"><h1>${title}</h1></div>
-                                <div class="cell small-6"></div>
+                                <div class="cell small-6"><h1>Facilitator Coaches</h1></div>
+                                <div class="cell small-6 right">Coaching activity during the Registration and Active Training Stages</div>
                             </div>
                             <hr>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-3 all1"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 all2"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 all3"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 all4"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 total_registrants"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 total_att"><span class="loading-spinner active"></span></div>
                             </div>
                             <hr>
                             <div class="grid-x">
+                                <div class="cell center"><h1 id="range-title">Last 30 Days</h1></div>
                                 <div class="cell small-6">
                                     <h2>Progress Indicators</h2>
                                 </div>
@@ -97,70 +94,55 @@ class Zume_Coaching_Facilitator extends Zume_Chart_Base
                                 </div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-6 first"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 range_languages"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 range_locations"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 new_coaching_requests"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 languages"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 locations"><span class="loading-spinner active"></span></div>
                             </div>
                         </div>
                     `)
 
-                window.load = ( filter ) => {
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "registrants", key: "total_registrants" }, ( data ) => {
+                    data.label = 'Current Registrants'
+                    data.valence = 'valence-grey'
+                    jQuery('.total_registrants').html(window.template_single(data))
+                    window.spin_remove()
+                })
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "att", key: "total_att" }, ( data ) => {
+                    data.label = 'Current Active Trainees'
+                    data.valence = 'valence-grey'
+                    jQuery('.total_att').html(window.template_single(data))
+                    window.spin_remove()
+                })
+
+                window.load = ( range ) => {
 
                     window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Active Registrants'
-                        jQuery('.all1').html( window.template_single( data ) )
-                        window.click_listener( data.key )
+                    window.API_get( window.site_info.total_url, { stage: "facilitator", key: "new_coaching_requests", range: range }, ( data ) => {
+                        jQuery('.new_coaching_requests').html(window.template_single(data))
+                        window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Active Trainees'
-                        jQuery('.all2').html( window.template_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-
-
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'New Coaching Requests'
-                        jQuery('.first').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
+                    window.API_get( window.site_info.total_url, { stage: "facilitator", key: "languages", range: range }, ( data ) => {
+                        jQuery('.languages').html(window.template_single(data))
+                        window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Languages'
-                        jQuery('.range_languages').html( window.template_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Locations'
-                        jQuery('.range_locations').html( window.template_single( data ) )
-                        window.click_listener( data.key )
+                    window.API_get( window.site_info.total_url, { stage: "facilitator", key: "locations", range: range }, ( data ) => {
+                        jQuery('.locations').html(window.template_single_map(data))
+                        window.click_listener( data )
                         window.spin_remove()
                     })
 
                 }
                 window.setup_filter()
 
-                window.click_listener = (key) => {
-                    jQuery('.zume-list.'+key).click(function(){
-                        jQuery('#modal-large').foundation('open')
-                        jQuery('#modal-large-title').empty().html('Fact Label<hr>')
-                        jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
-
-                        window.API_get( window.site_url+'trainees/list', ( data ) => {
-                            jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
-                            jQuery.each(data, function(i,v)  {
-                                jQuery('#zume-list-modal').append( '<tr><td><a href="#">' + v.display_name + '</a></td></tr>')
-                            })
-                            jQuery('.loading-spinner').removeClass('active')
-                        })
-                    })
+                window.click_listener = ( data ) => {
+                    window.load_list(data)
+                    window.load_map(data)
                 }
             })
         </script>

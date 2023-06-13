@@ -104,8 +104,8 @@ class Zume_Path_Goals extends Zume_Chart_Base
                     window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
                         data.label = 'Fully Trained Trainees'
                         data.key = 'full_trained_trainees'
-                        data.link = window.site_info.site_url + '/zume_app/heatmap_trainees'
-                        data.description = 'Trainees who have completed the full Zúme training course and have recorded their progress.'
+                        data.link = ''
+                        data.description = 'Fully Trained Trainees are those who have completed the full Zúme training course and have recorded their progress.'
                         jQuery('.trainees_full').html(window.template_map_list(data))
                         window.click_listener(data)
                         window.spin_remove()
@@ -114,8 +114,8 @@ class Zume_Path_Goals extends Zume_Chart_Base
                     window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
                         data.label = 'Practitioners'
                         data.key = 'practitioners'
-                        data.link = window.site_info.site_url + '/zume_app/heatmap_practitioners'
-                        data.description = 'Disciple making movement practitioners of all stages (Partial, Completed, Multiplying). These are those who have indicated that they are seeking movement with multiplicative methods and want to participate in the Zúme Community.'
+                        data.link = ''
+                        data.description = 'Practitioners are those who have identified as movement practitioners (of all stages: Partial, Completed, Multiplying). They are seeking movement with multiplicative methods and want to participate in the Zúme Community.'
                         jQuery('.practitioners').html(window.template_map_list(data))
                         window.click_listener(data)
                         window.spin_remove()
@@ -124,7 +124,7 @@ class Zume_Path_Goals extends Zume_Chart_Base
                     window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
                         data.label = 'Churches'
                         data.key = 'churches'
-                        data.link = window.site_info.site_url + '/zume_app/heatmap_churches'
+                        data.link = ''
                         data.description = 'These are the total number of churches reported by all the practitioners of all stages in the Zúme Community.'
                         jQuery('.churches').html(window.template_map_list(data))
                         window.click_listener(data)
@@ -134,13 +134,13 @@ class Zume_Path_Goals extends Zume_Chart_Base
                 window.setup_filter()
 
 
-                window.click_listener = (data ) => {
+                window.click_listener = ( data ) => {
                     jQuery('.zume-list.'+data.key).click(function(){
                         jQuery('#modal-large').foundation('open')
                         jQuery('#modal-large-title').empty().html(`${data.label}<hr>`)
                         jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
 
-                        window.API_get( window.site_url+'trainees/list', ( data_list ) => {
+                        window.API_get( window.site_url+'list', ( data_list ) => {
                             jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
                             jQuery('#zume-list-modal').append( `<tr><td><strong>Name</strong></td><td><strong>Registered</strong></td></tr>`)
                             jQuery.each(data_list, function(i,v)  {

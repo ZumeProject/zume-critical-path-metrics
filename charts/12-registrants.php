@@ -58,41 +58,40 @@ class Zume_Path_Registrant extends Zume_Chart_Base
         $this->js_api();
         ?>
         <script>
-            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
             jQuery(document).ready(function(){
                 "use strict";
 
                 let chart = jQuery('#chart')
-                let title = '<?php echo $this->base_title ?>'
                 chart.empty().html(`
                         <div id="zume-path">
                             <div class="grid-x">
-                                <div class="cell small-6"><h1>${title}</h1></div>
-                                <div class="cell small-6">
-                                </div>
-                            </div>
-                            <hr>
-                            <div id="hero"><span class="loading-spinner active"></span></div>
-                            <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-3 all_locations"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 all_countries"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 "><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 "><span class="loading-spinner active"></span></div>
+                                <div class="cell small-6"><h1>Registrants</h1></div>
+                                <div class="cell small-6 right">Has registered. Needs to plan a training and invite others.</div>
                             </div>
                             <hr>
                             <div class="grid-x">
+                                <div class="cell hero"><span class="loading-spinner active"></span></div>
+                            </div>
+                            <div class="grid-x grid-margin-x grid-margin-y">
+                                 <div class="cell medium-3 all_locations"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 all_countries"><span class="loading-spinner active"></span></div>
+                            </div>
+                            <hr>
+                            <div class="grid-x">
+                                <div class="cell center"><h1 id="range-title">Last 30 Days</h1></div>
                                 <div class="cell small-6">
                                     <h2>Progress Indicators</h2>
                                 </div>
-                                <div class="cell small-6">
-                                    <span style="float: right;">
-                                        <select id="range-filter">
+                                <div class="cell small-6" style="float: right;">
+                                     <span>
+                                        <select id="range-filter" class="z-range-filter">
                                             <option value="30">Last 30 days</option>
                                             <option value="7">Last 7 days</option>
                                             <option value="90">Last 90 days</option>
                                             <option value="365">Last 1 Year</option>
                                         </select>
                                     </span>
+                                    <span class="loading-spinner active float-spinner"></span>
                                 </div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
@@ -102,106 +101,85 @@ class Zume_Path_Registrant extends Zume_Chart_Base
                             <div class="grid-x grid-margin-x grid-margin-y">
                                  <div class="cell"><h2>Remaining Progress</h2></div>
                             </div>
-
                             <div class="grid-x grid-margin-x grid-margin-y">
                                  <div class="cell medium-6 has_no_people"><span class="loading-spinner active"></span></div>
                                  <div class="cell medium-6 has_friends"><span class="loading-spinner active"></span></div>
                                  <div class="cell medium-6 has_coach"><span class="loading-spinner active"></span></div>
                                  <div class="cell medium-6 has_profile"><span class="loading-spinner active"></span></div>
                             </div>
-
                         </div>
-                    `)
-                window.load = ( filter ) => {
+                `)
+
+                // totals
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "registrants", key: "total_registrants" }, ( data ) => {
+                    jQuery('.hero').html(window.template_map_list(data))
+                    window.click_listener( data )
+                    window.spin_remove()
+                })
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "registrants", key: "locations" }, ( data ) => {
+                    jQuery('.all_locations').html(window.template_single(data))
+                    window.spin_remove()
+                })
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "registrants", key: "countries" }, ( data ) => {
+                    jQuery('.all_countries').html(window.template_single_map(data))
+                    window.spin_remove()
+                })
+
+                // ranges
+                window.load = ( range ) => {
                     jQuery('.loading-spinner').addClass('active')
 
+                    // positive
                     window.spin_add()
-                    window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Registrants'
-                        data.description = 'Total number of registrants in this stage.'
-                        jQuery('#hero').html(window.template_map_list(data))
+                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "new_registrations", range: range }, ( data ) => {
+                        jQuery('.new_registrants').html( window.template_trio( data ) )
+                        window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Locations'
-                        jQuery('.all_locations').html(window.template_single(data))
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Countries'
-                        jQuery('.all_countries').html(window.template_single(data))
+                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "has_plan", range: range }, ( data ) => {
+                        jQuery('.made_plan').html( window.template_trio( data ) )
+                        window.click_listener( data )
                         window.spin_remove()
                     })
 
-
+                    // negative
                     window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'New Registrants'
-                        data.description = 'Total number of registrants in this stage.'
-                        jQuery('.new_registrants').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
+                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_plan", range: range, negative_stat: true }, ( data ) => {
+                        jQuery('.has_no_people').html( window.template_trio( data ) )
+                        window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Made a Plan'
-                        data.description = 'Total number of registrants in this stage.'
-                        jQuery('.made_plan').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-
-
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter+'&negative_stat=true', ( data ) => {
-                        data.label = 'Has No Plan'
-                        jQuery('.has_no_people').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
+                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_friends", range: range, negative_stat: true }, ( data ) => {
+                        jQuery('.has_friends').html( window.template_trio( data ) )
+                        window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter+'&negative_stat=true', ( data ) => {
-                        data.label = 'Has No Friends'
-                        jQuery('.has_friends').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
+                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_coach", range: range, negative_stat: true }, ( data ) => {
+                        jQuery('.has_coach').html( window.template_trio( data ) )
+                        window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter+'&negative_stat=true', ( data ) => {
-                        data.label = 'Has No Coach'
-                        jQuery('.has_coach').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_url+'sample?filter='+filter+'&negative_stat=true', ( data ) => {
-                        data.label = 'Has Not Updated Profile'
-                        jQuery('.has_profile').html( window.template_trio_single( data ) )
-                        window.click_listener( data.key )
+                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_updated_profile", range: range, negative_stat: true }, ( data ) => {
+                        jQuery('.has_profile').html( window.template_trio( data ) )
+                        window.click_listener( data )
                         window.spin_remove()
                     })
 
                 }
                 window.setup_filter()
 
-                window.click_listener = (key) => {
-                    jQuery('.zume-list.'+key).click(function(){
-                        jQuery('#modal-large').foundation('open')
-                        jQuery('#modal-large-title').empty().html('Fact Label<hr>')
-                        jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
-
-                        window.API_get( window.site_url+'trainees/list', ( data ) => {
-                            jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
-                            jQuery.each(data, function(i,v)  {
-                                jQuery('#zume-list-modal').append( '<tr><td><a href="#">' + v.display_name + '</a></td></tr>')
-                            })
-                            jQuery('.loading-spinner').removeClass('active')
-                        })
-                    })
+                window.click_listener = ( data ) => {
+                    window.load_list(data)
+                    window.load_map(data)
+                    window.load_redirect(data)
                 }
-
 
             })
 

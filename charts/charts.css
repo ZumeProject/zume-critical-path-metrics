@@ -3,17 +3,23 @@
     --lightgrey: #cccccc;
     --darkgrey: #999999;
 
-    --darkred: red;
-    --red: #ffbf00;
-    --grey: grey;
-    --green: lime;
-    --darkgreen: green;
+    --darkred: rgba(255, 0, 0, 1);
+    --darkred-hover: rgba(255, 0, 0, .8);
+    --red: rgba(255, 165, 0, 1);
+    --red-hover: rgba(255, 165, 0, .8);
+    --grey: rgba(128,128,128,1);
+    --grey-hover: rgba(128,128,128,.8);
+    --green: rgba(0,255,0,1);
+    --green-hover: rgba(0,255,0,.5);
+    --darkgreen: rgba(0,100,0,1);
+    --darkgreen-hover: rgba(0,100,0,.8);
 
-    --small-text: 0.8em;
-    --medium-text: 1em;
-    --medium-title-text: 1.4em;
-    --large-text: 2em;
-    --xlarge-text: 3em;
+    --small: 0.8rem;
+    --normal: 1rem;
+    --medium: 1.5rem;
+    --large: 2rem;
+    --xlarge: 3rem;
+
     --radius: 10px;
 
     --medium-weight: 400;
@@ -26,19 +32,39 @@
     margin: 0 auto;
 }
 .valence-darkred {
-    background-color: var(--darkred);
+    background-color: var(--darkred) !important;
+}
+.valence-darkred.hover:hover {
+    background-color: var(--darkred-hover) !important;
+    cursor: pointer;
 }
 .valence-red {
-    background-color: var(--red);
+    background-color: var(--red) !important;
+}
+.valence-red.hover:hover {
+    background-color: var(--red-hover) !important;
+    cursor: pointer;
 }
 .valence-grey {
-    background-color: var(--grey);
+    background-color: var(--grey) !important;
+}
+.valence-grey.hover:hover {
+    background-color: var(--grey-hover) !important;
+    cursor: pointer;
 }
 .valence-green {
-    background-color: var(--green);
+    background-color: var(--green) !important;
+}
+.valence-green.hover:hover {
+    background-color: var(--green-hover) !important;
+    cursor: pointer;
 }
 .valence-darkgreen {
-    background-color: var(--darkgreen);
+    background-color: var(--darkgreen) !important;
+}
+.valence-darkgreen.hover:hover {
+    background-color: var(--darkgreen-hover) !important;
+    cursor: pointer;
 }
 
 
@@ -46,198 +72,105 @@
     background: linear-gradient(var(--lightgrey), var(--lightgrey)) no-repeat center/10px 90%;
 }
 .critical-path-element {
-    margin: var(--medium-text) 0;
+    margin: var(--normal) 0;
 }
-.zume-trio-card {
-    background-color: var(--grey);
-    border-radius: var(--radius);
-    box-shadow: 0 3px 3px 0 rgba(0,0,0,.6);
-    margin: 20px auto;
-    text-align: center;
-    color: white;
-    width: 100%;
+.z-range-filter {
+    float:right;
+    width: fit-content;
 }
-.zume-trio-card-content {
-    padding: 1.5em 0;
-    cursor: pointer;
-    border: 1px solid var(--white);
-    background-color: var(--grey);
-    border-radius: var(--radius) var(--radius) 0 0;
+.float-spinner {
+    float:right;
+    margin: var(--small);
 }
-.zume-trio-card-content:hover {
-    background-color: var(--darkgrey);
-}
-.zume-trio-card .zume-trio-card-title {
-    vertical-align: middle;
-    font-size: var(--xlarge-text);
-    font-weight: var(--heavy-weight);
-    text-transform: uppercase;
-}
-.zume-trio-card .zume-trio-card-value {
-    vertical-align: middle;
-    font-size: var(--xlarge-text);
-    font-weight: var(--heavy-weight);
-}
-.zume-trio-card .zume-goal {
-    border-radius: 0 0 0 var(--radius);
-    color: white;
-    height: 50px;
-    font-size: var(--large-text);
-    border: 1px solid var(--white);
-}
-.zume-trio-card .zume-trend {
-    border-radius: 0 0 var(--radius) 0;
-    color: white;
-    height: 50px;
-    font-size: var(--large-text);
-    border: 1px solid var(--white);
-}
-
-.zume-card-content {
-    padding: 1.5em 0;
-    cursor: pointer;
-    border: 1px solid var(--white);
-    background-color: var(--grey);
-    border-radius: var(--radius) var(--radius) 0 0;
-}
-.zume-card-content .description {
-    width: 75%;
-    max-width: 500px;
-    text-align: center;
-    margin: 0 auto;
-}
-.zume-card-sub-left {
-    border-radius: 0 0 0 var(--radius);
-    color: white;
-    height: 50px;
-    font-size: var(--large-text);
-    border: 1px solid var(--white);
-    cursor:pointer;
-}
-.zume-card-sub-left:hover {
-    background-color: var(--darkgrey);
-}
-.zume-card-sub-right {
-    border-radius: 0 0 var(--radius) 0;
-    color: white;
-    height: 50px;
-    font-size: var(--large-text);
-    border: 1px solid var(--white);
-    cursor:pointer;
-}
-.zume-card-sub-right:hover {
-    background-color: var(--darkgrey);
+.right {
+    float:right;
+    text-align: right;
 }
 
 
 
 /**
- * Zume Trio Single Card
+Card Base
  */
-.zume-trio-single-card {
-    background-color: var(--grey);
+.z-card {
     border-radius: var(--radius);
-    border: 1px solid var(--white);
     box-shadow: 0 3px 3px 0 rgba(0,0,0,.6);
+    margin: var(--normal) auto;
     text-align: center;
-    color: white;
+    color: var(--white);
+    width: 100%;
+    background-color: var(--grey);
 }
-.zume-trio-single-top {
-    padding: 1em 0;
+.z-card-single {
+    padding: var(--medium) 0;
+    border: 1px solid var(--white);
+    border-radius: var(--radius);
 }
-.zume-trio-single-top-title {
+.z-card-main {
+    padding: var(--medium) 0;
+    border: 1px solid var(--white);
+    border-radius: var(--radius) var(--radius) 0 0;
+}
+.z-card-main.hover:hover {
+    cursor: pointer;
+    background-color: var(--darkgrey);
+}
+.z-card-sub-left {
+    border-radius: 0 0 0 var(--radius);
+    color: var(--white);
+    min-height: 50px;
+    font-size: var(--large);
+    border: 1px solid var(--white);
+}
+.z-card-sub-left.hover:hover {
+    cursor: pointer;
+    background-color: var(--darkgrey);
+}
+.z-card-sub-left.sub {
+    padding: var(--medium) 0;
+}
+.z-card-sub-right {
+    border-radius: 0 0 var(--radius) 0;
+    color: var(--white);
+    min-height: 50px;
+    font-size: var(--large);
+    border: 1px solid var(--white);
+}
+.z-card-sub-right.hover:hover {
+    cursor: pointer;
+    background-color: var(--darkgrey);
+}
+.z-card-sub-right.sub {
+    padding: var(--medium) 0;
+}
+.z-card-title {
     text-transform:uppercase;
     color: var(--white);
-    font-size: var(--medium-title-text);
+    font-size: var(--medium);
     font-weight: var(--medium-weight);
 }
-.zume-trio-single-top.zume-list:hover {
-    background-color: var(--darkgrey);
-    cursor: pointer;
-}
-.zume-trio-single-top-value {
-    font-size: var(--xlarge-text);
+.z-card-value {
+    font-size: var(--xlarge);
     font-weight: var(--heavy-weight);
 }
-.zume-trio-single-top-description {
-    font-size: var(--small-text);
+.sub .z-card-value {
+    font-size: var(--large);
+    font-weight: var(--heavy-weight);
+}
+.z-card-description {
+    color: var(--white);
+    font-size: var(--small);
     font-weight: var(--medium-weight);
-}
-.zume-trio-single-left {
-    padding: 1em 0;
-    border-radius: 0 0 0 var(--radius);
-    float:left;
-    width: 50%;
-    color: white;
-    font-size: var(--medium-text);
-    border: 1px solid var(--white);
-    bottom: 0;
-}
-.zume-trio-single-right {
-    padding: 1em 0;
-    border-radius: 0 0 var(--radius) 0;
-    float:right;
-    width: 50%;
-    color: white;
-    font-size: var(--medium-text);
-    border: 1px solid var(--white);
-    bottom: 0;
-}
-.zume-trio-single-card-value {
-    font-size: var(--xlarge-text);
-    font-weight: var(--heavy-weight);
-    margin-bottom: 8px;
-}
-.zume-trio-single-sub-value {
-    font-size: var(--large-text);
-    font-weight: var(--heavy-weight);
-    margin-bottom: 8px;
-}
-.zume-trio-single-card-footer {
-    color: var(--white);
-    font-size: var(--small-text);
-    font-weight: 400;
-    margin-bottom: 8px;
-}
-.zume-trio-hero-title {
-    color: var(--white);
-    font-size: var(--xlarge-text);;
-    font-weight: 400;
-    margin-bottom: 8px;
-    text-transform: uppercase;
 }
 
 
-.zume-card {
-    border-radius: var(--radius);
-    border: 1px solid var(--white);
-    box-shadow: 0 3px 3px 0 rgba(0,0,0,.6);
-    padding: 16px;
-    margin: 5px;
-    text-align: center;
-    color: var(--white);
-    cursor: pointer;
+
+.z-card-title.hero {
+    font-size: var(--xlarge);
+    font-weight: var(--medium-weight);
 }
-.zume-card:hover {
-    opacity: .8;
-}
-.zume-card .zume-card-title {
-    color: var(--white);
-    font-size: 1.4em;
-    font-weight: 400;
-    margin-bottom: 8px;
-}
-.zume-card .zume-card-value {
-    font-size: var(--xlarge-text);
-    font-weight: var(--heavy-weight);
-    margin-bottom: 8px;
-}
-.zume-card .zume-card-footer {
-    color: var(--white);
-    font-size: var(--small-text);
-    font-weight: 400;
-    margin-bottom: 8px;
-    height: 40px;
-}
+
+
+
 
 

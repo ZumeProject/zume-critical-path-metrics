@@ -79,13 +79,17 @@ abstract class Zume_Chart_Base
                 window.site_info = {
                     'site_url': '<?php echo site_url(); ?>',
                     'rest_url': '<?php echo esc_url_raw( rest_url() ); ?>',
+                    'total_url': '<?php echo esc_url_raw( rest_url() ); ?>zume_stats/v1/total',
+                    'range_url': '<?php echo esc_url_raw( rest_url() ); ?>zume_stats/v1/range',
+                    'map_url': '<?php echo esc_url_raw( rest_url() ); ?>zume_stats/v1/map',
+                    'list_url': '<?php echo esc_url_raw( rest_url() ); ?>zume_stats/v1/list',
                     'plugin_uri': '<?php echo plugin_dir_url( __DIR__ ); ?>',
                     'nonce': '<?php echo wp_create_nonce( 'wp_rest' ); ?>',
                     'current_user_login': '<?php echo wp_get_current_user()->user_login; ?>',
                     'current_user_id': '<?php echo get_current_user_id(); ?>'
                 };
-                window.API_get = (url, callback ) => {
-                    return $.get(url, callback);
+                window.API_get = (url, data, callback ) => {
+                    return $.get(url, data, callback);
                 }
                 window.API_post = (url, callback ) => {
                     return $.post(url, callback);
@@ -93,170 +97,189 @@ abstract class Zume_Chart_Base
                 window.setup_filter = () => {
                     let range_filter = jQuery('#range-filter')
                     window.filter = range_filter.val()
+                    jQuery('#range-title').html( jQuery('#range-filter :selected').text() )
                     range_filter.on('change', function(){
                         window.filter = range_filter.val()
+                        jQuery('#range-title').html( jQuery('#range-filter :selected').text() )
                         window.load( window.filter )
                     })
                     window.load( window.filter )
                 }
-                window.template_trio = ({key, link, label, goal_valence, trend_valence, value, description}) => {
+                window.template_map_list = ({key, link, label, value, description}) => {
+                    let hover = '';
+                    if ( link ) {
+                        hover = 'hover'
+                    }
                     return `
                     <div class="grid-x">
-                        <div class="cell zume-trio-card ${key}">
-                            <div class="zume-trio-card-content ${key}" data-link="${link}">
-                                <div class="zume-trio-card-title ${key}">
-                                  ${label}
-                                </div>
-                                <div class="zume-trio-card-value ${key}">
-                                  ${value}
-                                </div>
-                                <div>
-                                  <div class="${key} description">
-                                      ${description}
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="zume-trio-card-footer ${key}">
-                                <div class="grid-x">
-                                    <div class="cell small-6 zume-goal ${key} ${goal_valence}">
-                                      GOALS
-                                    </div>
-                                    <div class="cell small-6 zume-trend ${key} ${trend_valence}">
-                                      TRENDS
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    `;
-                }
-                window.template_trio_single = ({key, link, label, goal, goal_valence, goal_percent, trend, trend_valence, trend_percent, value, description}) => {
-                    return `
-                      <div class="grid-x"><div class="cell zume-trio-single-card" >
-                            <div class="zume-trio-single-top zume-list ${key}" data-link="${link}">
-                                <div class="zume-trio-single-top-title ${key}">
-                                    ${label}
-                                </div>
-                                <div class="zume-trio-single-top-value ${key}">
-                                    ${value}
-                                </div>
-                                <div>
-                                  <div class="zume-trio-single-top-description ${key}">
-                                      ${description}
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="zume-trio-single-left ${goal_valence} ${key}">
-                                <div class="zume-trio-single-top-title ${key}">
-                                    GOAL
-                                </div>
-                                <div class="zume-trio-single-sub-value ${key}">
-                                    ${goal_percent}%
-                                </div>
-                                <div class="zume-trio-single-top-description ${key}">
-                                     goal for this period ( ${goal} )
-                                 </div>
-                            </div>
-                            <div class="zume-trio-single-right ${trend_valence} ${key}">
-                                <div class="zume-trio-single-top-title ${key}">
-                                    TREND
-                                </div>
-                                <div class="zume-trio-single-sub-value ${key}">
-                                     ${trend_percent}%
-                                </div>
-                                <div class="zume-trio-single-top-description ${key}">
-                                      previous period ( ${trend} )
-                                  </div>
-                            </div>
-                      </div></div>
-                    `;
-                }
-                window.template_trio_hero = ({key, link, label, goal, goal_valence, goal_percent, trend, trend_valence, trend_percent, value, description}) => {
-                    return `
-                      <div class="grid-x"><div class="cell zume-trio-single-card" >
-                            <div class="zume-trio-single-top zume-list ${key}" data-key="${key}" data-link="${link}">
-                                <div class="zume-trio-hero-title ${key}">
-                                    ${label}
-                                </div>
-                                <div class="zume-trio-single-top-value ${key}">
-                                    ${value}
-                                </div>
-                                <div>
-                                  <div class="zume-trio-single-top-description ${key}">
-                                      ${description}
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="zume-trio-single-left ${goal_valence} ${key}">
-                                <div class="zume-trio-single-top-title ${key}">
-                                    GOAL
-                                </div>
-                                <div class="zume-trio-single-sub-value ${key}">
-                                    ${goal_percent}%
-                                </div>
-                                <div class="zume-trio-single-top-description ${key}">
-                                     goal for this period ( ${goal} )
-                                 </div>
-                            </div>
-                            <div class="zume-trio-single-right ${trend_valence} ${key}">
-                                <div class="zume-trio-single-top-title ${key}">
-                                    TREND
-                                </div>
-                                <div class="zume-trio-single-sub-value ${key}">
-                                     ${trend_percent}%
-                                </div>
-                                <div class="zume-trio-single-top-description ${key}">
-                                      previous period ( ${trend} )
-                                  </div>
-                            </div>
-                      </div></div>
-                    `;
-                }
-                window.template_map_list = ({key, link, label, value, description}) => {
-                    return `
-                      <div class="cell zume-trio-card ${key} medium-4 large-3" data-equalizer-watch>
-                          <div class="zume-card-content ${key}" >
-                              <div class="zume-trio-card-title ${key}">
+                      <div class="cell z-card ${key}">
+                          <div class="z-card-main ${hover} ${key}" >
+                              <div class="z-card-title hero ${key}">
                                   ${label}
                               </div>
-                              <div class="zume-trio-card-value ${key}">
+                              <div class="z-card-value ${key}">
                                   ${value}
                               </div>
-                              <div class="${key} description">
+                              <div class="z-card-description ${key}">
                                   ${description}
                                </div>
                           </div>
-                          <div class="zume-trio-card-footer ${key}">
+                          <div class="z-card-footer ${key}">
                               <div class="grid-x">
-                                  <div class="cell small-6 zume-card-sub-left zume-list ${key}" data-link="${link}">
+                                  <div class="cell small-6 z-card-sub-left hover zume-list ${key}">
                                       LIST
                                   </div>
-                                  <div class="cell small-6 zume-card-sub-right zume-map ${key}">
+                                  <div class="cell small-6 z-card-sub-right hover zume-map ${key}">
                                       MAP
                                   </div>
                               </div>
                           </div>
-                      </div>
+                      </div></div>
                     `;
                 }
                 window.template_single = ({key, valence, label, value, description}) => {
                     return `
                         <div class="grid-x">
-                        <div class="cell" data-equalizer-watch>
-                            <div class="zume-card zume-list ${key} ${valence}">
-                                <div class="zume-card-title ${key}">
+                        <div class="cell z-card ${key} ${valence}">
+                            <div class="z-card-single">
+                                <div class="z-card-title ${key}">
                                     ${label}
                                 </div>
-                                <div class="zume-card-value ${key}">
+                                <div class="z-card-value ${key}">
                                     ${value}
                                 </div>
-                                <div class="zume-card-footer ${key}">
+                                <div class="z-card-description ${key}">
                                     ${description}
                                 </div>
                             </div>
-                        </div></div>
+                        </div>
+                        </div>
                     `;
                 }
+                window.template_single_list = ({key, valence, label, value, description}) => {
+                    return `
+                        <div class="grid-x">
+                        <div class="cell z-card zume-list ${key} ${valence} hover">
+                            <div class="z-card-single">
+                                <div class="z-card-title ${key}">
+                                    ${label}
+                                </div>
+                                <div class="z-card-value ${key}">
+                                    ${value}
+                                </div>
+                                <div class="z-card-description ${key}">
+                                    ${description}
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    `;
+                }
+                window.template_single_map = ({key, valence, label, value, description}) => {
+                    return `
+                        <div class="grid-x">
+                        <div class="cell z-card zume-map ${key} ${valence} hover">
+                            <div class="z-card-single">
+                                <div class="z-card-title ${key}">
+                                    ${label}
+                                </div>
+                                <div class="z-card-value ${key}">
+                                    ${value}
+                                </div>
+                                <div class="z-card-description ${key}">
+                                    ${description}
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    `;
+                }
+                window.template_trio = ({key, link, label, goal, goal_valence, goal_percent, trend, trend_valence, trend_percent, value, description}) => {
+                    let hover = '';
+                    if ( link ) {
+                        hover = 'hover'
+                    }
+                    return `
+                    <div class="grid-x">
+                      <div class="cell z-card  ${key}">
+                          <div class="z-card-main zume-list ${hover} ${key}" >
+                              <div class="z-card-title ${key}">
+                                  ${label}
+                              </div>
+                              <div class="z-card-value ${key}">
+                                  ${value}
+                              </div>
+                              <div class="z-card-description ${key}">
+                                  ${description}
+                               </div>
+                          </div>
+                          <div class="z-card-footer ${key}">
+                              <div class="grid-x">
+                                  <div class="cell small-6 z-card-sub-left sub ${goal_valence} ${key}">
+                                      <div class="z-card-title ${key}">
+                                            GOAL
+                                        </div>
+                                        <div class="z-card-value ${key}">
+                                            ${goal_percent}%
+                                        </div>
+                                        <div class="z-card-description ${key}">
+                                             goal for this period (${goal})
+                                         </div>
+                                  </div>
+                                  <div class="cell small-6 z-card-sub-right sub ${trend_valence} ${key}">
+                                      <div class="z-card-title ${key}">
+                                            TREND
+                                        </div>
+                                        <div class="z-card-value ${key}">
+                                             ${trend_percent}%
+                                        </div>
+                                        <div class="z-card-description ${key}">
+                                              previous period (${trend})
+                                       </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+
+                    `;
+                }
+
+                window.load_list = ( data ) => {
+                    jQuery('.zume-list.'+data.key).click(function(){
+                        jQuery('#modal-large').foundation('open')
+                        jQuery('#modal-large-title').empty().html(`${data.label}<hr>`)
+                        jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
+
+                        window.API_get( window.site_info.list_url, ( data_list ) => {
+                            jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
+                            jQuery('#zume-list-modal').append( `<tr><td><strong>Name</strong></td><td><strong>Registered</strong></td></tr>`)
+                            jQuery.each(data_list, function(i,v)  {
+                                jQuery('#zume-list-modal').append( `<tr><td><a href="#">${ v.display_name }</a></td><td>${v.user_registered}</td></tr>`)
+                            })
+                            jQuery('.loading-spinner').removeClass('active')
+                        })
+                    })
+                }
+                window.load_map = ( data ) => {
+                    jQuery('.zume-map.'+data.key).click(function(){
+                        jQuery('#modal-full').foundation('open')
+                        jQuery('#modal-full-title').empty().html(`${data.label}<hr>`)
+                        window.API_get( window.site_info.map_url, { key: data.key }, ( data_map ) => {
+                            jQuery('#modal-full-content').empty().html(data_map.link)
+                            jQuery('.map-iframe').prop('src', jQuery(this).data('link')).prop('height', window.innerHeight - 150)
+                            jQuery('.loading-spinner').removeClass('active')
+                        })
+                    })
+                }
+                window.load_redirect = ( data ) => {
+                    // if ( data.link !== '' ) {
+                    //     jQuery('.z-card-main.hover.'+data.key).click(function(){
+                    //         window.location.href = data.link
+                    //     })
+                    // }
+                }
+
                 window.spin_add = () => {
                     if ( typeof window.spin_count === 'undefined' ){
                         window.spin_count = 0
