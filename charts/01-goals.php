@@ -90,10 +90,22 @@ class Zume_Path_Goals extends Zume_Chart_Base
                                 </div>
                             </div>
                             <hr>
-                            <div class="grid-x critical-path">
-                                <div class="cell"><div class="trainees_full zume-critical-path"><span class="loading-spinner active"></span></div></div>
-                                <div class="cell"><div class="practitioners zume-critical-path"><span class="loading-spinner active"></span></div></div>
-                                <div class="cell"><div class="churches zume-critical-path"><span class="loading-spinner active"></span></div></div>
+                            <div class="grid-x grid-padding-x">
+                                <div class="cell medium-3">
+                                    <h2>Vision</h2>
+                                    <p><strong>Zúme's vision</strong> is to saturation the world with multiplying disciples in our generation. As a measurement, our goal is to catalyze 1 trained practitioner and 2 multiplying simple churches for every 5,000 people in the USA and 50,000 people globally</p>
+                                    <p><strong>Zúme Training</strong> is an on-line and in-life learning experience designed for small groups who follow Jesus to learn how to obey His Great Commission and make disciples who multiply.</p>
+                                    <p><strong>Zúme Community</strong> is a community of practice for those who what to see disciple making movements.</p>
+                                    <h2>Top Metrics</h2>
+                                    <p>These metrics (fully trained trainees, practitioners, and churches) represent the highest level milestones for accomplishing Zúme's vision. </p>
+                                </div>
+                                <div class="cell medium-9">
+                                     <div class="grid-x critical-path">
+                                        <div class="cell"><div class="trainees_full zume-critical-path"><span class="loading-spinner active"></span></div></div>
+                                        <div class="cell"><div class="practitioners zume-critical-path"><span class="loading-spinner active"></span></div></div>
+                                        <div class="cell"><div class="churches zume-critical-path"><span class="loading-spinner active"></span></div></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     `)

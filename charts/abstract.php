@@ -83,6 +83,7 @@ abstract class Zume_Chart_Base
                     'range_url': '<?php echo esc_url_raw( rest_url() ); ?>zume_stats/v1/range',
                     'map_url': '<?php echo esc_url_raw( rest_url() ); ?>zume_stats/v1/map',
                     'list_url': '<?php echo esc_url_raw( rest_url() ); ?>zume_stats/v1/list',
+                    'elements_url': '<?php echo esc_url_raw( rest_url() ); ?>zume_stats/v1/training_elements',
                     'plugin_uri': '<?php echo plugin_dir_url( __DIR__ ); ?>',
                     'nonce': '<?php echo wp_create_nonce( 'wp_rest' ); ?>',
                     'current_user_login': '<?php echo wp_get_current_user()->user_login; ?>',

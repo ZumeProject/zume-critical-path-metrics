@@ -69,7 +69,7 @@
 
 
 .critical-path {
-    background: linear-gradient(var(--lightgrey), var(--lightgrey)) no-repeat center/10px 90%;
+    background: linear-gradient(var(--lightgrey), var(--lightgrey)) no-repeat center/10px 100%;
 }
 .critical-path-element {
     margin: var(--normal) 0;
@@ -85,6 +85,9 @@
 .right {
     float:right;
     text-align: right;
+}
+.padding-top {
+    padding-top: var(--normal);
 }
 
 

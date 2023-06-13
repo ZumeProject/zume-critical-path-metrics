@@ -239,7 +239,7 @@ class Zume_Path_Active extends Zume_Chart_Base
                     })
 
 
-                    window.API_get( window.site_url+'training_elements?filter='+filter, ( data ) => {
+                    window.API_get( window.site_info.elements_url, { range: range }, ( data ) => {
                         am5.ready(function() {
                             console.log(data)
 

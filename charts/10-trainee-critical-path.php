@@ -17,7 +17,7 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Critical Path', 'disciple_tools' );
+        $this->base_title = __( 'Disciple Maker Path', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path/$this->base_slug" === $url_path ) {
@@ -64,19 +64,16 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
         return $content;
     }
     public function wp_head() {
-            $this->styles();
             $this->js_api();
             ?>
             <script>
-                window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
                 jQuery(document).ready(function(){
                     "use strict";
                     let chart = jQuery('#chart')
-                    let title = '<?php echo $this->base_title ?>'
                     chart.empty().html(`
                         <div id="zume-path">
                             <div class="grid-x">
-                                <div class="cell small-6"><h1>${title}</h1></div>
+                                <div class="cell small-6"><h1>Disciple Maker Path</h1></div>
                                 <div class="cell small-6">
                                     <span style="float: right;">
                                         <select id="range-filter">
@@ -87,19 +84,119 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
                                             <option value="365">Last 1 Year</option>
                                         </select>
                                     </span>
+                                    <span class="loading-spinner active right" style="margin:.5em 1em;"></span>
                                 </div>
                             </div>
                             <hr>
-                            <span class="loading-spinner active"></span>
+                            <div class="grid-x grid-padding-x">
 
-                            <div class="grid-y critical-path" id="zume-cards">
-                                <div class="critical-path-element registrants"><span class="loading-spinner active"></span></div>
-                                <div class="critical-path-element active_training_trainees"><span class="loading-spinner active"></span></div>
-                                <div class="critical-path-element post_training_trainees"><span class="loading-spinner active"></span></div>
-                                <div class="critical-path-element s1_practitioners"><span class="loading-spinner active"></span></div>
-                                <div class="critical-path-element s2_practitioners"><span class="loading-spinner active"></span></div>
-                                <div class="critical-path-element s3_practitioners"><span class="loading-spinner active"></span></div>
+                                <div class="cell medium-9 center">
+                                     STEPS
+                                </div>
+                                <div class="cell medium-3"></div>
+                                <!-- element-->
+                                <div class="cell medium-9 critical-path">
+                                     <div class="registrants"><span class="loading-spinner active"></span></div>
+                                </div>
+                                <div class="cell medium-3 padding-top">
+                                    <h3>Step Identity</h3>
+                                    <ul>
+                                        <li>Has registered with an email</li>
+                                    </ul>
+                                    <h3>Next Steps</h3>
+                                    <ul>
+                                        <li>Make a training plan</li>
+                                        <li>Invite friends</li>
+                                    </ul>
+                                </div>
+
+                                <!-- element-->
+                                <div class="cell medium-9 critical-path">
+                                     <div class="active_training_trainees"><span class="loading-spinner active"></span></div>
+                                </div>
+                                <div class="cell medium-3 padding-top">
+                                    <h3>Step Identity</h3>
+                                    <ul>
+                                        <li>Has a plan</li>
+                                    </ul>
+                                    <h3>Next Steps</h3>
+                                    <ul>
+                                        <li>Complete training content</li>
+                                        <li>Create 3-month plan</li>
+                                    </ul>
+                                </div>
+
+                                <!-- element-->
+                                <div class="cell medium-9 critical-path">
+                                     <div class="post_training_trainees"><span class="loading-spinner active"></span></div>
+                                </div>
+                                <div class="cell medium-3 padding-top">
+                                    <h3>Step Identity</h3>
+                                    <ul>
+                                        <li>Has completed training</li>
+                                        <li>Working 3-month plan (maybe)</li>
+                                    </ul>
+                                    <h3>Next Steps</h3>
+                                    <ul>
+                                        <li>Make first practitioner report</li>
+                                        <li>Establish ongoing coaching relationship</li>
+                                    </ul>
+                                </div>
+
+                                <!-- element-->
+                                <div class="cell medium-9 critical-path">
+                                     <div class="s1_practitioners"><span class="loading-spinner active"></span></div>
+                                </div>
+                                <div class="cell medium-3 padding-top">
+                                    <h3>Step Identity</h3>
+                                    <ul>
+                                        <li>Implementing partial checklist</li>
+                                        <li>Some fruit, inconsistent</li>
+                                        <li>Getting coached</li>
+                                    </ul>
+                                    <h3>Next Steps</h3>
+                                    <ul>
+                                        <li>Full MAWL competence with coaching checklist</li>
+                                        <li>Continued reporting</li>
+                                        <li>Connect with S2 practitioner hubs</li>
+                                    </ul>
+                                </div>
+
+                                <!-- element-->
+                                <div class="cell medium-9 critical-path">
+                                     <div class="s2_practitioners"><span class="loading-spinner active"></span></div>
+                                </div>
+                                <div class="cell medium-3 padding-top">
+                                    <h3>Step Identity</h3>
+                                    <ul>
+                                        <li>Coaching checklist competence</li>
+                                        <li>Consistent effort, consistent fruit</li>
+                                    </ul>
+                                    <h3>Next Steps</h3>
+                                    <ul>
+                                        <li>focus on 2,3,4 generations of disciples</li>
+                                        <li>focus on 2,3,4 generations of churches</li>
+                                        <li>Connect with S3 practitioner hubs</li>
+                                    </ul>
+                                </div>
+
+                                <!-- element-->
+                                <div class="cell medium-9 critical-path">
+                                    <div class="s3_practitioners"><span class="loading-spinner active"></span></div>
+                                </div>
+                                <div class="cell medium-3 padding-top">
+                                    <h3>Step Identity</h3>
+                                    <ul>
+                                        <li>2,3,4 generations of disciples</li>
+                                        <li>2,3,4 generations of churches</li>
+                                    </ul>
+                                    <h3>Next Steps</h3>
+                                    <ul>
+                                        <li>downstream coaching for consistent generations</li>
+                                    </ul>
+                                </div>
                             </div>
+
 
                         </div>
                     `)
@@ -107,36 +204,42 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
                     window.load = ( range ) => {
                         window.spin_add()
                         window.API_get( window.site_info.total_url, { stage: "registrants", key: "total_registrants", range: range }, ( data ) => {
+                            data.label = "Registrant"
                             jQuery('.registrants').html(window.template_map_list(data))
                             window.click_listener(data)
                             window.spin_remove()
                         })
                         window.spin_add()
                         window.API_get( window.site_info.total_url, { stage: "att", key: "total_att", range: range }, ( data ) => {
+                            data.label = "Active Training Trainee"
                             jQuery('.active_training_trainees').html(window.template_map_list(data))
                             window.click_listener(data)
                             window.spin_remove()
                         })
                         window.spin_add()
                         window.API_get( window.site_info.total_url, { stage: "ptt", key: "total_ptt", range: range }, ( data ) => {
+                            data.label = "Post Training Trainee"
                             jQuery('.post_training_trainees').html(window.template_map_list(data))
                             window.click_listener(data)
                             window.spin_remove()
                         })
                         window.spin_add()
                         window.API_get( window.site_info.total_url, { stage: "s1", key: "total_s1", range: range }, ( data ) => {
+                            data.label = "(S1) Partial Practitioner"
                             jQuery('.s1_practitioners').html(window.template_map_list(data))
                             window.click_listener(data)
                             window.spin_remove()
                         })
                         window.spin_add()
                         window.API_get( window.site_info.total_url, { stage: "s2", key: "total_s2", range: range }, ( data ) => {
+                            data.label = "(S2) Completed Practitioner"
                             jQuery('.s2_practitioners').html(window.template_map_list(data))
                             window.click_listener(data)
                             window.spin_remove()
                         })
                         window.spin_add()
                         window.API_get( window.site_info.total_url, { stage: "s3", key: "total_s3", range: range }, ( data ) => {
+                            data.label = "(S3) Multiplying Practitioner"
                             jQuery('.s3_practitioners').html(window.template_map_list(data))
                             window.click_listener(data)
                             window.spin_remove()

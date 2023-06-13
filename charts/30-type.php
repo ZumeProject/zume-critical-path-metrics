@@ -17,7 +17,7 @@ class Zume_Coaching_Types extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Report Types', 'disciple_tools' );
+        $this->base_title = __( 'add reports', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path/$this->base_slug" === $url_path ) {
@@ -57,7 +57,7 @@ class Zume_Coaching_Types extends Zume_Chart_Base
         );
     }
     public function base_menu( $content ) {
-        $content .= '<li class=""><hr></li>';
+        $content .= '<li class=""><hr>development only</li>';
         $content .= '<li class=""><a href="'.site_url('/zume-path/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
         return $content;
     }
