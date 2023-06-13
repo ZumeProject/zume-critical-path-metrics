@@ -115,6 +115,7 @@ class Zume_Path_S1 extends Zume_Chart_Base
                 // totals
                 window.spin_add()
                 window.API_get( window.site_info.total_url, { stage: "s1", key: "total_s1" }, ( data ) => {
+                    data.link = ''
                     jQuery('.hero').html(window.template_map_list(data))
                     window.click_listener( data )
                     window.spin_remove()
@@ -184,7 +185,6 @@ class Zume_Path_S1 extends Zume_Chart_Base
                 window.click_listener = ( data ) => {
                     window.load_list(data)
                     window.load_map(data)
-                    window.load_redirect(data)
                 }
             })
 

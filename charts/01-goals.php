@@ -135,27 +135,8 @@ class Zume_Path_Goals extends Zume_Chart_Base
 
 
                 window.click_listener = ( data ) => {
-                    jQuery('.zume-list.'+data.key).click(function(){
-                        jQuery('#modal-large').foundation('open')
-                        jQuery('#modal-large-title').empty().html(`${data.label}<hr>`)
-                        jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
-
-                        window.API_get( window.site_url+'list', ( data_list ) => {
-                            jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
-                            jQuery('#zume-list-modal').append( `<tr><td><strong>Name</strong></td><td><strong>Registered</strong></td></tr>`)
-                            jQuery.each(data_list, function(i,v)  {
-                                jQuery('#zume-list-modal').append( `<tr><td><a href="#">${ v.display_name }</a></td><td>${v.user_registered}</td></tr>`)
-                            })
-                            jQuery('.loading-spinner').removeClass('active')
-                        })
-                    })
-                    jQuery('.zume-map.'+data.key).click(function(){
-                        jQuery('#modal-full').foundation('open')
-                        jQuery('#modal-full-title').empty().html(`${data.label}<hr>`)
-                        jQuery('#modal-full-content').empty().html(`<iframe class="map-iframe" width="100%" height="2500" src="${data.link}" frameborder="0" style="border:0" allowfullscreen></iframe>`)
-                        jQuery('.map-iframe').prop('src', jQuery(this).data('link')).prop('height', window.innerHeight - 150)
-
-                    })
+                    window.load_list(data)
+                    window.load_map(data)
                 }
 
                 jQuery('.loading-spinner').removeClass('active')

@@ -147,7 +147,6 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
                     window.click_listener = ( data ) => {
                         window.load_list(data)
                         window.load_map(data)
-                        window.load_redirect(data)
                         jQuery('.z-card-main.hover.'+data.key).click(function(){
                             window.location.href = data.link
                         })

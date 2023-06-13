@@ -683,7 +683,7 @@ class Zume_Stats_Endpoints
             default:
                 return [
                     'key' => 'total_ptt',
-                    'label' => 'Post Training',
+                    'label' => 'Post-Training Trainees',
                     'description' => 'People who have completed the training and are working on a 3-month plan.',
                     'link' => 'post',
                     'value' => Zume_Query::format_int( $value ),

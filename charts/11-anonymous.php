@@ -146,7 +146,6 @@ class Zume_Path_Anonymous extends Zume_Chart_Base
                 window.click_listener = ( data ) => {
                     window.load_list(data)
                     window.load_map(data)
-                    window.load_redirect(data)
                 }
             })
 

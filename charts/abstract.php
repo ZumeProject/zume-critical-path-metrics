@@ -272,13 +272,6 @@ abstract class Zume_Chart_Base
                         })
                     })
                 }
-                window.load_redirect = ( data ) => {
-                    // if ( data.link !== '' ) {
-                    //     jQuery('.z-card-main.hover.'+data.key).click(function(){
-                    //         window.location.href = data.link
-                    //     })
-                    // }
-                }
 
                 window.spin_add = () => {
                     if ( typeof window.spin_count === 'undefined' ){
