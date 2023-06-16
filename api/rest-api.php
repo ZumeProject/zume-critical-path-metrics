@@ -963,7 +963,7 @@ class Zume_Stats_Endpoints
             case 'total_churches';
                 return [
                     'key' => 'total_churches',
-                    'label' => 'Total Churches',
+                    'label' => 'Churches',
                     'description' => 'Total number of churches reported by S2 Practitioners.',
                     'link' => '',
                     'value' => Zume_Query::format_int( $value ),
@@ -979,7 +979,7 @@ class Zume_Stats_Endpoints
             case 'total_locations';
                 return [
                     'key' => 'total_locations',
-                    'label' => 'Total Locations',
+                    'label' => 'Locations',
                     'description' => 'Total number of locations reported by S2 Practitioners.',
                     'link' => '',
                     'value' => Zume_Query::format_int( $value ),
@@ -995,7 +995,7 @@ class Zume_Stats_Endpoints
             case 'total_active_reporters';
                 return [
                     'key' => 'total_active_reporters',
-                    'label' => 'Total Active Reporters',
+                    'label' => 'Active Reporters',
                     'description' => 'Total number of active reporters.',
                     'link' => 's1_practitioners',
                     'value' => Zume_Query::format_int( $value ),
@@ -1134,7 +1134,7 @@ class Zume_Stats_Endpoints
             case 'total_churches';
                 return [
                     'key' => 'total_churches',
-                    'label' => 'Total Churches',
+                    'label' => 'Churches',
                     'description' => 'Total number of churches reported by S2 Practitioners.',
                     'link' => '',
                     'value' => Zume_Query::format_int( $value ),
@@ -1150,7 +1150,7 @@ class Zume_Stats_Endpoints
             case 'total_locations';
                 return [
                     'key' => 'total_locations',
-                    'label' => 'Total Locations',
+                    'label' => 'Locations',
                     'description' => 'Total number of locations reported by S2 Practitioners.',
                     'link' => '',
                     'value' => Zume_Query::format_int( $value ),
@@ -1166,7 +1166,7 @@ class Zume_Stats_Endpoints
             case 'total_active_reporters';
                 return [
                     'key' => 'total_active_reporters',
-                    'label' => 'Total Active Reporters',
+                    'label' => 'Active Reporters',
                     'description' => 'Total number of active reporters.',
                     'link' => 's1_practitioners',
                     'value' => Zume_Query::format_int( $value ),
