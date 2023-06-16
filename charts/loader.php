@@ -51,7 +51,7 @@ class Zume_Metrics_Base {
         if ( current_user_can( 'access_disciple_tools' ) ) {
             $tabs[] = [
                 "link" => site_url( "/zume-path/" ), // the link where the user will be directed when they click
-                "label" => __( "Critical Path", "disciple_tools" )  // the label the user will see
+                "label" => __( "Goals", "disciple_tools" )  // the label the user will see
             ];
         }
         return $tabs;
