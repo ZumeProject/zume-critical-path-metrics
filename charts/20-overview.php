@@ -83,8 +83,8 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
                             </div>
                             <hr>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-3 active_coaches"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 total_people_in_coaching"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 active_coaches"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 total_people_in_coaching"><span class="loading-spinner active"></span></div>
                             </div>
                             <hr>
                             <div class="grid-x">
@@ -105,9 +105,9 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
                                 </div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-3 new_coaching_requests"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 coaching_engagements"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 people_in_coaching"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 new_coaching_requests"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 coaching_engagements"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 people_in_coaching"><span class="loading-spinner active"></span></div>
                             </div>
                         </div>
                     `)
@@ -127,7 +127,7 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
                     window.spin_remove()
                 })
 
-                window.load = ( range ) => {
+                window.path_load = ( range ) => {
 
                     window.spin_add()
                     window.API_get( window.site_info.total_url, { stage: "early", key: "new_coaching_requests", range: range }, ( data ) => {

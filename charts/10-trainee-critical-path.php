@@ -201,7 +201,7 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
                         </div>
                     `)
 
-                    window.load = ( range ) => {
+                    window.path_load = ( range ) => {
                         window.spin_add()
                         window.API_get( window.site_info.total_url, { stage: "registrants", key: "total_registrants", range: range }, ( data ) => {
                             data.label = "Registrant"

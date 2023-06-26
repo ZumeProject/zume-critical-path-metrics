@@ -70,17 +70,23 @@ class Zume_Path_Post extends Zume_Chart_Base
                             </div>
                             <hr>
                              <div class="grid-x">
-                                <div class="cell hero"><span class="loading-spinner active"></span></div>
+                                <div class="cell">
+                                    <h2>Cumulative</h2>
+                                </div>
+                            </div>
+                             <div class="grid-x">
+                                <div class="cell total_ptt"><span class="loading-spinner active"></span></div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-3 needs_coach"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 needs_3_month_plan"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 no_coach"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 no_updated_profiles"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 needs_3_month_plan"><span class="loading-spinner active"></span></div>
                             </div>
                             <hr>
                             <div class="grid-x">
                                 <div class="cell center"><h1 id="range-title">Last 30 Days</h1></div>
                                 <div class="cell small-6">
-                                    <h2>Progress Indicators</h2>
+                                    <h2>Time Range</h2>
                                 </div>
                                 <div class="cell small-6">
                                     <span style="float: right;">
@@ -95,9 +101,12 @@ class Zume_Path_Post extends Zume_Chart_Base
                                 </div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-6 new_trainees"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-6 new_3_month_plans"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-6 new_coaching_requests"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-12 in_and_out"><span class="loading-spinner active"></span></div>
+                            </div>
+                            <div class="grid-x grid-margin-x grid-margin-y">
+                                 <div class="cell medium-6 coach_requests"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 set_profile"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 completed_3_month_plans"><span class="loading-spinner active"></span></div>
                             </div>
                         </div>
                     `)
@@ -106,40 +115,73 @@ class Zume_Path_Post extends Zume_Chart_Base
                 window.spin_add()
                 window.API_get( window.site_info.total_url, { stage: "ptt", key: "total_ptt" }, ( data ) => {
                     data.link = ''
-                    jQuery('.hero').html(window.template_map_list(data))
+                    data.label = 'Post-Training Trainees'
+                    data.description = 'Description'
+                    jQuery('.'+data.key).html(window.template_map_list(data))
                     window.click_listener( data )
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "ptt", key: "needs_coach" }, ( data ) => {
-                    jQuery('.needs_coach').html(window.template_single(data))
+                window.API_get( window.site_info.total_url, { stage: "general", key: "no_coach" }, ( data ) => {
+                    data.valence = 'valence-grey'
+                    data.label = 'Has No Coach'
+                    data.description = 'Description'
+                    jQuery('.'+data.key).html(window.template_single_map(data))
                     window.click_listener( data )
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "ptt", key: "needs_3_month_plan" }, ( data ) => {
-                    jQuery('.needs_3_month_plan').html(window.template_single(data))
+                window.API_get( window.site_info.total_url, { stage: "general", key: "no_updated_profiles" }, ( data ) => {
+                    data.valence = 'valence-grey'
+                    data.label = 'Has Not Updated Profile'
+                    data.description = 'Description'
+                    jQuery('.'+data.key).html(window.template_single_map(data))
+                    window.click_listener( data )
+                    window.spin_remove()
+                })
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "general", key: "needs_3_month_plan" }, ( data ) => {
+                    data.valence = 'valence-grey'
+                    data.label = 'Needs 3-Month Plan'
+                    data.description = 'Description'
+                    jQuery('.'+data.key).html(window.template_single_map(data))
                     window.click_listener( data )
                     window.spin_remove()
                 })
 
-                window.load = ( range ) => {
+                // ranges
+                window.path_load = ( range ) => {
+                    jQuery('.loading-spinner').addClass('active')
 
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "ptt", key: "new_trainees", range: range }, ( data ) => {
-                        jQuery('.new_trainees').html( window.template_trio( data ) )
+                    window.API_get( window.site_info.total_url, { stage: "general", key: "in_and_out", range: range }, ( data ) => {
+                        data.label = 'Post-Training Flow'
+                        data.description = 'Description'
+                        jQuery('.'+data.key).html( window.template_in_out( data ) )
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "ptt", key: "new_3_month_plans", range: range }, ( data ) => {
-                        jQuery('.new_3_month_plans').html( window.template_trio( data ) )
+                    window.API_get( window.site_info.total_url, { stage: "general", key: "coach_requests", range: range }, ( data ) => {
+                        data.label = 'Coaching Requests'
+                        data.description = 'Description'
+                        jQuery('.'+data.key).html(window.template_single_map(data))
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "ptt", key: "new_coaching_requests", range: range }, ( data ) => {
-                        jQuery('.new_coaching_requests').html( window.template_trio( data ) )
+                    window.API_get( window.site_info.total_url, { stage: "general", key: "set_profile", range: range }, ( data ) => {
+                        data.label = 'Set Profile'
+                        data.description = 'Description'
+                        jQuery('.'+data.key).html(window.template_single_map(data))
+                        window.click_listener( data )
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_info.total_url, { stage: "general", key: "completed_3_month_plans", range: range }, ( data ) => {
+                        data.label = 'Completed 3-Month Plans'
+                        data.description = 'Description'
+                        jQuery('.'+data.key).html(window.template_single_map(data))
                         window.click_listener( data )
                         window.spin_remove()
                     })

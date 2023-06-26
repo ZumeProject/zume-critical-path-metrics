@@ -27,9 +27,11 @@ class Zume_Metrics_Base {
             require_once ('abstract.php');
 
             require_once ('01-goals.php');
+            require_once ('01-location-list.php');
             require_once ('02-concepts.php');
 
             require_once ('10-trainee-critical-path.php');
+            require_once ('11-location-funnel.php');
             require_once ('11-anonymous.php');
             require_once ('12-registrants.php');
             require_once ('13-active-training.php');
@@ -43,7 +45,12 @@ class Zume_Metrics_Base {
             require_once ('22-early.php');
             require_once ('23-advanced.php');
 
-            require_once ('30-type.php');
+            require_once ('40-partners.php');
+
+            require_once ('100-type.php');
+            require_once ('101-goals.php');
+            require_once ('102-journey.php');
+
         }
     }
 

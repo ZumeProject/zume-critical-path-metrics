@@ -102,9 +102,9 @@ abstract class Zume_Chart_Base
                     range_filter.on('change', function(){
                         window.filter = range_filter.val()
                         jQuery('#range-title').html( jQuery('#range-filter :selected').text() )
-                        window.load( window.filter )
+                        window.path_load( window.filter )
                     })
-                    window.load( window.filter )
+                    window.path_load( window.filter )
                 }
                 window.template_map_list = ({key, link, label, value, description}) => {
                     let hover = '';
@@ -128,7 +128,7 @@ abstract class Zume_Chart_Base
                           <div class="z-card-footer ${key}">
                               <div class="grid-x">
                                   <div class="cell small-6 z-card-sub-left hover zume-list ${key}">
-                                      LIST
+                                      STATS
                                   </div>
                                   <div class="cell small-6 z-card-sub-right hover zume-map ${key}">
                                       MAP
@@ -162,6 +162,7 @@ abstract class Zume_Chart_Base
                         <div class="grid-x">
                         <div class="cell z-card zume-list ${key} ${valence} hover">
                             <div class="z-card-single">
+                                <div class="z-icon"><i class="fi-list-bullet" ></i></div>
                                 <div class="z-card-title ${key}">
                                     ${label}
                                 </div>
@@ -181,6 +182,7 @@ abstract class Zume_Chart_Base
                         <div class="grid-x">
                         <div class="cell z-card zume-map ${key} ${valence} hover">
                             <div class="z-card-single">
+                                <div class="z-icon"><i class="fi-map" ></i></div>
                                 <div class="z-card-title ${key}">
                                     ${label}
                                 </div>
@@ -193,6 +195,43 @@ abstract class Zume_Chart_Base
                             </div>
                         </div>
                         </div>
+                    `;
+                }
+                window.template_in_out = ({key, label, value_in, value_idle, value_out, description}) => {
+                    return `
+                    <div class="grid-x z-card z-card-single ">
+                      <div class="cell small-12 z-card-title ${key}">
+                           ${label}<hr>
+                      </div>
+                      <div class="cell small-4  ${key}">
+                        <div class="z-card-title ${key}">
+                            IN
+                        </div>
+                        <div class="z-card-value ${key}">
+                          ${value_in}
+                        </div>
+                      </div>
+                      <div class="cell small-4 ${key}">
+                        <div class="z-card-title ${key}">
+                            IDLE
+                        </div>
+                        <div class="z-card-value ${key}">
+                          ${value_idle}
+                        </div>
+                      </div>
+                      <div class="cell small-4 ${key}">
+                        <div class="z-card-title ${key}">
+                            OUT
+                        </div>
+                        <div class="z-card-value ${key}">
+                          ${value_out}
+                        </div>
+                      </div>
+                      <div class="cell small-12 z-card-description ${key}">
+                          ${description}
+                       </div>
+                    </div>
+
                     `;
                 }
                 window.template_trio = ({key, link, label, goal, goal_valence, goal_percent, trend, trend_valence, trend_percent, value, description}) => {
@@ -242,7 +281,6 @@ abstract class Zume_Chart_Base
                           </div>
                       </div>
                     </div>
-
                     `;
                 }
 

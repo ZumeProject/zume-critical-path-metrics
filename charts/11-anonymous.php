@@ -71,13 +71,18 @@ class Zume_Path_Anonymous extends Zume_Chart_Base
                             </div>
                             <hr>
                             <div class="grid-x">
+                                <div class="cell">
+                                    <h2>Cumulative</h2>
+                                </div>
+                            </div>
+                            <div class="grid-x">
                                 <div class="cell medium-3 hero"><span class="loading-spinner active"></span></div>
                             </div>
                             <hr>
                             <div class="grid-x">
                                 <div class="cell center"><h1 id="range-title">Last 30 Days</h1></div>
                                 <div class="cell small-6">
-                                    <h2>Progress Indicators</h2>
+                                    <h2>Time Range</h2>
                                 </div>
                                 <div class="cell small-6">
                                     <span style="float: right;">
@@ -92,15 +97,14 @@ class Zume_Path_Anonymous extends Zume_Chart_Base
                                 </div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-6 visitors"><span class="loading-spinner active"></span></div>
                                  <div class="cell medium-6 registrations"><span class="loading-spinner active"></span></div>
-                            </div>
-                            <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell"><h2>CTAs</h2></div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
                                  <div class="cell medium-6 coach_requests"><span class="loading-spinner active"></span></div>
                                  <div class="cell medium-6 joined_online_training"><span class="loading-spinner active"></span></div>
+                            </div>
+                            <div class="grid-x grid-margin-x grid-margin-y">
+                                 <div class="cell medium-6 visitors"><span class="loading-spinner active"></span></div>
                             </div>
                         </div>
                     `)
@@ -113,29 +117,33 @@ class Zume_Path_Anonymous extends Zume_Chart_Base
                     window.spin_remove()
                 })
 
-                window.load = ( range ) => {
+                window.path_load = ( range ) => {
+
+                    window.spin_add()
+                    window.API_get( window.site_info.total_url, { stage: "anonymous", key: "registrations", range: range }, ( data ) => {
+                        jQuery('.registrations').html( window.template_trio( data ) )
+                        window.click_listener( data )
+                        window.spin_remove()
+                    })
 
                     window.spin_add()
                     window.API_get( window.site_info.total_url, { stage: "anonymous", key: "coach_requests", range: range }, ( data ) => {
-                        jQuery('.coach_requests').html( window.template_trio( data ) )
+                        data.valence = "valence-grey"
+                        jQuery('.coach_requests').html( window.template_single( data ) )
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
                     window.API_get( window.site_info.total_url, { stage: "anonymous", key: "joined_online_training", range: range }, ( data ) => {
-                        jQuery('.joined_online_training').html( window.template_trio( data ) )
+                        data.valence = "valence-grey"
+                        jQuery('.joined_online_training').html( window.template_single( data ) )
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
                     window.API_get( window.site_info.total_url, { stage: "anonymous", key: "visitors", range: range }, ( data ) => {
-                        jQuery('.visitors').html( window.template_trio( data ) )
-                        window.click_listener( data )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "anonymous", key: "registrations", range: range }, ( data ) => {
-                        jQuery('.registrations').html( window.template_trio( data ) )
+                        data.valence = "valence-grey"
+                        jQuery('.visitors').html( window.template_single( data ) )
                         window.click_listener( data )
                         window.spin_remove()
                     })

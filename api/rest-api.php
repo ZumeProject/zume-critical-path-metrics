@@ -34,7 +34,6 @@ class Zume_Stats_Endpoints
                 'permission_callback' => '__return_true'
             ]
         );
-
         register_rest_route(
             $namespace, '/list', [
                 'methods'  => [ 'GET', 'POST' ],
@@ -56,11 +55,35 @@ class Zume_Stats_Endpoints
                 'permission_callback' => '__return_true'
             ]
         );
-
         register_rest_route(
             $namespace, '/log', [
                 'methods'  => [ 'GET', 'POST' ],
                 'callback' => [ $this, 'log' ],
+                'permission_callback' => '__return_true'
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/data', [
+                [
+                    'methods'  => 'GET',
+                    'callback' => [ $this, 'location_list' ],
+                    'permission_callback' => '__return_true',
+                ],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/location_goals', [
+                [
+                    'methods'  => 'GET',
+                    'callback' => [ $this, 'location_goals' ],
+                    'permission_callback' => '__return_true',
+                ],
+            ]
+        );
+        register_rest_route(
+            $namespace, '/simulate', [
+                'methods'  => [ 'GET', 'POST' ],
+                'callback' => [ $this, 'training_elements' ],
                 'permission_callback' => '__return_true'
             ]
         );
@@ -207,11 +230,26 @@ class Zume_Stats_Endpoints
                     'negative_stat' => $negative_stat,
                 ];
             case 'total_anonymous':
-            default:
                 return [
                     'key' => 'total_anonymous',
                     'label' => 'Anonymous',
                     'description' => 'Sample description.',
+                    'link' => '',
+                    'value' => Zume_Query::format_int( $value ),
+                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal' => $goal,
+                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
+                    'trend' => $trend,
+                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
+                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
+                    'negative_stat' => $negative_stat,
+                ];
+            default:
+                return [
+                    'key' => '',
+                    'label' => '',
+                    'description' => '',
                     'link' => '',
                     'value' => Zume_Query::format_int( $value ),
                     'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
@@ -285,6 +323,32 @@ class Zume_Stats_Endpoints
                     'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
                     'trend_percent' => Zume_Query::get_percent( $value, $trend ),
                     'negative_stat' => $negative_stat,
+                ];
+            case 'coach_requests':
+                return [
+                    'key' => 'coach_requests',
+                    'label' => 'Coach Requests',
+                    'description' => 'Coach requests in this period of time',
+                    'link' => '',
+                    'value' => Zume_Query::format_int( $value ),
+                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal' => $goal,
+                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
+                    'trend' => $trend,
+                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
+                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
+                    'negative_stat' => $negative_stat,
+                ];
+            case 'registrations_in_out':
+                return [
+                    'key' => 'registrations_in_out',
+                    'label' => 'New Registrations Flow',
+                    'description' => 'Number of registrants moving through this stage.',
+                    'link' => '',
+                    'value_in' => Zume_Query::format_int( rand(100, 1000) ),
+                    'value_idle' => Zume_Query::format_int( rand(100, 1000) ),
+                    'value_out' => Zume_Query::format_int( rand(100, 1000) ),
                 ];
             case 'has_plan':
                 return [
@@ -368,12 +432,27 @@ class Zume_Stats_Endpoints
                 ];
 
             case 'total_registrants':
-            default:
                 return [
                     'key' => 'total_registrants',
                     'label' => 'Registrants',
                     'description' => 'People who have registered but have not progressed into training.',
                     'link' => 'registrants',
+                    'value' => Zume_Query::format_int( $value ),
+                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal' => $goal,
+                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
+                    'trend' => $trend,
+                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
+                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
+                    'negative_stat' => $negative_stat,
+                ];
+            default:
+                return [
+                    'key' => $params['key'],
+                    'label' => '',
+                    'description' => '',
+                    'link' => '',
                     'value' => Zume_Query::format_int( $value ),
                     'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
                     'goal' => $goal,
@@ -491,173 +570,38 @@ class Zume_Stats_Endpoints
                     'trend_percent' => Zume_Query::get_percent( $value, $trend ),
                     'negative_stat' => $negative_stat,
                 ];
-            case 'session_1':
+            case 'active_training_in_out':
                 return [
-                    'key' => 'session_1',
-                    'label' => 'Session 1',
-                    'description' => 'Session 1 of the training.',
+                    'key' => $params['key'],
+                    'label' => 'New Registrations Flow',
+                    'description' => 'Number of registrants moving through this stage.',
                     'link' => '',
-                    'value' => Zume_Query::format_int( $value ),
-                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal' => $goal,
-                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
-                    'trend' => $trend,
-                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
-                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
-                    'negative_stat' => $negative_stat,
-                ];
-            case 'session_2':
-                return [
-                    'key' => 'session_2',
-                    'label' => 'Session 2',
-                    'description' => 'Session 2 of the training.',
-                    'link' => '',
-                    'value' => Zume_Query::format_int( $value ),
-                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal' => $goal,
-                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
-                    'trend' => $trend,
-                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
-                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
-                    'negative_stat' => $negative_stat,
-                ];
-            case 'session_3':
-                return [
-                    'key' => 'session_3',
-                    'label' => 'Session 3',
-                    'description' => 'Session 3 of the training.',
-                    'link' => '',
-                    'value' => Zume_Query::format_int( $value ),
-                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal' => $goal,
-                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
-                    'trend' => $trend,
-                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
-                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
-                    'negative_stat' => $negative_stat,
-                ];
-            case 'session_4':
-                return [
-                    'key' => 'session_4',
-                    'label' => 'Session 4',
-                    'description' => 'Session 4 of the training.',
-                    'link' => '',
-                    'value' => Zume_Query::format_int( $value ),
-                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal' => $goal,
-                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
-                    'trend' => $trend,
-                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
-                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
-                    'negative_stat' => $negative_stat,
-                ];
-            case 'session_5':
-                return [
-                    'key' => 'session_5',
-                    'label' => 'Session 5',
-                    'description' => 'Session 5 of the training.',
-                    'link' => '',
-                    'value' => Zume_Query::format_int( $value ),
-                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal' => $goal,
-                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
-                    'trend' => $trend,
-                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
-                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
-                    'negative_stat' => $negative_stat,
-                ];
-            case 'session_6':
-                return [
-                    'key' => 'session_6',
-                    'label' => 'Session 6',
-                    'description' => 'Session 6 of the training.',
-                    'link' => '',
-                    'value' => Zume_Query::format_int( $value ),
-                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal' => $goal,
-                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
-                    'trend' => $trend,
-                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
-                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
-                    'negative_stat' => $negative_stat,
-                ];
-            case 'session_7':
-                return [
-                    'key' => 'session_7',
-                    'label' => 'Session 7',
-                    'description' => 'Session 7 of the training.',
-                    'link' => '',
-                    'value' => Zume_Query::format_int( $value ),
-                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal' => $goal,
-                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
-                    'trend' => $trend,
-                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
-                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
-                    'negative_stat' => $negative_stat,
-                ];
-            case 'session_8':
-                return [
-                    'key' => 'session_8',
-                    'label' => 'Session 8',
-                    'description' => 'Session 8 of the training.',
-                    'link' => '',
-                    'value' => Zume_Query::format_int( $value ),
-                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal' => $goal,
-                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
-                    'trend' => $trend,
-                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
-                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
-                    'negative_stat' => $negative_stat,
-                ];
-            case 'session_9':
-                return [
-                    'key' => 'session_9',
-                    'label' => 'Session 9',
-                    'description' => 'Session 9 of the training.',
-                    'link' => '',
-                    'value' => Zume_Query::format_int( $value ),
-                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal' => $goal,
-                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
-                    'trend' => $trend,
-                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
-                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
-                    'negative_stat' => $negative_stat,
-                ];
-            case 'session_10':
-                return [
-                    'key' => 'session_10',
-                    'label' => 'Session 10',
-                    'description' => 'Session 10 of the training.',
-                    'link' => '',
-                    'value' => Zume_Query::format_int( $value ),
-                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal' => $goal,
-                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
-                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
-                    'trend' => $trend,
-                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
-                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
-                    'negative_stat' => $negative_stat,
+                    'value_in' => Zume_Query::format_int( rand(100, 1000) ),
+                    'value_idle' => Zume_Query::format_int( rand(100, 1000) ),
+                    'value_out' => Zume_Query::format_int( rand(100, 1000) ),
                 ];
             case 'total_att':
-            default:
                 return [
                     'key' => 'total_att',
                     'label' => 'Active Training Trainees',
                     'description' => 'People who are actively working a training plan or have only partially completed the training.',
                     'link' => 'active',
+                    'value' => Zume_Query::format_int( $value ),
+                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal' => $goal,
+                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
+                    'trend' => $trend,
+                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
+                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
+                    'negative_stat' => $negative_stat,
+                ];
+            default:
+                return [
+                    'key' => $params['key'],
+                    'label' => '',
+                    'description' => '',
+                    'link' => '',
                     'value' => Zume_Query::format_int( $value ),
                     'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
                     'goal' => $goal,
@@ -760,12 +704,27 @@ class Zume_Stats_Endpoints
                     'negative_stat' => $negative_stat,
                 ];
             case 'total_ptt':
-            default:
                 return [
                     'key' => 'total_ptt',
                     'label' => 'Post-Training Trainees',
                     'description' => 'People who have completed the training and are working on a 3-month plan.',
                     'link' => 'post',
+                    'value' => Zume_Query::format_int( $value ),
+                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal' => $goal,
+                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
+                    'trend' => $trend,
+                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
+                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
+                    'negative_stat' => $negative_stat,
+                ];
+            default:
+                return [
+                    'key' => $params['key'],
+                    'label' => '',
+                    'description' => '',
+                    'link' => '',
                     'value' => Zume_Query::format_int( $value ),
                     'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
                     'goal' => $goal,
@@ -933,12 +892,27 @@ class Zume_Stats_Endpoints
                 ];
 
             case 'total_s1':
-            default:
                 return [
                     'key' => 'total_s1',
                     'label' => '(S1) Partial Practitioners',
                     'description' => 'Learning through doing. Implementing partial checklist / 4-fields',
                     'link' => 's1_practitioners',
+                    'value' => Zume_Query::format_int( $value ),
+                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal' => $goal,
+                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
+                    'trend' => $trend,
+                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
+                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
+                    'negative_stat' => $negative_stat,
+                ];
+            default:
+                return [
+                    'key' => $params['key'],
+                    'label' => '',
+                    'description' => '',
+                    'link' => '',
                     'value' => Zume_Query::format_int( $value ),
                     'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
                     'goal' => $goal,
@@ -1105,12 +1079,27 @@ class Zume_Stats_Endpoints
                     'negative_stat' => $negative_stat,
                 ];
             case 'total_s2':
-            default:
                 return [
                     'key' => 'total_s2',
                     'label' => '(S2) Completed Practitioners',
                     'description' => 'People who are seeking multiplicative movement and are completely skilled with the coaching checklist.',
                     'link' => 's2_practitioners',
+                    'value' => Zume_Query::format_int( $value ),
+                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal' => $goal,
+                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
+                    'trend' => $trend,
+                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
+                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
+                    'negative_stat' => $negative_stat,
+                ];
+            default:
+                return [
+                    'key' => $params['key'],
+                    'label' => '',
+                    'description' => '',
+                    'link' => '',
                     'value' => Zume_Query::format_int( $value ),
                     'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
                     'goal' => $goal,
@@ -1276,12 +1265,27 @@ class Zume_Stats_Endpoints
                     'negative_stat' => $negative_stat,
                 ];
             case 'total_s3':
-            default:
                 return [
                     'key' => 'total_s3',
                     'label' => '(S3) Multiplying Practitioners',
                     'description' => 'People who are seeking multiplicative movement and are stewarding generational fruit.',
                     'link' => 's3_practitioners',
+                    'value' => Zume_Query::format_int( $value ),
+                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal' => $goal,
+                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
+                    'trend' => $trend,
+                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
+                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
+                    'negative_stat' => $negative_stat,
+                ];
+            default:
+                return [
+                    'key' => $params['key'],
+                    'label' => '',
+                    'description' => '',
+                    'link' => '',
                     'value' => Zume_Query::format_int( $value ),
                     'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
                     'goal' => $goal,
@@ -1353,9 +1357,9 @@ class Zume_Stats_Endpoints
                 ];
             default:
                 return [
-                    'key' => 'general',
-                    'label' => 'General',
-                    'description' => 'General',
+                    'key' => $params['key'],
+                    'label' => '',
+                    'description' => '',
                     'link' => '',
                     'value' => Zume_Query::format_int( $value ),
                     'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
@@ -1425,12 +1429,28 @@ class Zume_Stats_Endpoints
                     'trend_percent' => Zume_Query::get_percent( $value, $trend ),
                     'negative_stat' => $negative_stat,
                 ];
-            default:
+            case 'total_s3';
                 return [
                     'key' => 'total_s3',
                     'label' => '(S3) Multiplying Practitioners',
                     'description' => 'People who are seeking multiplicative movement and are stewarding generational fruit.',
                     'link' => 's3_practitioners',
+                    'value' => Zume_Query::format_int( $value ),
+                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal' => $goal,
+                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
+                    'trend' => $trend,
+                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
+                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
+                    'negative_stat' => $negative_stat,
+                ];
+            default:
+                return [
+                    'key' => $params['key'],
+                    'label' => '',
+                    'description' => '',
+                    'link' => '',
                     'value' => Zume_Query::format_int( $value ),
                     'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
                     'goal' => $goal,
@@ -1596,12 +1616,27 @@ class Zume_Stats_Endpoints
                     'negative_stat' => $negative_stat,
                 ];
             case 'total_s3':
-            default:
                 return [
                     'key' => 'total_s3',
                     'label' => '(S3) Multiplying Practitioners',
                     'description' => 'People who are seeking multiplicative movement and are stewarding generational fruit.',
                     'link' => 's3_practitioners',
+                    'value' => Zume_Query::format_int( $value ),
+                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal' => $goal,
+                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
+                    'trend' => $trend,
+                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
+                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
+                    'negative_stat' => $negative_stat,
+                ];
+            default:
+                return [
+                    'key' => $params['key'],
+                    'label' => '',
+                    'description' => '',
+                    'link' => '',
                     'value' => Zume_Query::format_int( $value ),
                     'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
                     'goal' => $goal,
@@ -1688,11 +1723,36 @@ class Zume_Stats_Endpoints
                     'negative_stat' => $negative_stat,
                 ];
             case 'general':
-            default:
                 return [
-                    'key' => 'general',
+                    'key' => $params['key'],
                     'label' => 'General',
                     'description' => 'Key not found',
+                    'link' => '',
+                    'value' => Zume_Query::format_int( $value ),
+                    'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal' => $goal,
+                    'goal_valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
+                    'goal_percent' => Zume_Query::get_percent( $value, $goal ),
+                    'trend' => $trend,
+                    'trend_valence' => Zume_Query::get_valence( $value, $trend, $negative_stat ),
+                    'trend_percent' => Zume_Query::get_percent( $value, $trend ),
+                    'negative_stat' => $negative_stat,
+                ];
+            case 'in_and_out':
+                return [
+                    'key' => $params['key'],
+                    'label' => '',
+                    'description' => 'Description',
+                    'link' => '',
+                    'value_in' => Zume_Query::format_int( rand(100, 1000) ),
+                    'value_idle' => Zume_Query::format_int( rand(100, 1000) ),
+                    'value_out' => Zume_Query::format_int( rand(100, 1000) ),
+                ];
+            default:
+                return [
+                    'key' => $params['key'],
+                    'label' => '',
+                    'description' => 'Description',
                     'link' => '',
                     'value' => Zume_Query::format_int( $value ),
                     'valence' => Zume_Query::get_valence( $value, $goal, $negative_stat ),
@@ -1708,6 +1768,495 @@ class Zume_Stats_Endpoints
 
     }
 
+    public function location_goals() {
+        $data = DT_Mapping_Module::instance()->data();
+
+        $data = $this->add_practitioners_column( $data );
+        $data = $this->add_practitioners_goal_column( $data );
+        $data = $this->add_churches_column( $data );
+        $data = $this->add_church_goal_column( $data );
+
+        return $data;
+    }
+    public function location_list( ) {
+        $data = DT_Mapping_Module::instance()->data();
+
+        $data = $this->add_registrants_column( $data );
+        $data = $this->add_active_training_column( $data );
+        $data = $this->add_post_training_column( $data );
+        $data = $this->add_s1_column( $data );
+        $data = $this->add_s2_column( $data );
+        $data = $this->add_s3_column( $data );
+
+        return $data;
+    }
+
+    public function add_registrants_column( $data ) {
+        $column_labels = $data['custom_column_labels'] ?? [];
+        $column_data   = $data['custom_column_data'] ?? [];
+        if ( empty( $column_labels ) ) {
+            $next_column_number = 0;
+        } else if ( count( $column_labels ) === 1 ) {
+            $next_column_number = 1;
+        } else {
+            $next_column_number = count( $column_labels );
+        }
+        $column_labels[ $next_column_number ] = [
+            'key'   => 'registrants',
+            'label' => __( 'Registrants', 'disciple_tools' )
+        ];
+        if ( ! empty( $column_data ) ) {
+            foreach ( $column_data as $key => $value ) {
+                $column_data[$key][$next_column_number] = 0;
+            }
+        }
+        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( 'contacts', [ 'overall_status' => [ '-closed' ], 'type' => [ 'access' ] ] );
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $result ) {
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
+                    $grid_id = $result['grid_id'];
+
+                    // test if grid_id exists, else prepare it with 0 values
+                    if ( ! isset( $column_data[ $grid_id ] ) ) {
+                        $column_data[ $grid_id ] = [];
+                        $i                         = 0;
+                        while ( $i <= $next_column_number ) {
+                            $column_data[$grid_id][$i] = 0;
+                            $i ++;
+                        }
+                    }
+
+                    // add new record to column
+                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
+                }
+            }
+        }
+        $data['custom_column_labels'] = $column_labels;
+        $data['custom_column_data']   = $column_data;
+        return $data;
+    }
+    public function add_active_training_column( $data ) {
+        $column_labels = $data['custom_column_labels'] ?? [];
+        $column_data   = $data['custom_column_data'] ?? [];
+        if ( empty( $column_labels ) ) {
+            $next_column_number = 0;
+        } else if ( count( $column_labels ) === 1 ) {
+            $next_column_number = 1;
+        } else {
+            $next_column_number = count( $column_labels );
+        }
+        $column_labels[ $next_column_number ] = [
+            'key'   => 'active_training',
+            'label' => __( 'Active Training', 'disciple_tools' )
+        ];
+        if ( ! empty( $column_data ) ) {
+            foreach ( $column_data as $key => $value ) {
+                $column_data[$key][$next_column_number] = 0;
+            }
+        }
+        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( 'contacts', [ 'overall_status' => [ '-closed' ], 'type' => [ 'access' ] ] );
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $result ) {
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
+                    $grid_id = $result['grid_id'];
+
+                    // test if grid_id exists, else prepare it with 0 values
+                    if ( ! isset( $column_data[ $grid_id ] ) ) {
+                        $column_data[ $grid_id ] = [];
+                        $i                         = 0;
+                        while ( $i <= $next_column_number ) {
+                            $column_data[$grid_id][$i] = 0;
+                            $i ++;
+                        }
+                    }
+
+                    // add new record to column
+                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
+                }
+            }
+        }
+        $data['custom_column_labels'] = $column_labels;
+        $data['custom_column_data']   = $column_data;
+        return $data;
+    }
+    public function add_post_training_column( $data ) {
+        $column_labels = $data['custom_column_labels'] ?? [];
+        $column_data   = $data['custom_column_data'] ?? [];
+        if ( empty( $column_labels ) ) {
+            $next_column_number = 0;
+        } else if ( count( $column_labels ) === 1 ) {
+            $next_column_number = 1;
+        } else {
+            $next_column_number = count( $column_labels );
+        }
+        $column_labels[ $next_column_number ] = [
+            'key'   => 'post_training',
+            'label' => __( 'Post Training', 'disciple_tools' )
+        ];
+        if ( ! empty( $column_data ) ) {
+            foreach ( $column_data as $key => $value ) {
+                $column_data[$key][$next_column_number] = 0;
+            }
+        }
+        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( 'contacts', [ 'overall_status' => [ '-closed' ], 'type' => [ 'access' ] ] );
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $result ) {
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
+                    $grid_id = $result['grid_id'];
+
+                    // test if grid_id exists, else prepare it with 0 values
+                    if ( ! isset( $column_data[ $grid_id ] ) ) {
+                        $column_data[ $grid_id ] = [];
+                        $i                         = 0;
+                        while ( $i <= $next_column_number ) {
+                            $column_data[$grid_id][$i] = 0;
+                            $i ++;
+                        }
+                    }
+
+                    // add new record to column
+                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
+                }
+            }
+        }
+        $data['custom_column_labels'] = $column_labels;
+        $data['custom_column_data']   = $column_data;
+        return $data;
+    }
+    public function add_s1_column( $data ) {
+        $column_labels = $data['custom_column_labels'] ?? [];
+        $column_data   = $data['custom_column_data'] ?? [];
+        if ( empty( $column_labels ) ) {
+            $next_column_number = 0;
+        } else if ( count( $column_labels ) === 1 ) {
+            $next_column_number = 1;
+        } else {
+            $next_column_number = count( $column_labels );
+        }
+        $column_labels[ $next_column_number ] = [
+            'key'   => 's1',
+            'label' => __( 'Partial Practitioner', 'disciple_tools' )
+        ];
+        if ( ! empty( $column_data ) ) {
+            foreach ( $column_data as $key => $value ) {
+                $column_data[$key][$next_column_number] = 0;
+            }
+        }
+        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( 'contacts', [ 'overall_status' => [ '-closed' ], 'type' => [ 'access' ] ] );
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $result ) {
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
+                    $grid_id = $result['grid_id'];
+
+                    // test if grid_id exists, else prepare it with 0 values
+                    if ( ! isset( $column_data[ $grid_id ] ) ) {
+                        $column_data[ $grid_id ] = [];
+                        $i                         = 0;
+                        while ( $i <= $next_column_number ) {
+                            $column_data[$grid_id][$i] = 0;
+                            $i ++;
+                        }
+                    }
+
+                    // add new record to column
+                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
+                }
+            }
+        }
+        $data['custom_column_labels'] = $column_labels;
+        $data['custom_column_data']   = $column_data;
+        return $data;
+    }
+    public function add_s2_column( $data ) {
+        $column_labels = $data['custom_column_labels'] ?? [];
+        $column_data   = $data['custom_column_data'] ?? [];
+        if ( empty( $column_labels ) ) {
+            $next_column_number = 0;
+        } else if ( count( $column_labels ) === 1 ) {
+            $next_column_number = 1;
+        } else {
+            $next_column_number = count( $column_labels );
+        }
+        $column_labels[ $next_column_number ] = [
+            'key'   => 's2',
+            'label' => __( 'Completed Practitioner', 'disciple_tools' )
+        ];
+        if ( ! empty( $column_data ) ) {
+            foreach ( $column_data as $key => $value ) {
+                $column_data[$key][$next_column_number] = 0;
+            }
+        }
+        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( 'contacts', [ 'overall_status' => [ '-closed' ], 'type' => [ 'access' ] ] );
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $result ) {
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
+                    $grid_id = $result['grid_id'];
+
+                    // test if grid_id exists, else prepare it with 0 values
+                    if ( ! isset( $column_data[ $grid_id ] ) ) {
+                        $column_data[ $grid_id ] = [];
+                        $i                         = 0;
+                        while ( $i <= $next_column_number ) {
+                            $column_data[$grid_id][$i] = 0;
+                            $i ++;
+                        }
+                    }
+
+                    // add new record to column
+                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
+                }
+            }
+        }
+        $data['custom_column_labels'] = $column_labels;
+        $data['custom_column_data']   = $column_data;
+        return $data;
+    }
+    public function add_s3_column( $data ) {
+        $column_labels = $data['custom_column_labels'] ?? [];
+        $column_data   = $data['custom_column_data'] ?? [];
+        if ( empty( $column_labels ) ) {
+            $next_column_number = 0;
+        } else if ( count( $column_labels ) === 1 ) {
+            $next_column_number = 1;
+        } else {
+            $next_column_number = count( $column_labels );
+        }
+        $column_labels[ $next_column_number ] = [
+            'key'   => 's3',
+            'label' => __( 'Multiplying Practitioner', 'disciple_tools' )
+        ];
+        if ( ! empty( $column_data ) ) {
+            foreach ( $column_data as $key => $value ) {
+                $column_data[$key][$next_column_number] = 0;
+            }
+        }
+        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( 'contacts', [ 'overall_status' => [ '-closed' ], 'type' => [ 'access' ] ] );
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $result ) {
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
+                    $grid_id = $result['grid_id'];
+
+                    // test if grid_id exists, else prepare it with 0 values
+                    if ( ! isset( $column_data[ $grid_id ] ) ) {
+                        $column_data[ $grid_id ] = [];
+                        $i                         = 0;
+                        while ( $i <= $next_column_number ) {
+                            $column_data[$grid_id][$i] = 0;
+                            $i ++;
+                        }
+                    }
+
+                    // add new record to column
+                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
+                }
+            }
+        }
+        $data['custom_column_labels'] = $column_labels;
+        $data['custom_column_data']   = $column_data;
+        return $data;
+    }
+
+    public function add_practitioners_column( $data ) {
+        $column_labels = $data['custom_column_labels'] ?? [];
+        $column_data   = $data['custom_column_data'] ?? [];
+        if ( empty( $column_labels ) ) {
+            $next_column_number = 0;
+        } else if ( count( $column_labels ) === 1 ) {
+            $next_column_number = 1;
+        } else {
+            $next_column_number = count( $column_labels );
+        }
+        $column_labels[ $next_column_number ] = [
+            'key'   => 'practitioners',
+            'label' => __( 'Practitioners', 'disciple_tools' )
+        ];
+        if ( ! empty( $column_data ) ) {
+            foreach ( $column_data as $key => $value ) {
+                $column_data[$key][$next_column_number] = 0;
+            }
+        }
+        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( 'contacts', [ 'overall_status' => [ '-closed' ], 'type' => [ 'access' ] ] );
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $result ) {
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
+                    $grid_id = $result['grid_id'];
+
+                    // test if grid_id exists, else prepare it with 0 values
+                    if ( ! isset( $column_data[ $grid_id ] ) ) {
+                        $column_data[ $grid_id ] = [];
+                        $i                         = 0;
+                        while ( $i <= $next_column_number ) {
+                            $column_data[$grid_id][$i] = 0;
+                            $i ++;
+                        }
+                    }
+
+                    if ( $result['country_code'] === 'US' ) {
+                        $result['count'] = round( intval( $result['population'] ) / 2500 );
+                    } else {
+                        $result['count'] = round( intval( $result['population'] ) / 25000 );
+                    }
+
+                    // add new record to column
+                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
+                }
+            }
+        }
+        $data['custom_column_labels'] = $column_labels;
+        $data['custom_column_data']   = $column_data;
+        return $data;
+    }
+    public function add_churches_column( $data ) {
+        $column_labels = $data['custom_column_labels'] ?? [];
+        $column_data   = $data['custom_column_data'] ?? [];
+        if ( empty( $column_labels ) ) {
+            $next_column_number = 0;
+        } else if ( count( $column_labels ) === 1 ) {
+            $next_column_number = 1;
+        } else {
+            $next_column_number = count( $column_labels );
+        }
+        $column_labels[ $next_column_number ] = [
+            'key'   => 'churches',
+            'label' => __( 'Churches', 'disciple_tools' )
+        ];
+        if ( ! empty( $column_data ) ) {
+            foreach ( $column_data as $key => $value ) {
+                $column_data[$key][$next_column_number] = 0;
+            }
+        }
+        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( 'contacts', [ 'overall_status' => [ '-closed' ], 'type' => [ 'access' ] ] );
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $result ) {
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
+                    $grid_id = $result['grid_id'];
+
+                    // test if grid_id exists, else prepare it with 0 values
+                    if ( ! isset( $column_data[ $grid_id ] ) ) {
+                        $column_data[ $grid_id ] = [];
+                        $i                         = 0;
+                        while ( $i <= $next_column_number ) {
+                            $column_data[$grid_id][$i] = 0;
+                            $i ++;
+                        }
+                    }
+
+                    if ( $result['country_code'] === 'US' ) {
+                        $result['count'] = round( intval( $result['population'] ) / 2500 );
+                    } else {
+                        $result['count'] = round( intval( $result['population'] ) / 25000 );
+                    }
+
+                    // add new record to column
+                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
+                }
+            }
+        }
+        $data['custom_column_labels'] = $column_labels;
+        $data['custom_column_data']   = $column_data;
+        return $data;
+    }
+
+    public function add_practitioners_goal_column( $data ) {
+        global $wpdb;
+        $column_labels = $data['custom_column_labels'] ?? [];
+        $column_data   = $data['custom_column_data'] ?? [];
+        if ( empty( $column_labels ) ) {
+            $next_column_number = 0;
+        } else if ( count( $column_labels ) === 1 ) {
+            $next_column_number = 1;
+        } else {
+            $next_column_number = count( $column_labels );
+        }
+        $column_labels[ $next_column_number ] = [
+            'key'   => 'practitioner_goal',
+            'label' => __( 'Practitioner Goal', 'disciple_tools' )
+        ];
+        if ( ! empty( $column_data ) ) {
+            foreach ( $column_data as $key => $value ) {
+                $column_data[$key][$next_column_number] = 0;
+            }
+        }
+        $results = $wpdb->get_results( "SELECT grid_id, population, country_code, 1 as count FROM {$wpdb->prefix}dt_location_grid WHERE population != '0' AND population IS NOT NULL AND level < 3", ARRAY_A );
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $result ) {
+                $grid_id = $result['grid_id'];
+                if ( $result['country_code'] === 'US' ) {
+                    $result['count'] = round( intval( $result['population'] ) / 5000 );
+                } else {
+                    $result['count'] = round( intval( $result['population'] ) / 50000 );
+                }
+
+                if ( ! isset( $column_data[ $grid_id ] ) ) {
+                    $column_data[ $grid_id ] = [];
+                    $i = 0;
+                    while ( $i <= $next_column_number ) {
+                        $column_data[$grid_id][$i] = 0;
+                        $i ++;
+                    }
+                }
+
+                if ( $result['count'] == 0 ) {
+                    $result['count'] = 1;
+                }
+
+                $column_data[$grid_id][$next_column_number] = number_format( $result['count'] ); // must be string
+            }
+        }
+        $data['custom_column_labels'] = $column_labels;
+        $data['custom_column_data']   = $column_data;
+        return $data;
+    }
+    public function add_church_goal_column( $data ) {
+        global $wpdb;
+        $column_labels = $data['custom_column_labels'] ?? [];
+        $column_data   = $data['custom_column_data'] ?? [];
+        if ( empty( $column_labels ) ) {
+            $next_column_number = 0;
+        } else if ( count( $column_labels ) === 1 ) {
+            $next_column_number = 1;
+        } else {
+            $next_column_number = count( $column_labels );
+        }
+        $column_labels[ $next_column_number ] = [
+            'key'   => 'church_goal',
+            'label' => __( 'Church Goal', 'disciple_tools' )
+        ];
+        if ( ! empty( $column_data ) ) {
+            foreach ( $column_data as $key => $value ) {
+                $column_data[$key][$next_column_number] = 0;
+            }
+        }
+        $results = $wpdb->get_results( "SELECT grid_id, population, country_code, 1 as count FROM {$wpdb->prefix}dt_location_grid WHERE population != '0' AND population IS NOT NULL AND level < 3", ARRAY_A );
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $result ) {
+                $grid_id = $result['grid_id'];
+                if ( $result['country_code'] === 'US' ) {
+                    $result['count'] = round( intval( $result['population'] ) / 2500 );
+                } else {
+                    $result['count'] = round( intval( $result['population'] ) / 25000 );
+                }
+
+                if ( ! isset( $column_data[ $grid_id ] ) ) {
+                    $column_data[ $grid_id ] = [];
+                    $i = 0;
+                    while ( $i <= $next_column_number ) {
+                        $column_data[$grid_id][$i] = 0;
+                        $i ++;
+                    }
+                }
+
+                if ( $result['count'] == 0 ) {
+                    $result['count'] = 1;
+                }
+
+                $column_data[$grid_id][$next_column_number] = number_format( $result['count'] ); // must be string
+            }
+        }
+        $data['custom_column_labels'] = $column_labels;
+        $data['custom_column_data']   = $column_data;
+        return $data;
+    }
 
     public function list( WP_REST_Request $request ) {
         return Zume_Query::trainees_list( dt_recursive_sanitize_array( $request->get_params() ) );
@@ -1730,7 +2279,6 @@ class Zume_Stats_Endpoints
     public function sample( WP_REST_Request $request ) {
         return Zume_Query::sample( dt_recursive_sanitize_array( $request->get_params() ) );
     }
-
 
     public function authorize_url( $authorized ){
         if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), $this->namespace  ) !== false ) {

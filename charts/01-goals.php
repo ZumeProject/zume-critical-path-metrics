@@ -110,7 +110,7 @@ class Zume_Path_Goals extends Zume_Chart_Base
                         </div>
                     `)
 
-                window.load = ( filter ) => {
+                window.path_load = ( filter ) => {
 
                     window.spin_add()
                     window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {

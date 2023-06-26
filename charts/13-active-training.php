@@ -78,18 +78,22 @@ class Zume_Path_Active extends Zume_Chart_Base
                                 </div>
                             </div>
                             <hr>
+                            <div class="grid-x grid-margin-x grid-margin-y">
+                                 <div class="cell"><h2>Cumulative</h2></div>
+                            </div>
                             <div class="grid-x">
-                                <div class="cell hero"><span class="loading-spinner active"></span></div>
+                                <div class="cell total_att"><span class="loading-spinner active"></span></div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-3 has_coach"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 inactive_trainees"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 no_coach"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 no_friends"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 no_updated_profiles"><span class="loading-spinner active"></span></div>
                             </div>
                             <hr>
                             <div class="grid-x">
                                 <div class="cell center"><h1 id="range-title">Last 30 Days</h1></div>
                                 <div class="cell small-6">
-                                    <h2>Progress Indicators</h2>
+                                    <h2>Time Range</h2>
                                 </div>
                                 <div class="cell small-6" style="float: right;">
                                      <span>
@@ -104,32 +108,15 @@ class Zume_Path_Active extends Zume_Chart_Base
                                 </div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-6 new_active_trainees"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-12 active_training_in_out"><span class="loading-spinner active"></span></div>
+                            </div>
+                            <div class="grid-x grid-margin-x grid-margin-y">
                                  <div class="cell medium-6 total_checkins"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 3_month_plans"><span class="loading-spinner active"></span></div>
                             </div>
-                            <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell"><h2>Remaining Progress</h2></div>
-                            </div>
-                            <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-6 has_no_coach"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-6 has_no_updated_profile"><span class="loading-spinner active"></span></div>
-                            </div>
+
                             <hr>
-                            <h2>Sessions</h2>
-                            <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-3 session_1"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session_2"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session_3"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session_4"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session_5"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session_6"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session_7"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session_8"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session_9"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 session_10"><span class="loading-spinner active"></span></div>
-                            </div>
-                            <hr>
-                            <h2>Engagements Per Training Element</h2>
+                            <h2>Completions Per Training Element</h2>
                             <div id="chartdiv"></div>
                         </div>
                     `)
@@ -137,104 +124,64 @@ class Zume_Path_Active extends Zume_Chart_Base
                 window.spin_add()
                 window.API_get( window.site_info.total_url, { stage: "att", key: "total_att" }, ( data ) => {
                     data.link = ''
-                    jQuery('.hero').html(window.template_map_list(data))
+                    data.label = 'Active Training Trainees'
+                    data.description = 'People who are actively working a training plan or have only partially completed the training.'
+                    jQuery('.'+data.key).html(window.template_map_list(data))
                     window.click_listener( data )
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "att", key: "has_coach" }, ( data ) => {
-                    jQuery('.has_coach').html(window.template_single_list(data))
+                window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_coach" }, ( data ) => {
+                    data.valence = 'valence-grey'
+                    data.label = 'Has No Coach'
+                    data.description = 'Description'
+                    jQuery('.'+data.key).html(window.template_single_map(data))
                     window.click_listener( data )
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "att", key: "inactive_trainees" }, ( data ) => {
-                    jQuery('.inactive_trainees').html(window.template_single_list(data))
+                window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_friends" }, ( data ) => {
+                    data.valence = 'valence-grey'
+                    data.label = 'Has No Friends'
+                    data.description = 'Description'
+                    jQuery('.'+data.key).html(window.template_single_map(data))
+                    window.click_listener( data )
+                    window.spin_remove()
+                })
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_updated_profiles" }, ( data ) => {
+                    data.valence = 'valence-grey'
+                    data.label = 'Has Not Updated Profile'
+                    data.description = 'Description'
+                    jQuery('.'+data.key).html(window.template_single_map(data))
                     window.click_listener( data )
                     window.spin_remove()
                 })
 
                 // range
-                window.load = ( range ) => {
-                    // positive stats
+                window.path_load = ( range ) => {
+                    jQuery('.loading-spinner').addClass('active')
+
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "att", key: "new_active_trainees", range: range }, ( data ) => {
-                        jQuery('.new_active_trainees').html(window.template_trio(data))
+                    window.API_get( window.site_info.total_url, { stage: "att", key: "active_training_in_out", range: range }, ( data ) => {
+                        data.label = 'Active Training Flow'
+                        jQuery('.'+data.key).html( window.template_in_out( data ) )
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
                     window.API_get( window.site_info.total_url, { stage: "att", key: "total_checkins", range: range }, ( data ) => {
-                        jQuery('.total_checkins').html(window.template_trio(data))
+                        data.label = 'Total Checkins'
+                        jQuery('.'+data.key).html(window.template_single_map(data))
                         window.click_listener( data )
                         window.spin_remove()
                     })
-
-                    // negative stats
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "att", key: "has_no_coach", range: range, negative_stat: true }, ( data ) => {
-                        jQuery('.has_no_coach').html(window.template_trio(data))
+                    window.API_get( window.site_info.total_url, { stage: "att", key: "3_month_plans", range: range }, ( data ) => {
+                        data.label = '3-Month Plans'
+                        data.description = 'Description'
+                        jQuery('.'+data.key).html(window.template_single_map(data))
                         window.click_listener( data )
-                        window.spin_remove()
-                    })
-
-                    window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "att", key: "has_no_updated_profile", range: range, negative_stat: true }, ( data ) => {
-                        jQuery('.has_no_updated_profile').html(window.template_trio(data))
-                        window.click_listener( data )
-                        window.spin_remove()
-                    })
-
-
-
-                    window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_1", range: range }, ( data ) => {
-                        jQuery('.session_1').html(window.template_trio(data))
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_2", range: range }, ( data ) => {
-                        jQuery('.session_2').html(window.template_trio(data))
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_3", range: range }, ( data ) => {
-                        jQuery('.session_3').html(window.template_trio(data))
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_4", range: range }, ( data ) => {
-                        jQuery('.session_4').html(window.template_trio(data))
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_5", range: range }, ( data ) => {
-                        jQuery('.session_5').html(window.template_trio(data))
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_6", range: range }, ( data ) => {
-                        jQuery('.session_6').html(window.template_trio(data))
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_7", range: range }, ( data ) => {
-                        jQuery('.session_7').html(window.template_trio(data))
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_8", range: range }, ( data ) => {
-                        jQuery('.session_8').html(window.template_trio(data))
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_9", range: range }, ( data ) => {
-                        jQuery('.session_9').html(window.template_trio(data))
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "att", key: "session_10", range: range }, ( data ) => {
-                        jQuery('.session_10').html(window.template_trio(data))
                         window.spin_remove()
                     })
 

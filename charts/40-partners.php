@@ -2,11 +2,11 @@
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 
-class Zume_Coaching_Facilitator extends Zume_Chart_Base
+class Zume_Partner extends Zume_Chart_Base
 {
     //slug and title of the top menu folder
-    public $base_slug = 'coaching_facilitator'; // lowercase
-    public $slug = '';
+    public $base_slug = 'partner_general'; // lowercase
+    public $slug = ''; // lowercase
     public $title;
     public $base_title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
@@ -18,7 +18,7 @@ class Zume_Coaching_Facilitator extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Facilitator', 'disciple_tools' );
+        $this->base_title = __( 'General', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path/$this->base_slug" === $url_path ) {
@@ -50,16 +50,25 @@ class Zume_Coaching_Facilitator extends Zume_Chart_Base
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
-                'data' => $this->data(),
+                'data' =>[
+                    'translations' => [
+                        'title_overview' => __( 'Project Overview', 'disciple_tools' ),
+                    ],
+                ],
             ]
         );
     }
-
-
+    public function base_menu( $content ) {
+        $content .= '<li class=""><hr></li>';
+        $content .= '<li class="">PARTNERS</li>';
+        $content .= '<li class=""><a href="'.site_url('/zume-path/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
+        return $content;
+    }
     public function wp_head() {
         $this->js_api();
         ?>
         <script>
+            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
             jQuery(document).ready(function(){
                 "use strict";
 
@@ -67,13 +76,15 @@ class Zume_Coaching_Facilitator extends Zume_Chart_Base
                 chart.empty().html(`
                         <div id="zume-path">
                             <div class="grid-x">
-                                <div class="cell small-6"><h1>Facilitator Coaches</h1></div>
-                                <div class="cell small-6 right">Coaching activity during the Registration and Active Training Stages</div>
+                                <div class="cell small-6"><h1>Partner Statistics</h1></div>
+                                <div class="cell small-6 right">General statistics that are valuable for partners and Zume supporters</div>
                             </div>
                             <hr>
-                            <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-6 total_registrants"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-6 total_att"><span class="loading-spinner active"></span></div>
+                            <div class="grid-x grid-margin-x grid-margin-y" id="hero"></div>
+                            <div class="grid-x grid-margin-x grid-margin-y" id="top">
+                                 <div class="cell medium-6 registered_people"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 completed_trainees"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 total_practitioners"><span class="loading-spinner active"></span></div>
                             </div>
                             <hr>
                             <div class="grid-x">
@@ -85,7 +96,6 @@ class Zume_Coaching_Facilitator extends Zume_Chart_Base
                                     <span style="float: right;">
                                         <select id="range-filter">
                                             <option value="30">Last 30 days</option>
-                                            <option value="7">Last 7 days</option>
                                             <option value="90">Last 90 days</option>
                                             <option value="365">Last 1 Year</option>
                                         </select>
@@ -93,39 +103,64 @@ class Zume_Coaching_Facilitator extends Zume_Chart_Base
                                     <span class="loading-spinner active" style="float: right; margin:0 10px;"></span>
                                 </div>
                             </div>
-                            <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-6 new_coaching_requests"><span class="loading-spinner active"></span></div>
+                            <div class="grid-x grid-margin-x grid-margin-y" id="range">
                                  <div class="cell medium-6 languages"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 trainees"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 coaching_engagements"><span class="loading-spinner active"></span></div>
                             </div>
                         </div>
                     `)
 
+                // totals
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "registrants", key: "total_registrants" }, ( data ) => {
-                    data.label = 'Current Registrants'
-                    data.valence = 'valence-grey'
-                    jQuery('.total_registrants').html(window.template_single(data))
+                window.API_get( window.site_info.total_url, { stage: "general", key: "registered_people" }, ( data ) => {
+                    data.label = 'Registered Peoples'
+                    data.description = 'Description'
+                    jQuery('.'+data.key ).html(window.template_single_map(data))
+                    window.click_listener( data )
                     window.spin_remove()
                 })
+
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "att", key: "total_att" }, ( data ) => {
-                    data.label = 'Current Active Trainees'
-                    data.valence = 'valence-grey'
-                    jQuery('.total_att').html(window.template_single(data))
+                window.API_get( window.site_info.total_url, { stage: "general", key: "completed_trainees" }, ( data ) => {
+                    data.label = 'Completed Trainees'
+                    data.description = 'Description'
+                    jQuery('.'+data.key).html(window.template_single_map(data))
+                    window.click_listener( data )
+                    window.spin_remove()
+                })
+
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "general", key: "total_practitioners" }, ( data ) => {
+                    data.label = 'Total Practitioners'
+                    data.description = 'Description'
+                    jQuery('.'+data.key).html(window.template_single_map(data))
+                    window.click_listener( data )
                     window.spin_remove()
                 })
 
                 window.path_load = ( range ) => {
 
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "facilitator", key: "new_coaching_requests", range: range }, ( data ) => {
-                        jQuery('.new_coaching_requests').html(window.template_single(data))
-                        window.click_listener( data )
+                    window.API_get( window.site_info.total_url, { stage: "general", key: "languages", range: range }, ( data ) => {
+                        data.label = 'Languages'
+                        data.description = 'Languages used by Zume training and community.'
+                        jQuery('.'+data.key).html(window.template_single(data))
+                        window.click_listener(data)
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "facilitator", key: "languages", range: range }, ( data ) => {
-                        jQuery('.languages').html(window.template_single(data))
+                    window.API_get( window.site_info.total_url, { stage: "general", key: "trainees", range: range }, ( data ) => {
+                        data.label = 'Trainees'
+                        data.description = ''
+                        jQuery('.'+data.key).html(window.template_single(data))
+                        window.spin_remove()
+                    })
+                    window.spin_add()
+                    window.API_get( window.site_info.total_url, { stage: "general", key: "coaching_engagements", range: range }, ( data ) => {
+                        data.label = 'Coaching Engagements'
+                        data.description = ''
+                        jQuery('.'+data.key).html(window.template_single_map(data))
                         window.click_listener( data )
                         window.spin_remove()
                     })
@@ -139,17 +174,8 @@ class Zume_Coaching_Facilitator extends Zume_Chart_Base
                 }
             })
         </script>
-
         <?php
     }
 
-    public function data() {
-        return [
-            'translations' => [
-                'title_overview' => __( 'Project Overview', 'disciple_tools' ),
-            ],
-        ];
-    }
-
 }
-new Zume_Coaching_Facilitator();
+new Zume_Partner();

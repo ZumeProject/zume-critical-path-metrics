@@ -17,7 +17,7 @@ class Zume_Path_Registrant extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Registrants', 'disciple_tools' );
+        $this->base_title = __( 'Registrant', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path/$this->base_slug" === $url_path ) {
@@ -65,22 +65,29 @@ class Zume_Path_Registrant extends Zume_Chart_Base
                 chart.empty().html(`
                         <div id="zume-path">
                             <div class="grid-x">
-                                <div class="cell small-6"><h1>Registrants</h1></div>
+                                <div class="cell small-6"><h1>Registrant</h1></div>
                                 <div class="cell small-6 right">Has registered. Needs to plan a training and invite others.</div>
                             </div>
                             <hr>
                             <div class="grid-x">
-                                <div class="cell hero"><span class="loading-spinner active"></span></div>
+                                <div class="cell">
+                                    <h2>Cumulative</h2>
+                                </div>
+                            </div>
+                            <div class="grid-x">
+                                <div class="cell total_registrants"><span class="loading-spinner active"></span></div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-3 all_locations"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 all_countries"><span class="loading-spinner active"></span></div>
+                                <div class="cell medium-6 no_plan"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 no_coach"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 no_friends"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 no_updated_profiles"><span class="loading-spinner active"></span></div>
                             </div>
                             <hr>
                             <div class="grid-x">
                                 <div class="cell center"><h1 id="range-title">Last 30 Days</h1></div>
                                 <div class="cell small-6">
-                                    <h2>Progress Indicators</h2>
+                                    <h2>Time Range</h2>
                                 </div>
                                 <div class="cell small-6" style="float: right;">
                                      <span>
@@ -95,17 +102,13 @@ class Zume_Path_Registrant extends Zume_Chart_Base
                                 </div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-6 new_registrants"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-6 made_plan"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-12 new_registrants"><span class="loading-spinner active"></span></div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell"><h2>Remaining Progress</h2></div>
-                            </div>
-                            <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-6 has_no_people"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-6 has_friends"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-6 has_coach"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-6 has_profile"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 coach_requests"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 set_profile"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 invited_friends"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 joined_online_training"><span class="loading-spinner active"></span></div>
                             </div>
                         </div>
                 `)
@@ -113,62 +116,89 @@ class Zume_Path_Registrant extends Zume_Chart_Base
                 // totals
                 window.spin_add()
                 window.API_get( window.site_info.total_url, { stage: "registrants", key: "total_registrants" }, ( data ) => {
-                    data.link = ''
-                    jQuery('.hero').html(window.template_map_list(data))
+                    data.label = 'Registrants'
+                    data.description = 'Description'
+                    jQuery('.'+data.key).html(window.template_map_list(data))
                     window.click_listener( data )
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "registrants", key: "locations" }, ( data ) => {
-                    jQuery('.all_locations').html(window.template_single(data))
+                window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_plan" }, ( data ) => {
+                    data.valence = 'valence-grey'
+                    data.label = 'Has No Plan'
+                    data.description = 'Description'
+                    jQuery('.'+data.key).html(window.template_single_map(data))
+                    window.click_listener( data )
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "registrants", key: "countries" }, ( data ) => {
-                    jQuery('.all_countries').html(window.template_single_map(data))
+                window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_friends" }, ( data ) => {
+                    data.valence = 'valence-grey'
+                    data.label = 'Has No Friends'
+                    data.description = 'Description'
+                    jQuery('.'+data.key).html(window.template_single_map(data))
+                    window.click_listener( data )
+                    window.spin_remove()
+                })
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_coach" }, ( data ) => {
+                    data.valence = 'valence-grey'
+                    data.label = 'Has No Coach'
+                    data.description = 'Description'
+                    jQuery('.'+data.key).html(window.template_single_map(data))
+                    window.click_listener( data )
+                    window.spin_remove()
+                })
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_updated_profiles" }, ( data ) => {
+                    data.valence = 'valence-grey'
+                    data.label = 'Has Not Updated Profile'
+                    data.description = 'Description'
+                    jQuery('.'+data.key).html(window.template_single_map(data))
+                    window.click_listener( data )
                     window.spin_remove()
                 })
 
                 // ranges
-                window.load = ( range ) => {
+                window.path_load = ( range ) => {
                     jQuery('.loading-spinner').addClass('active')
 
                     // positive
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "new_registrations", range: range }, ( data ) => {
-                        jQuery('.new_registrants').html( window.template_trio( data ) )
+                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "registrations_in_out", range: range }, ( data ) => {
+                        jQuery('.new_registrants').html( window.template_in_out( data ) )
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "has_plan", range: range }, ( data ) => {
-                        jQuery('.made_plan').html( window.template_trio( data ) )
-                        window.click_listener( data )
-                        window.spin_remove()
-                    })
-
-                    // negative
-                    window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_plan", range: range, negative_stat: true }, ( data ) => {
-                        jQuery('.has_no_people').html( window.template_trio( data ) )
+                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "coach_requests", range: range }, ( data ) => {
+                        data.label = 'Coaching Requests'
+                        data.description = 'Description'
+                        jQuery('.'+data.key).html(window.template_single_map(data))
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_friends", range: range, negative_stat: true }, ( data ) => {
-                        jQuery('.has_friends').html( window.template_trio( data ) )
+                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "set_profile", range: range }, ( data ) => {
+                        data.label = 'Set Profile'
+                        data.description = 'Description'
+                        jQuery('.'+data.key).html(window.template_single_map(data))
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_coach", range: range, negative_stat: true }, ( data ) => {
-                        jQuery('.has_coach').html( window.template_trio( data ) )
+                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "invited_friends", range: range }, ( data ) => {
+                        data.label = 'Invited Friends'
+                        data.description = 'Description'
+                        jQuery('.'+data.key).html(window.template_single_map(data))
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_updated_profile", range: range, negative_stat: true }, ( data ) => {
-                        jQuery('.has_profile').html( window.template_trio( data ) )
+                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "joined_online_training", range: range }, ( data ) => {
+                        data.label = 'Joined Online Training'
+                        data.description = 'Description'
+                        jQuery('.'+data.key).html(window.template_single_map(data))
                         window.click_listener( data )
                         window.spin_remove()
                     })

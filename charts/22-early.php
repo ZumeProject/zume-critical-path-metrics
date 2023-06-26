@@ -73,6 +73,7 @@ class Zume_Coaching_Early extends Zume_Chart_Base
                             <div class="grid-x grid-margin-x grid-margin-y">
                                  <div class="cell medium-3 total_registrants"><span class="loading-spinner active"></span></div>
                                  <div class="cell medium-3 total_att"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-3 coaches"><span class="loading-spinner active"></span></div>
                             </div>
                             <hr>
                             <div class="grid-x">
@@ -95,7 +96,6 @@ class Zume_Coaching_Early extends Zume_Chart_Base
                             <div class="grid-x grid-margin-x grid-margin-y">
                                  <div class="cell medium-3 new_coaching_requests"><span class="loading-spinner active"></span></div>
                                  <div class="cell medium-3 languages"><span class="loading-spinner active"></span></div>
-                                 <div class="cell medium-3 locations"><span class="loading-spinner active"></span></div>
                             </div>
                         </div>
                     `)
@@ -114,8 +114,15 @@ class Zume_Coaching_Early extends Zume_Chart_Base
                     jQuery('.total_att').html(window.template_single(data))
                     window.spin_remove()
                 })
+                window.spin_add()
+                window.API_get( window.site_info.total_url, { stage: "early", key: "coaches" }, ( data ) => {
+                    data.label = 'Coaches'
+                    data.valence = 'valence-grey'
+                    jQuery('.coaches').html(window.template_single(data))
+                    window.spin_remove()
+                })
 
-                window.load = ( range ) => {
+                window.path_load = ( range ) => {
 
                     window.spin_add()
                     window.API_get( window.site_info.total_url, { stage: "early", key: "new_coaching_requests", range: range }, ( data ) => {
@@ -126,12 +133,6 @@ class Zume_Coaching_Early extends Zume_Chart_Base
                     window.spin_add()
                     window.API_get( window.site_info.total_url, { stage: "early", key: "languages", range: range }, ( data ) => {
                         jQuery('.languages').html(window.template_single(data))
-                        window.click_listener( data )
-                        window.spin_remove()
-                    })
-                    window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "early", key: "locations", range: range }, ( data ) => {
-                        jQuery('.locations').html(window.template_single_map(data))
                         window.click_listener( data )
                         window.spin_remove()
                     })
