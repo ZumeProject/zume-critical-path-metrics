@@ -26,34 +26,6 @@ class Zume_Path_L2 extends Zume_Chart_Base
         }
     }
 
-    public function scripts() {
-        wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
-        wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
-        wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
-
-        wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
-
-        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
-            'jquery',
-            'jquery-ui-core',
-            'amcharts-core',
-            'amcharts-charts',
-            'amcharts-animated',
-            'lodash'
-        ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
-
-        wp_localize_script(
-            'dt_metrics_project_script', 'dtMetricsProject', [
-                'root' => esc_url_raw( rest_url() ),
-                'theme_uri' => get_template_directory_uri(),
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-                'current_user_login' => wp_get_current_user()->user_login,
-                'current_user_id' => get_current_user_id(),
-                'data' => $this->data(),
-            ]
-        );
-    }
-
     public function wp_head() {
         $this->js_api();
         ?>

@@ -60,6 +60,33 @@ abstract class Zume_Chart_Base
         );
     }
 
+    public function scripts() {
+        wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
+        wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
+        wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
+
+        wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
+
+        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
+            'jquery',
+            'jquery-ui-core',
+            'amcharts-core',
+            'amcharts-charts',
+            'amcharts-animated',
+            'lodash'
+        ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
+
+        wp_localize_script(
+            'dt_metrics_project_script', 'dtMetricsProject', [
+                'root' => esc_url_raw( rest_url() ),
+                'theme_uri' => get_template_directory_uri(),
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+                'current_user_login' => wp_get_current_user()->user_login,
+                'current_user_id' => get_current_user_id(),
+            ]
+        );
+    }
+
     public function has_permission(){
         $permissions = $this->permissions;
         $pass = count( $permissions ) === 0;
@@ -287,14 +314,14 @@ abstract class Zume_Chart_Base
                 window.load_list = ( data ) => {
                     jQuery('.zume-list.'+data.key).click(function(){
                         jQuery('#modal-large').foundation('open')
-                        jQuery('#modal-large-title').empty().html(`${data.label}<hr>`)
+                        jQuery('#modal-large-title').empty().html(`${data.label} <span style="float:right; margin-right: 2em;"><button class="button small">Take Action</button> <button class="button small ">Take Action</button></span> <hr>`)
                         jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
 
                         window.API_get( window.site_info.list_url, ( data_list ) => {
                             jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
-                            jQuery('#zume-list-modal').append( `<tr><td><strong>Name</strong></td><td><strong>Registered</strong></td></tr>`)
+                            jQuery('#zume-list-modal').append( `<tr><td></td><td><strong>Name</strong></td><td><strong>Registered</strong></td></tr>`)
                             jQuery.each(data_list, function(i,v)  {
-                                jQuery('#zume-list-modal').append( `<tr><td><a href="#">${ v.display_name }</a></td><td>${v.user_registered}</td></tr>`)
+                                jQuery('#zume-list-modal').append( `<tr><td><input type="checkbox" /></td><td><a href="#">${ v.display_name }</a></td><td>${v.user_registered}</td></tr>`)
                             })
                             jQuery('.loading-spinner').removeClass('active')
                         })

@@ -164,6 +164,8 @@ Card Base
     color: var(--white);
     font-size: var(--small);
     font-weight: var(--medium-weight);
+    padding-left: var(--small);
+    padding-right: var(--small);
 }
 
 

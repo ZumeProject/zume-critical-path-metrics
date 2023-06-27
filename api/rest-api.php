@@ -2075,7 +2075,7 @@ class Zume_Stats_Endpoints
                 $column_data[$key][$next_column_number] = 0;
             }
         }
-        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( 'contacts', [ 'overall_status' => [ '-closed' ], 'type' => [ 'access' ] ] );
+        $results = self::query_sample( 'contacts', [ 'overall_status' => [ '-closed' ], 'type' => [ 'access' ] ] );
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
                 if ( $result['count'] > 0 ) { // filter for only contact and positive counts
@@ -2091,14 +2091,14 @@ class Zume_Stats_Endpoints
                         }
                     }
 
-                    if ( $result['country_code'] === 'US' ) {
+                    if ( isset( $result['country_code'] ) && $result['country_code'] === 'US' ) {
                         $result['count'] = round( intval( $result['population'] ) / 2500 );
                     } else {
                         $result['count'] = round( intval( $result['population'] ) / 25000 );
                     }
 
                     // add new record to column
-                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
+                    $column_data[$grid_id][$next_column_number] = number_format( $result['count'] ) ?? 0; // must be string
                 }
             }
         }
@@ -2125,7 +2125,7 @@ class Zume_Stats_Endpoints
                 $column_data[$key][$next_column_number] = 0;
             }
         }
-        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( 'contacts', [ 'overall_status' => [ '-closed' ], 'type' => [ 'access' ] ] );
+        $results = self::query_sample( 'contacts', [ 'overall_status' => [ '-closed' ], 'type' => [ 'access' ] ] );
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
                 if ( $result['count'] > 0 ) { // filter for only contact and positive counts
@@ -2141,20 +2141,117 @@ class Zume_Stats_Endpoints
                         }
                     }
 
-                    if ( $result['country_code'] === 'US' ) {
+                    if ( isset( $result['country_code'] ) && $result['country_code'] === 'US' ) {
                         $result['count'] = round( intval( $result['population'] ) / 2500 );
                     } else {
                         $result['count'] = round( intval( $result['population'] ) / 25000 );
                     }
 
                     // add new record to column
-                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
+                    $column_data[$grid_id][$next_column_number] = number_format( $result['count'] ) ?? 0; // must be string
                 }
             }
         }
         $data['custom_column_labels'] = $column_labels;
         $data['custom_column_data']   = $column_data;
         return $data;
+    }
+
+    public static function query_sample( $post_type, $query ) {
+        global $wpdb;
+        $sql = DT_Posts::fields_to_sql( $post_type, $query );
+        if ( empty( $sql['where_sql'] ) ){
+            $sql['where_sql'] = '1=1';
+        }
+
+        //phpcs:disable
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT t.grid_id, t.count, lg.country_code, lg.population FROM (
+            SELECT t0.admin0_grid_id as grid_id, count(t0.admin0_grid_id) as count
+            FROM (
+                SELECT lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->dt_location_grid_meta as lgm
+                LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                INNER JOIN $wpdb->posts as p ON ( p.ID = lgm.post_id )
+                " . $sql["joins_sql"] . "
+                WHERE p.post_type = %s
+                AND " . $sql["where_sql"] . "
+            ) as t0
+            GROUP BY t0.admin0_grid_id
+            UNION
+            SELECT t1.admin1_grid_id as grid_id, count(t1.admin1_grid_id) as count
+            FROM (
+                SELECT lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->dt_location_grid_meta as lgm
+                LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                INNER JOIN $wpdb->posts as p ON ( p.ID = lgm.post_id )
+                " . $sql["joins_sql"] . "
+                WHERE p.post_type = %s
+                AND " . $sql["where_sql"] . "
+            ) as t1
+            GROUP BY t1.admin1_grid_id
+            UNION
+            SELECT t2.admin2_grid_id as grid_id, count(t2.admin2_grid_id) as count
+            FROM (
+                SELECT lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->dt_location_grid_meta as lgm
+                LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                INNER JOIN $wpdb->posts as p ON ( p.ID = lgm.post_id )
+                " . $sql["joins_sql"] . "
+                WHERE p.post_type = %s
+                AND " . $sql["where_sql"] . "
+            ) as t2
+            GROUP BY t2.admin2_grid_id
+            UNION
+            SELECT t3.admin3_grid_id as grid_id, count(t3.admin3_grid_id) as count
+            FROM (
+                SELECT lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->dt_location_grid_meta as lgm
+                LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                INNER JOIN $wpdb->posts as p ON ( p.ID = lgm.post_id )
+                " . $sql["joins_sql"] . "
+                WHERE p.post_type = %s
+                AND " . $sql["where_sql"] . "
+            ) as t3
+            GROUP BY t3.admin3_grid_id
+            UNION
+            SELECT t4.admin4_grid_id as grid_id, count(t4.admin4_grid_id) as count
+            FROM (
+                SELECT lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->dt_location_grid_meta as lgm
+                LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                INNER JOIN $wpdb->posts as p ON ( p.ID = lgm.post_id )
+                " . $sql["joins_sql"] . "
+                WHERE p.post_type = %s
+                AND " . $sql["where_sql"] . "
+            ) as t4
+            GROUP BY t4.admin4_grid_id
+            UNION
+            SELECT t5.admin5_grid_id as grid_id, count(t5.admin5_grid_id) as count
+            FROM (
+                SELECT lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->dt_location_grid_meta as lgm
+                LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                INNER JOIN $wpdb->posts as p ON ( p.ID = lgm.post_id )
+                " . $sql["joins_sql"] . "
+                WHERE p.post_type = %s
+                AND " . $sql["where_sql"] . "
+            ) as t5
+            GROUP BY t5.admin5_grid_id
+            ) as t
+            LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=t.grid_id
+            ", $post_type, $post_type, $post_type, $post_type, $post_type, $post_type ), ARRAY_A );
+        //phpcs:enable
+
+
+        $list = [];
+        if ( is_array( $results ) ) {
+            foreach ( $results as $result ) {
+                $list[$result['grid_id']] = $result;
+            }
+        }
+
+        return $list;
     }
 
     public function add_practitioners_goal_column( $data ) {

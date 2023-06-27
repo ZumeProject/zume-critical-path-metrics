@@ -18,41 +18,13 @@ class Zume_Path_Goals extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Goals', 'disciple_tools' );
+        $this->base_title = __( 'Top Goals', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             add_action( 'wp_head',[ $this, 'wp_head' ], 1000);
         }
-    }
-
-    public function scripts() {
-        wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
-        wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
-        wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
-
-        wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
-
-        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
-            'jquery',
-            'jquery-ui-core',
-            'amcharts-core',
-            'amcharts-charts',
-            'amcharts-animated',
-            'lodash'
-        ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
-
-        wp_localize_script(
-            'dt_metrics_project_script', 'dtMetricsProject', [
-                'root' => esc_url_raw( rest_url() ),
-                'theme_uri' => get_template_directory_uri(),
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-                'current_user_login' => wp_get_current_user()->user_login,
-                'current_user_id' => get_current_user_id(),
-                'data' => $this->data(),
-            ]
-        );
     }
 
     public function base_menu( $content ) {
@@ -97,11 +69,10 @@ class Zume_Path_Goals extends Zume_Chart_Base
                                     <p><strong>Zúme Training</strong> is an on-line and in-life learning experience designed for small groups who follow Jesus to learn how to obey His Great Commission and make disciples who multiply.</p>
                                     <p><strong>Zúme Community</strong> is a community of practice for those who what to see disciple making movements.</p>
                                     <h2>Top Metrics</h2>
-                                    <p>These metrics (fully trained trainees, practitioners, and churches) represent the highest level milestones for accomplishing Zúme's vision. </p>
+                                    <p>These metrics ( practitioners and churches) represent the highest level milestones for accomplishing Zúme's vision. </p>
                                 </div>
                                 <div class="cell medium-9">
                                      <div class="grid-x critical-path">
-                                        <div class="cell"><div class="trainees_full zume-critical-path"><span class="loading-spinner active"></span></div></div>
                                         <div class="cell"><div class="practitioners zume-critical-path"><span class="loading-spinner active"></span></div></div>
                                         <div class="cell"><div class="churches zume-critical-path"><span class="loading-spinner active"></span></div></div>
                                     </div>
@@ -112,16 +83,7 @@ class Zume_Path_Goals extends Zume_Chart_Base
 
                 window.path_load = ( filter ) => {
 
-                    window.spin_add()
-                    window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
-                        data.label = 'Fully Trained Trainees'
-                        data.key = 'full_trained_trainees'
-                        data.link = ''
-                        data.description = 'Fully Trained Trainees are those who have completed the full Zúme training course and have recorded their progress.'
-                        jQuery('.trainees_full').html(window.template_map_list(data))
-                        window.click_listener(data)
-                        window.spin_remove()
-                    })
+
                     window.spin_add()
                     window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
                         data.label = 'Practitioners'

@@ -20,7 +20,7 @@ class Zume_Metrics_Locations_List extends Zume_Chart_Base
             return;
         }
         $this->title = __( 'Locations List', 'disciple_tools' );
-        $this->base_title = __( 'Location Funnel', 'disciple_tools' );
+        $this->base_title = __( 'Steps By Location', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path/$this->base_slug" === $url_path ) {

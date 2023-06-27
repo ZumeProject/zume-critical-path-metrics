@@ -22,8 +22,7 @@ class Zume_Metrics_Locations_Goals extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->title = __( 'Locations', 'disciple_tools' );
-        $this->base_title = __( 'Location Goals', 'disciple_tools' );
+        $this->base_title = __( 'Goals by Location', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path/$this->base_slug" === $url_path ) {

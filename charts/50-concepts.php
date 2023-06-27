@@ -17,7 +17,7 @@ class Zume_Path_Concept extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Concepts', 'disciple_tools' );
+        $this->base_title = __( 'Funnel Concepts', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path/$this->base_slug" === $url_path ) {
@@ -26,36 +26,11 @@ class Zume_Path_Concept extends Zume_Chart_Base
         }
     }
 
-    public function scripts() {
-        wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
-        wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
-        wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
-
-        wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
-
-        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
-            'jquery',
-            'jquery-ui-core',
-            'amcharts-core',
-            'amcharts-charts',
-            'amcharts-animated',
-            'lodash'
-        ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
-
-        wp_localize_script(
-            'dt_metrics_project_script', 'dtMetricsProject', [
-                'root' => esc_url_raw( rest_url() ),
-                'theme_uri' => get_template_directory_uri(),
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-                'current_user_login' => wp_get_current_user()->user_login,
-                'current_user_id' => get_current_user_id(),
-                'data' =>[
-                    'translations' => [
-                        'title_overview' => __( 'Project Overview', 'disciple_tools' ),
-                    ],
-                ],
-            ]
-        );
+    public function base_menu( $content ) {
+        $content .= '<li class=""><hr></li>';
+        $content .= '<li class="">HELP</li>';
+        $content .= '<li class=""><a href="'.site_url('/zume-path/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
+        return $content;
     }
 
     public function wp_head() {
