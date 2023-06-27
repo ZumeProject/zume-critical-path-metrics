@@ -22,7 +22,7 @@ class Zume_Path_Goals extends Zume_Chart_Base
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path" === $url_path ) {
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            add_action( 'wp_enqueue_scripts', [ $this, 'base_scripts' ], 99 );
             add_action( 'wp_head',[ $this, 'wp_head' ], 1000);
         }
     }
