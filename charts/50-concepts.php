@@ -34,7 +34,6 @@ class Zume_Path_Concept extends Zume_Chart_Base
     }
 
     public function wp_head() {
-        $this->styles();
         $this->js_api();
         ?>
         <script>
@@ -109,10 +108,6 @@ class Zume_Path_Concept extends Zume_Chart_Base
 
         </script>
         <?php
-    }
-
-    public function styles() {
-
     }
 
 }

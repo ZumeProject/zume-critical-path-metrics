@@ -81,32 +81,29 @@ class Zume_Path_Goals extends Zume_Chart_Base
                         </div>
                     `)
 
-                window.path_load = ( filter ) => {
-
+                window.path_load = ( range ) => {
 
                     window.spin_add()
-                    window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
+                    window.API_get( window.site_info.total_url, { stage: "general", key: "practitioners", range: range }, ( data ) => {
                         data.label = 'Practitioners'
-                        data.key = 'practitioners'
                         data.link = ''
                         data.description = 'Practitioners are those who have identified as movement practitioners (of all stages: Partial, Completed, Multiplying). They are seeking movement with multiplicative methods and want to participate in the Zúme Community.'
-                        jQuery('.practitioners').html(window.template_map_list(data))
-                        window.click_listener(data)
+                        jQuery('.'+data.key).html(window.template_map_list(data))
+                        window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_post( window.site_url+'sample?filter='+filter, ( data ) => {
+                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "churches", range: range }, ( data ) => {
                         data.label = 'Churches'
-                        data.key = 'churches'
                         data.link = ''
                         data.description = 'These are the total number of churches reported by all the practitioners of all stages in the Zúme Community.'
-                        jQuery('.churches').html(window.template_map_list(data))
-                        window.click_listener(data)
+                        jQuery('.'+data.key).html(window.template_map_list(data))
+                        window.click_listener( data )
                         window.spin_remove()
                     })
+
                 }
                 window.setup_filter()
-
 
                 window.click_listener = ( data ) => {
                     window.load_list(data)
@@ -119,14 +116,9 @@ class Zume_Path_Goals extends Zume_Chart_Base
         </script>
         <?php
     }
-    public function data() {
-        return [
-            'translations' => [
-                'title_overview' => __( 'Project Overview', 'disciple_tools' ),
-            ],
-        ];
-    }
+
     public function styles() {
+        /* required for side menu*/
         ?>
         <style>
             .side-menu-item-highlight {

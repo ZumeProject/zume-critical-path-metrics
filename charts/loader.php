@@ -49,9 +49,7 @@ class Zume_Metrics_Base {
 
             require_once ('50-concepts.php');
 
-            require_once ('100-type.php');
             require_once ('101-goals.php');
-            require_once ('102-journey.php');
 
         }
     }

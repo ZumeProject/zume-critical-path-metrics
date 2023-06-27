@@ -17,7 +17,7 @@ class Zume_Reporting_Goals extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'manage goals', 'disciple_tools' );
+        $this->base_title = __( 'Manage goals', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-path/$this->base_slug" === $url_path ) {
@@ -27,7 +27,10 @@ class Zume_Reporting_Goals extends Zume_Chart_Base
     }
 
     public function base_menu( $content ) {
-        $content .= '<li class=""><a href="'.site_url('/zume-path/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
+        if ( user_can( get_current_user_id(), 'manage_options' ) ) {
+            $content .= '<li class=""><hr>Admin</li>';
+            $content .= '<li class=""><a href="'.site_url('/zume-path/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
+        }
         return $content;
     }
     public function wp_head() {
