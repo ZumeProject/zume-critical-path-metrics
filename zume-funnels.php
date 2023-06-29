@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name: Zúme - Funnels
- * Plugin URI: https://github.com/ZumeProject/zume-funnel-metrics
- * Description: Zúme - Critical Path is for reporting metrics on the Zume Critical Path.
- * Text Domain: zume-funnel-metrics
+ * Plugin URI: https://github.com/ZumeProject/zume-funnels
+ * Description: Zúme - Funnels is for managing funnel information and action.
+ * Text Domain: zume-funnels
  * Domain Path: /languages
  * Version:  0.1
  * Author URI: https://github.com/DiscipleTools
- * GitHub Plugin URI: https://github.com/ZumeProject/zume-funnel-metrics
+ * GitHub Plugin URI: https://github.com/ZumeProject/zume-funnels
  * Requires at least: 4.7.0
  * (Requires 4.7+ because of the integration of the REST API at 4.7 and the security requirements of this milestone version.)
  * Tested up to: 5.6
@@ -24,19 +24,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Gets the instance of the `Zume_Critical_Path` class.
+ * Gets the instance of the `Zume_Funnel` class.
  *
  * @since  0.1
  * @access public
  * @return object|bool
  */
-function zume_critical_path() {
-    $zume_critical_path_required_dt_theme_version = '1.19';
+function zume_funnel() {
+    $zume_funnel_required_dt_theme_version = '1.19';
     $wp_theme = wp_get_theme();
     $version = $wp_theme->version;
 
     if ( phpversion() < '8.0' ) {
-        add_action( 'admin_notices', 'zume_critical_path_hook_admin_notice' );
+        add_action( 'admin_notices', 'zume_funnel_hook_admin_notice' );
         add_action( 'wp_ajax_dismissed_notice_handler', 'dt_hook_ajax_notice_handler' );
         return false;
     }
@@ -45,8 +45,8 @@ function zume_critical_path() {
      * Check if the Disciple.Tools theme is loaded and is the latest required version
      */
     $is_theme_dt = class_exists( 'Disciple_Tools' );
-    if ( $is_theme_dt && version_compare( $version, $zume_critical_path_required_dt_theme_version, '<' ) ) {
-        add_action( 'admin_notices', 'zume_critical_path_hook_admin_notice' );
+    if ( $is_theme_dt && version_compare( $version, $zume_funnel_required_dt_theme_version, '<' ) ) {
+        add_action( 'admin_notices', 'zume_funnel_hook_admin_notice' );
         add_action( 'wp_ajax_dismissed_notice_handler', 'dt_hook_ajax_notice_handler' );
         return false;
     }
@@ -60,15 +60,15 @@ function zume_critical_path() {
         require_once get_template_directory() . '/dt-core/global-functions.php';
     }
 
-    return Zume_Critical_Path::instance();
+    return Zume_Funnel::instance();
 
 }
-add_action( 'after_setup_theme', 'zume_critical_path', 20 );
+add_action( 'after_setup_theme', 'zume_funnel', 20 );
 
 //register the D.T Plugin
 add_filter( 'dt_plugins', function ( $plugins ){
     $plugin_data = get_file_data( __FILE__, [ 'Version' => 'Version', 'Plugin Name' => 'Plugin Name' ], false );
-    $plugins['zume-funnel-metrics'] = [
+    $plugins['zume-funnels'] = [
         'plugin_url' => trailingslashit( plugin_dir_url( __FILE__ ) ),
         'version' => $plugin_data['Version'] ?? null,
         'name' => $plugin_data['Plugin Name'] ?? null,
@@ -82,7 +82,7 @@ add_filter( 'dt_plugins', function ( $plugins ){
  * @since  0.1
  * @access public
  */
-class Zume_Critical_Path {
+class Zume_Funnel {
 
     private static $_instance = null;
     public static function instance() {
@@ -93,6 +93,10 @@ class Zume_Critical_Path {
     }
 
     private function __construct() {
+        if ( ! current_user_can( 'list_users' ) ) {
+            return;
+        }
+
         $is_rest = dt_is_rest();
 
         if ( $is_rest ) {
@@ -100,6 +104,7 @@ class Zume_Critical_Path {
             require_once ('api/queries.php');
             require_once( 'api/rest-api.php' );
         }
+
 
         require_once ('maps/cluster-1-last100.php');
         require_once ('maps/heatmap.php');
@@ -148,7 +153,7 @@ class Zume_Critical_Path {
      */
     public static function deactivation() {
         // add functions here that need to happen on deactivation
-        delete_option( 'dismissed-zume-funnel-metrics' );
+        delete_option( 'dismissed-zume-funnels' );
     }
 
     /**
@@ -159,7 +164,7 @@ class Zume_Critical_Path {
      * @return void
      */
     public function i18n() {
-        $domain = 'zume-funnel-metrics';
+        $domain = 'zume-funnels';
         load_plugin_textdomain( $domain, false, trailingslashit( dirname( plugin_basename( __FILE__ ) ) ). 'languages' );
     }
 
@@ -171,7 +176,7 @@ class Zume_Critical_Path {
      * @return string
      */
     public function __toString() {
-        return 'zume-funnel-metrics';
+        return 'zume-funnels';
     }
 
     /**
@@ -206,7 +211,7 @@ class Zume_Critical_Path {
      * @access public
      */
     public function __call( $method = '', $args = array() ) {
-        _doing_it_wrong( 'zume_critical_path::' . esc_html( $method ), 'Method does not exist.', '0.1' );
+        _doing_it_wrong( 'zume_funnel::' . esc_html( $method ), 'Method does not exist.', '0.1' );
         unset( $method, $args );
         return null;
     }
@@ -214,32 +219,32 @@ class Zume_Critical_Path {
 
 
 // Register activation hook.
-register_activation_hook( __FILE__, [ 'Zume_Critical_Path', 'activation' ] );
-register_deactivation_hook( __FILE__, [ 'Zume_Critical_Path', 'deactivation' ] );
+register_activation_hook( __FILE__, [ 'Zume_Funnel', 'activation' ] );
+register_deactivation_hook( __FILE__, [ 'Zume_Funnel', 'deactivation' ] );
 
 
-if ( ! function_exists( 'zume_critical_path_hook_admin_notice' ) ) {
-    function zume_critical_path_hook_admin_notice() {
-        global $zume_critical_path_required_dt_theme_version;
+if ( ! function_exists( 'zume_funnel_hook_admin_notice' ) ) {
+    function zume_funnel_hook_admin_notice() {
+        global $zume_funnel_required_dt_theme_version;
         $wp_theme = wp_get_theme();
         $current_version = $wp_theme->version;
-        $message = "'Disciple.Tools - Zúme Critical Path' plugin requires 'Disciple.Tools' theme to work. Please activate 'Disciple.Tools' theme or make sure it is latest version.";
+        $message = "'Disciple.Tools - Zúme Funnels' plugin requires 'Disciple.Tools' theme to work. Please activate 'Disciple.Tools' theme or make sure it is latest version.";
         if ( $wp_theme->get_template() === 'disciple-tools-theme' ){
-            $message .= ' ' . sprintf( esc_html( 'Current Disciple.Tools version: %1$s, required version: %2$s' ), esc_html( $current_version ), esc_html( $zume_critical_path_required_dt_theme_version ) );
+            $message .= ' ' . sprintf( esc_html( 'Current Disciple.Tools version: %1$s, required version: %2$s' ), esc_html( $current_version ), esc_html( $zume_funnel_required_dt_theme_version ) );
         }
         // Check if it's been dismissed...
-        if ( ! get_option( 'dismissed-zume-funnel-metrics', false ) ) { ?>
-            <div class="notice notice-error notice-zume-funnel-metrics is-dismissible" data-notice="zume-funnel-metrics">
+        if ( ! get_option( 'dismissed-zume-funnels', false ) ) { ?>
+            <div class="notice notice-error notice-zume-funnels is-dismissible" data-notice="zume-funnels">
                 <p><?php echo esc_html( $message );?></p>
             </div>
             <script>
                 jQuery(function($) {
-                    $( document ).on( 'click', '.notice-zume-funnel-metrics .notice-dismiss', function () {
+                    $( document ).on( 'click', '.notice-zume-funnels .notice-dismiss', function () {
                         $.ajax( ajaxurl, {
                             type: 'POST',
                             data: {
                                 action: 'dismissed_notice_handler',
-                                type: 'zume-funnel-metrics',
+                                type: 'zume-funnels',
                                 security: '<?php echo esc_html( wp_create_nonce( 'wp_rest_dismiss' ) ) ?>'
                             }
                         })
@@ -271,7 +276,7 @@ if ( !function_exists( 'dt_hook_ajax_notice_handler' ) ){
  * This section runs the remote plugin updating service, so you can issue distributed updates to your plugin
  *
  * @note See the instructions for version updating to understand the steps involved.
- * @link https://github.com/DiscipleTools/zume-funnel-metrics/wiki/Configuring-Remote-Updating-System
+ * @link https://github.com/DiscipleTools/zume-funnels/wiki/Configuring-Remote-Updating-System
  *
  * @todo Enable this section with your own hosted file
  * @todo An example of this file can be found in (version-control.json)
@@ -296,9 +301,9 @@ if ( !function_exists( 'dt_hook_ajax_notice_handler' ) ){
 //        }
 //        if ( class_exists( 'Puc_v4_Factory' ) ){
 //            Puc_v4_Factory::buildUpdateChecker(
-//                'https://raw.githubusercontent.com/DiscipleTools/zume-funnel-metrics/master/version-control.json',
+//                'https://raw.githubusercontent.com/DiscipleTools/zume-funnels/master/version-control.json',
 //                __FILE__,
-//                'zume-funnel-metrics'
+//                'zume-funnels'
 //            );
 //
 //        }
