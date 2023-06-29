@@ -63,10 +63,10 @@ class Zume_Stats_Endpoints
             ]
         );
         register_rest_route(
-            $this->namespace, '/data', [
+            $this->namespace, '/location_funnel', [
                 [
                     'methods'  => 'GET',
-                    'callback' => [ $this, 'location_list' ],
+                    'callback' => [ $this, 'location_funnel' ],
                     'permission_callback' => '__return_true',
                 ],
             ]
@@ -150,6 +150,7 @@ class Zume_Stats_Endpoints
         switch( $params['key'] ) {
 
             case 'total_registrations':
+                // query
                 return [
                     'key' => 'total_registrations',
                     'label' => 'Total Registrations',
@@ -1778,7 +1779,7 @@ class Zume_Stats_Endpoints
 
         return $data;
     }
-    public function location_list( ) {
+    public function location_funnel( ) {
         $data = DT_Mapping_Module::instance()->data();
 
         $data = $this->add_registrants_column( $data );

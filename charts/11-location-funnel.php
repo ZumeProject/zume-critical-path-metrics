@@ -50,7 +50,7 @@ class Zume_Metrics_Locations_List extends Zume_Chart_Base
         wp_localize_script(
             'dt_'.$this->slug.'_script', $this->js_object_name, [
                 'rest_endpoints_base' => esc_url_raw( rest_url() ) . $this->namespace,
-                'rest_endpoint' => esc_url_raw( rest_url() ) . $this->namespace . '/data',
+                'rest_endpoint' => esc_url_raw( rest_url() ) . $this->namespace . '/location_funnel',
                 'load_url' =>  "zume-path/$this->base_slug",
                 'base_slug' => $this->base_slug,
                 'root' => esc_url_raw( rest_url() ),

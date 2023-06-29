@@ -27,7 +27,7 @@ class Zume_Metrics_Base {
             require_once ('abstract.php');
 
             require_once ('01-goals.php');
-            require_once ('01-location-list.php');
+            require_once ('01-location-goal.php');
 
             require_once ('10-trainee-overview.php');
             require_once ('11-location-funnel.php');

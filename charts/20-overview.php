@@ -38,12 +38,10 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
         $this->js_api();
         ?>
         <script>
-            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
             jQuery(document).ready(function(){
                 "use strict";
 
                 let chart = jQuery('#chart')
-                let title = '<?php echo $this->base_title ?>'
                 chart.empty().html(`
                         <div id="zume-path">
                             <div class="grid-x">
@@ -57,7 +55,7 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
                                 </div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-6 active_coaches"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-6 coaches"><span class="loading-spinner active"></span></div>
                                  <div class="cell medium-6 total_people_in_coaching"><span class="loading-spinner active"></span></div>
                             </div>
                             <hr>
@@ -79,6 +77,7 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
                                 </div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
+                                 <div class="cell medium-6 active_coaches"><span class="loading-spinner active"></span></div>
                                  <div class="cell medium-6 new_coaching_requests"><span class="loading-spinner active"></span></div>
                                  <div class="cell medium-6 coaching_engagements"><span class="loading-spinner active"></span></div>
                                  <div class="cell medium-6 people_in_coaching"><span class="loading-spinner active"></span></div>
@@ -88,8 +87,9 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
 
                 // totals
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "general", key: "active_coaches" }, ( data ) => {
-                    jQuery('.active_coaches').html(window.template_single_map(data))
+                window.API_get( window.site_info.total_url, { stage: "general", key: "coaches" }, ( data ) => {
+                    data.label = "Coaches"
+                    jQuery('.'+data.key).html(window.template_single_map(data))
                     window.click_listener( data )
                     window.spin_remove()
                 })
@@ -103,6 +103,13 @@ class Zume_Coaching_Stages extends Zume_Chart_Base
 
                 window.path_load = ( range ) => {
 
+                    window.spin_add()
+                    window.API_get( window.site_info.total_url, { stage: "general", key: "active_coaches", range: range }, ( data ) => {
+                        data.label = "Active Coaches"
+                        jQuery('.'+data.key).html(window.template_single(data))
+                        window.click_listener( data )
+                        window.spin_remove()
+                    })
                     window.spin_add()
                     window.API_get( window.site_info.total_url, { stage: "early", key: "new_coaching_requests", range: range }, ( data ) => {
                         jQuery('.new_coaching_requests').html(window.template_single(data))
