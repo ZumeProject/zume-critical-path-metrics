@@ -1,7 +1,7 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-class Zume_Path_L3 extends Zume_Chart_Base
+class Zume_Funnel_L3 extends Zume_Funnel_Chart_Base
 {
     //slug and title of the top menu folder
     public $base_slug = 's3_practitioners'; // lowercase
@@ -17,10 +17,10 @@ class Zume_Path_L3 extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'S3 (Multiplying)', 'disciple_tools' );
+        $this->base_title = __( 'S3 (Multiplying)', 'zume_funnels' );
 
         $url_path = dt_get_url_path( true );
-        if ( "zume-path/$this->base_slug" === $url_path ) {
+        if ( "zume-funnel/$this->base_slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             add_action( 'wp_head',[ $this, 'wp_head' ], 1000);
         }
@@ -35,7 +35,7 @@ class Zume_Path_L3 extends Zume_Chart_Base
 
                 let chart = jQuery('#chart')
                 chart.empty().html(`
-                        <div id="zume-path">
+                        <div id="zume-funnel">
                             <div class="grid-x">
                                 <div class="cell small-6"><h1>Stage 3 - Multiplying Practitioners</h1></div>
                                 <div class="cell small-6 right">Coaching downstream 2,3,4 generations</div>
@@ -155,10 +155,10 @@ class Zume_Path_L3 extends Zume_Chart_Base
     public function data() {
         return [
             'translations' => [
-                'title_overview' => __( 'Project Overview', 'disciple_tools' ),
+                'title_overview' => __( 'Project Overview', 'zume_funnels' ),
             ],
         ];
     }
 
 }
-new Zume_Path_L3();
+new Zume_Funnel_L3();

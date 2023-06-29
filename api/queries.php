@@ -1,7 +1,7 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-class Zume_Query {
+class Zume_Funnel_Query {
 
     public static function sample( $params ) {
         $negative_stat = false;

@@ -2,10 +2,10 @@
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 if ( strpos( dt_get_url_path(), 'zume_app' ) !== false || dt_is_rest() ){
-    Zume_Public_Heatmap_Activity::instance();
+    Zume_Funnel_Public_Heatmap_Activity::instance();
 }
 
-class Zume_Public_Heatmap_Activity extends DT_Magic_Url_Base
+class Zume_Funnel_Public_Heatmap_Activity extends DT_Magic_Url_Base
 {
     public $page_title = 'Zúme Activity';
     public $root = "zume_app";
@@ -66,11 +66,11 @@ class Zume_Public_Heatmap_Activity extends DT_Magic_Url_Base
     }
 
     public function _header(){
-        Zume_App_Heatmap::_header();
+        Zume_Funnel_App_Heatmap::_header();
     }
 
     public static function _wp_enqueue_scripts(){
-        Zume_App_Heatmap::_wp_enqueue_scripts();
+        Zume_Funnel_App_Heatmap::_wp_enqueue_scripts();
     }
 
     public function body(){
@@ -90,7 +90,7 @@ class Zume_Public_Heatmap_Activity extends DT_Magic_Url_Base
                 'parts' => $this->parts,
                 'post_type' => $this->post_type,
                 'translation' => [
-                    'add' => __( 'Zume', 'disciple_tools' ),
+                    'add' => __( 'Zume', 'zume_funnels' ),
                     'title' => 'Activities',
                 ],
                 'grid_data' => ['data' => [], 'highest_value' => 1 ],
@@ -190,18 +190,18 @@ class Zume_Public_Heatmap_Activity extends DT_Magic_Url_Base
 
         switch ( $action ) {
             case 'self':
-                return Zume_App_Heatmap::get_self( $params['grid_id'], $this->global_div, $this->us_div );
+                return Zume_Funnel_App_Heatmap::get_self( $params['grid_id'], $this->global_div, $this->us_div );
             case 'a3':
             case 'a2':
             case 'a1':
             case 'a0':
             case 'world':
-                $list = Zume_App_Heatmap::query_activity_grid_totals( $action );
-                return Zume_App_Heatmap::endpoint_get_activity_level( $params['grid_id'], $action, $list, $this->global_div, $this->us_div );
+                $list = Zume_Funnel_App_Heatmap::query_activity_grid_totals( $action );
+                return Zume_Funnel_App_Heatmap::endpoint_get_activity_level( $params['grid_id'], $action, $list, $this->global_div, $this->us_div );
             case 'activity_data':
                 $grid_id = sanitize_text_field( wp_unslash( $params['grid_id'] ) );
                 $offset = sanitize_text_field( wp_unslash( $params['offset'] ) );
-                return Zume_App_Heatmap::query_activity_data( $grid_id, $offset );
+                return Zume_Funnel_App_Heatmap::query_activity_data( $grid_id, $offset );
             case 'grid_data':
                 return $this->_initial_polygon_value_list();
             default:
@@ -210,8 +210,8 @@ class Zume_Public_Heatmap_Activity extends DT_Magic_Url_Base
     }
 
     public function _initial_polygon_value_list(){
-        $flat_grid = Zume_App_Heatmap::query_saturation_list();
-        $grid_totals = Zume_App_Heatmap::query_activity_grid_totals();
+        $flat_grid = Zume_Funnel_App_Heatmap::query_saturation_list();
+        $grid_totals = Zume_Funnel_App_Heatmap::query_activity_grid_totals();
 
         $data = [];
         $highest_value = 1;
@@ -224,7 +224,7 @@ class Zume_Public_Heatmap_Activity extends DT_Magic_Url_Base
                 'percent' => 0,
             ];
 
-            $population_division = Zume_App_Heatmap::_get_population_division( $v['country_code'], $this->global_div, $this->us_div );
+            $population_division = Zume_Funnel_App_Heatmap::_get_population_division( $v['country_code'], $this->global_div, $this->us_div );
 
             $needed = round( $v['population'] / $population_division );
             if ( $needed < 1 ){

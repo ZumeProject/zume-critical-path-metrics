@@ -2,13 +2,13 @@
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 if ( strpos( dt_get_url_path(), 'zume_app' ) !== false || dt_is_rest() ){
-    Zume_Public_Heatmap_100hours_V2::instance();
+    Zume_Funnel_Public_Heatmap_100hours_V2::instance();
 }
 
 /**
  * Class Disciple_Tools_Plugin_Starter_Template_Magic_Link
  */
-class Zume_Public_Heatmap_100hours_V2 extends DT_Magic_Url_Base {
+class Zume_Funnel_Public_Heatmap_100hours_V2 extends DT_Magic_Url_Base {
 
     public $magic = false;
     public $parts = false;
@@ -166,9 +166,9 @@ class Zume_Public_Heatmap_100hours_V2 extends DT_Magic_Url_Base {
 
         switch ( $action ) {
             case 'load_geojson':
-                return Zume_App_Heatmap::get_activity_geojson();
+                return Zume_Funnel_App_Heatmap::get_activity_geojson();
             case 'activity_list':
-                return Zume_App_Heatmap::get_activity_list( $params['data'], true );
+                return Zume_Funnel_App_Heatmap::get_activity_list( $params['data'], true );
             default:
                 return new WP_Error( __METHOD__, "Missing valid action", [ 'status' => 400 ] );
         }

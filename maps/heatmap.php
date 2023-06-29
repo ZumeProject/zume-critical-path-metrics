@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-class Zume_App_Heatmap {
+class Zume_Funnel_App_Heatmap {
 
 
     /**
@@ -2087,14 +2087,14 @@ class Zume_App_Heatmap {
     }
 
     public static function clear_practitioner_grid_totals() {
-        delete_transient( 'Zume_App_Heatmap::query_practitioner_grid_totals' );
-        delete_transient( 'Zume_App_Heatmap::query_practitioner_grid_totalsa0' );
-        delete_transient( 'Zume_App_Heatmap::query_practitioner_grid_totalsa1' );
-        delete_transient( 'Zume_App_Heatmap::query_practitioner_grid_totalsa2' );
-        delete_transient( 'Zume_App_Heatmap::query_practitioner_grid_totalsa3' );
-        delete_transient( 'Zume_App_Heatmap::query_practitioner_grid_totalsa4' );
-        delete_transient( 'Zume_App_Heatmap::query_practitioner_grid_totalsworld' );
-        delete_transient( 'Zume_App_Heatmap::query_practitioner_grid_totalsfull' );
+        delete_transient( 'Zume_Funnel_App_Heatmap::query_practitioner_grid_totals' );
+        delete_transient( 'Zume_Funnel_App_Heatmap::query_practitioner_grid_totalsa0' );
+        delete_transient( 'Zume_Funnel_App_Heatmap::query_practitioner_grid_totalsa1' );
+        delete_transient( 'Zume_Funnel_App_Heatmap::query_practitioner_grid_totalsa2' );
+        delete_transient( 'Zume_Funnel_App_Heatmap::query_practitioner_grid_totalsa3' );
+        delete_transient( 'Zume_Funnel_App_Heatmap::query_practitioner_grid_totalsa4' );
+        delete_transient( 'Zume_Funnel_App_Heatmap::query_practitioner_grid_totalsworld' );
+        delete_transient( 'Zume_Funnel_App_Heatmap::query_practitioner_grid_totalsfull' );
     }
 
     public static function query_practitioner_grid_totals( $administrative_level = null ) {
@@ -2317,14 +2317,14 @@ class Zume_App_Heatmap {
     }
 
     public static function clear_church_grid_totals() {
-        delete_transient( 'Zume_App_Heatmap::query_church_grid_totals' );
-        delete_transient( 'Zume_App_Heatmap::query_church_grid_totalsa0' );
-        delete_transient( 'Zume_App_Heatmap::query_church_grid_totalsa1' );
-        delete_transient( 'Zume_App_Heatmap::query_church_grid_totalsa2' );
-        delete_transient( 'Zume_App_Heatmap::query_church_grid_totalsa3' );
-        delete_transient( 'Zume_App_Heatmap::query_church_grid_totalsa4' );
-        delete_transient( 'Zume_App_Heatmap::query_church_grid_totalsworld' );
-        delete_transient( 'Zume_App_Heatmap::query_church_grid_totalsfull' );
+        delete_transient( 'Zume_Funnel_App_Heatmap::query_church_grid_totals' );
+        delete_transient( 'Zume_Funnel_App_Heatmap::query_church_grid_totalsa0' );
+        delete_transient( 'Zume_Funnel_App_Heatmap::query_church_grid_totalsa1' );
+        delete_transient( 'Zume_Funnel_App_Heatmap::query_church_grid_totalsa2' );
+        delete_transient( 'Zume_Funnel_App_Heatmap::query_church_grid_totalsa3' );
+        delete_transient( 'Zume_Funnel_App_Heatmap::query_church_grid_totalsa4' );
+        delete_transient( 'Zume_Funnel_App_Heatmap::query_church_grid_totalsworld' );
+        delete_transient( 'Zume_Funnel_App_Heatmap::query_church_grid_totalsfull' );
     }
 
     public static function query_church_grid_totals( $administrative_level = null ) {
@@ -4303,27 +4303,27 @@ function zume_public_log_actions( $activity_log ){
 
         /* new_baptism */
         if ( 'studying' === substr( $log['action'], 0, 8 ) ) {
-            $initials = Zume_App_Heatmap::create_initials( $log['lng'], $log['lat'], $log['payload'] );
+            $initials = Zume_Funnel_App_Heatmap::create_initials( $log['lng'], $log['lat'], $log['payload'] );
             $activity_log[$index]['message'] = $initials . ' is studying "' . $log['payload']['title'] . '"';
         }
 
         if ( 'leading' === substr( $log['action'], 0, 7 ) ) {
-            $initials = Zume_App_Heatmap::create_initials( $log['lng'], $log['lat'], $log['payload'] );
+            $initials = Zume_Funnel_App_Heatmap::create_initials( $log['lng'], $log['lat'], $log['payload'] );
             $activity_log[$index]['message'] = $initials . ' is leading a group through session '. str_replace( '_', '', substr( $log['action'], -2, 2 ) ).'!';
         }
 
         if ( 'zume_training' === $log['action'] && 'joining' === $log['category'] ) {
-            $initials = Zume_App_Heatmap::create_initials( $log['lng'], $log['lat'], $log['payload'] );
+            $initials = Zume_Funnel_App_Heatmap::create_initials( $log['lng'], $log['lat'], $log['payload'] );
             $activity_log[$index]['message'] = $initials . ' is registering for Zúme Training! ';
         }
 
         if ( 'zume_vision' === $log['action'] && 'joining' === $log['category'] ) {
-            $initials = Zume_App_Heatmap::create_initials( $log['lng'], $log['lat'], $log['payload'] );
+            $initials = Zume_Funnel_App_Heatmap::create_initials( $log['lng'], $log['lat'], $log['payload'] );
             $activity_log[$index]['message'] = $initials . ' is registering for Zúme Community! ';
         }
 
         if ( 'updated_3_month' === $log['action'] ) {
-            $initials = Zume_App_Heatmap::create_initials( $log['lng'], $log['lat'], $log['payload'] );
+            $initials = Zume_Funnel_App_Heatmap::create_initials( $log['lng'], $log['lat'], $log['payload'] );
             $activity_log[$index]['message'] = $initials . ' is updating there Zúme Training 3 month plan! ';
         }
     }

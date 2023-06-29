@@ -2,7 +2,7 @@
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 
-class Zume_Path_Goals extends Zume_Chart_Base
+class Zume_Funnel_Goals extends Zume_Funnel_Chart_Base
 {
     //slug and title of the top menu folder
     public $base_slug = ''; // lowercase
@@ -18,10 +18,10 @@ class Zume_Path_Goals extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Top Goals', 'disciple_tools' );
+        $this->base_title = __( 'Top Goals', 'zume_funnels' );
 
         $url_path = dt_get_url_path( true );
-        if ( "zume-path" === $url_path ) {
+        if ( "zume-funnel" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'base_scripts' ], 99 );
             add_action( 'wp_head',[ $this, 'wp_head' ], 1000);
         }
@@ -29,7 +29,7 @@ class Zume_Path_Goals extends Zume_Chart_Base
 
     public function base_menu( $content ) {
         $content .= '<li class="">ZÚME</li>';
-        $content .= '<li class=""><a href="'.site_url('/zume-path/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
+        $content .= '<li class=""><a href="'.site_url('/zume-funnel/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
         return $content;
     }
 
@@ -38,14 +38,14 @@ class Zume_Path_Goals extends Zume_Chart_Base
         $this->js_api();
         ?>
         <script>
-            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
+            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_funnel/v1/'
             jQuery(document).ready(function(){
                 "use strict";
 
                 let chart = jQuery('#chart')
                 let title = '<?php echo $this->base_title ?>'
                 chart.empty().html(`
-                        <div id="zume-path">
+                        <div id="zume-funnel">
                             <div class="grid-x">
                                 <div class="cell small-6"><h1>Zúme ${title}</h1></div>
                                 <div class="cell small-6">
@@ -72,9 +72,9 @@ class Zume_Path_Goals extends Zume_Chart_Base
                                     <p>These metrics ( practitioners and churches) represent the highest level milestones for accomplishing Zúme's vision. </p>
                                 </div>
                                 <div class="cell medium-9">
-                                     <div class="grid-x critical-path">
-                                        <div class="cell"><div class="practitioners zume-funnel-metrics"><span class="loading-spinner active"></span></div></div>
-                                        <div class="cell"><div class="churches zume-funnel-metrics"><span class="loading-spinner active"></span></div></div>
+                                     <div class="grid-x zume-funnel">
+                                        <div class="cell"><div class="practitioners zume-funnels"><span class="loading-spinner active"></span></div></div>
+                                        <div class="cell"><div class="churches zume-funnels"><span class="loading-spinner active"></span></div></div>
                                     </div>
                                 </div>
                             </div>
@@ -134,4 +134,4 @@ class Zume_Path_Goals extends Zume_Chart_Base
         <?php
     }
 }
-new Zume_Path_Goals();
+new Zume_Funnel_Goals();

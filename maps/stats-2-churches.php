@@ -2,13 +2,13 @@
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 if ( strpos( dt_get_url_path(), 'zume_app' ) !== false || dt_is_rest() ){
-    Zume_Public_Stats_Churches::instance();
+    Zume_Funnel_Public_Stats_Churches::instance();
 }
 
 /**
  * Class Disciple_Tools_Plugin_Starter_Template_Magic_Link
  */
-class Zume_Public_Stats_Churches extends DT_Magic_Url_Base {
+class Zume_Funnel_Public_Stats_Churches extends DT_Magic_Url_Base {
 
     public $magic = false;
     public $parts = false;
@@ -216,8 +216,8 @@ class Zume_Public_Stats_Churches extends DT_Magic_Url_Base {
     }
 
     public function _unique_locations( ){
-        $flat_grid = Zume_App_Heatmap::query_saturation_list();
-        $grid_totals = Zume_App_Heatmap::query_church_grid_totals( 'full' );
+        $flat_grid = Zume_Funnel_App_Heatmap::query_saturation_list();
+        $grid_totals = Zume_Funnel_App_Heatmap::query_church_grid_totals( 'full' );
 
         $unique_locations = 0;
         foreach($flat_grid as $grid_id => $grid ) {

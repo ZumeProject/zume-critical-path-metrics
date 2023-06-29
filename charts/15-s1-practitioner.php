@@ -1,7 +1,7 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-class Zume_Path_S1 extends Zume_Chart_Base
+class Zume_Funnel_S1 extends Zume_Funnel_Chart_Base
 {
     //slug and title of the top menu folder
     public $base_slug = 's1_practitioners'; // lowercase
@@ -17,10 +17,10 @@ class Zume_Path_S1 extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'S1 (Partial)', 'disciple_tools' );
+        $this->base_title = __( 'S1 (Partial)', 'zume_funnels' );
 
         $url_path = dt_get_url_path( true );
-        if ( "zume-path/$this->base_slug" === $url_path ) {
+        if ( "zume-funnel/$this->base_slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             add_action( 'wp_head',[ $this, 'wp_head' ], 1000);
         }
@@ -35,7 +35,7 @@ class Zume_Path_S1 extends Zume_Chart_Base
 
                 let chart = jQuery('#chart')
                 chart.empty().html(`
-                        <div id="zume-path">
+                        <div id="zume-funnel">
                             <div class="grid-x">
                                 <div class="cell small-6"><h1>Stage 1 - Partial Practitioner</h1></div>
                                 <div class="cell small-6 right">Learning through doing. Implementing partial checklist / 4-fields</div>
@@ -155,10 +155,10 @@ class Zume_Path_S1 extends Zume_Chart_Base
     public function data() {
         return [
             'translations' => [
-                'title_overview' => __( 'Project Overview', 'disciple_tools' ),
+                'title_overview' => __( 'Project Overview', 'zume_funnels' ),
             ],
         ];
     }
 
 }
-new Zume_Path_S1();
+new Zume_Funnel_S1();

@@ -2,23 +2,23 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
- * Class Zume_Critical_Path_Menu
+ * Class Zume_Funnel_Menu
  */
-class Zume_Critical_Path_Menu {
+class Zume_Funnel_Menu {
 
-    public $token = 'zume_critical_path';
-    public $page_title = 'Zúme Critical Path';
+    public $token = 'zume_funnel';
+    public $page_title = 'Zúme Funnels';
 
     private static $_instance = null;
 
     /**
-     * Zume_Critical_Path_Menu Instance
+     * Zume_Funnel_Menu Instance
      *
-     * Ensures only one instance of Zume_Critical_Path_Menu is loaded or can be loaded.
+     * Ensures only one instance of Zume_Funnel_Menu is loaded or can be loaded.
      *
      * @since 0.1.0
      * @static
-     * @return Zume_Critical_Path_Menu instance
+     * @return Zume_Funnel_Menu instance
      */
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
@@ -37,7 +37,7 @@ class Zume_Critical_Path_Menu {
 
         add_action( 'admin_menu', array( $this, 'register_menu' ) );
 
-        $this->page_title = __( 'Zúme Critical Path', 'zume-funnel-metrics' );
+        $this->page_title = __( 'Zúme Funnels', 'zume-funnels' );
     }
 
 
@@ -46,9 +46,9 @@ class Zume_Critical_Path_Menu {
      * @since 0.1
      */
     public function register_menu() {
-        $this->page_title = __( 'Zúme Critical Path', 'zume-funnel-metrics' );
+        $this->page_title = __( 'Zúme Funnels', 'zume-funnels' );
 
-        add_submenu_page( 'dt_extensions', $this->page_title, 'Critical Path', 'manage_dt', $this->token, [ $this, 'content' ] );
+        add_submenu_page( 'dt_extensions', $this->page_title, 'Funnels', 'manage_dt', $this->token, [ $this, 'content' ] );
     }
 
     /**
@@ -86,11 +86,11 @@ class Zume_Critical_Path_Menu {
             <?php
             switch ( $tab ) {
                 case 'general':
-                    $object = new Zume_Critical_Path_Tab_General();
+                    $object = new Zume_Funnel_Tab_General();
                     $object->content();
                     break;
                 case 'second':
-                    $object = new Zume_Critical_Path_Tab_Second();
+                    $object = new Zume_Funnel_Tab_Second();
                     $object->content();
                     break;
                 default:
@@ -103,12 +103,12 @@ class Zume_Critical_Path_Menu {
         <?php
     }
 }
-Zume_Critical_Path_Menu::instance();
+Zume_Funnel_Menu::instance();
 
 /**
- * Class Zume_Critical_Path_Tab_General
+ * Class Zume_Funnel_Tab_General
  */
-class Zume_Critical_Path_Tab_General {
+class Zume_Funnel_Tab_General {
     public function content() {
         ?>
         <div class="wrap">
@@ -137,7 +137,7 @@ class Zume_Critical_Path_Tab_General {
     }
 
     public function main_column() {
-        $token = Zume_Critical_Path_Menu::instance()->token;
+        $token = Zume_Funnel_Menu::instance()->token;
         $this->process_form_fields( $token );
 
         $my_plugin_option = get_option( $token . '_my_plugin_option' );
@@ -210,9 +210,9 @@ class Zume_Critical_Path_Tab_General {
 
 
 /**
- * Class Zume_Critical_Path_Tab_Second
+ * Class Zume_Funnel_Tab_Second
  */
-class Zume_Critical_Path_Tab_Second {
+class Zume_Funnel_Tab_Second {
     public function content() {
         ?>
         <div class="wrap">

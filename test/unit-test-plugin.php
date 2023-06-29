@@ -3,10 +3,10 @@
 class PluginTest extends TestCase
 {
     public function test_plugin_installed() {
-        activate_plugin( 'zume-funnel-metrics/zume-funnel-metrics.php' );
+        activate_plugin( 'zume-funnels/zume-funnels.php' );
 
         $this->assertContains(
-            'zume-funnel-metrics/zume-funnel-metrics.php',
+            'zume-funnels/zume-funnels.php',
             get_option( 'active_plugins' )
         );
     }

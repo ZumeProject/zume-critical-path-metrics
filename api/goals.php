@@ -1,7 +1,7 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-class Zume_Goals {
+class Zume_Funnel_Goals {
     public static function get() {
         // Goals need to be divided by 365 to get the daily goal.
         return [

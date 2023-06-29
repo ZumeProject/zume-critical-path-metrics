@@ -1,7 +1,7 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-class Zume_Path_Concept extends Zume_Chart_Base
+class Zume_Funnel_Concept extends Zume_Funnel_Chart_Base
 {
     //slug and title of the top menu folder
     public $base_slug = 'concepts'; // lowercase
@@ -17,10 +17,10 @@ class Zume_Path_Concept extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Funnel Concepts', 'disciple_tools' );
+        $this->base_title = __( 'Funnel Concepts', 'zume_funnels' );
 
         $url_path = dt_get_url_path( true );
-        if ( "zume-path/$this->base_slug" === $url_path ) {
+        if ( "zume-funnel/$this->base_slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             add_action( 'wp_head',[ $this, 'wp_head' ], 1000);
         }
@@ -29,7 +29,7 @@ class Zume_Path_Concept extends Zume_Chart_Base
     public function base_menu( $content ) {
         $content .= '<li class=""><hr></li>';
         $content .= '<li class="">HELP</li>';
-        $content .= '<li class=""><a href="'.site_url('/zume-path/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
+        $content .= '<li class=""><a href="'.site_url('/zume-funnel/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
         return $content;
     }
 
@@ -37,13 +37,13 @@ class Zume_Path_Concept extends Zume_Chart_Base
         $this->js_api();
         ?>
         <script>
-            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
+            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_funnel/v1/'
             jQuery(document).ready(function(){
                 "use strict";
                 let chart = jQuery('#chart')
                 let title = '<?php echo $this->base_title ?>'
                 chart.empty().html(`
-                        <div id="zume-path">
+                        <div id="zume-funnel">
                             <div class="grid-x">
                                 <div class="cell small-6"><h1>${title}</h1></div>
                                 <div class="cell small-6"></div>
@@ -111,4 +111,4 @@ class Zume_Path_Concept extends Zume_Chart_Base
     }
 
 }
-new Zume_Path_Concept();
+new Zume_Funnel_Concept();

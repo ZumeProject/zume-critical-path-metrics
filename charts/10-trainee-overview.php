@@ -1,10 +1,10 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-class Zume_Trainee_Critical_Path extends Zume_Chart_Base
+class Zume_Funnel_Trainee extends Zume_Funnel_Chart_Base
 {
     //slug and title of the top menu folder
-    public $base_slug = 'trainee_critical_path'; // lowercase
+    public $base_slug = 'trainee_funnel'; // lowercase
     public $slug = ''; // lowercase
     public $title;
     public $base_title;
@@ -17,10 +17,10 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Overview', 'disciple_tools' );
+        $this->base_title = __( 'Overview', 'zume_funnels' );
 
         $url_path = dt_get_url_path( true );
-        if ( "zume-path/$this->base_slug" === $url_path ) {
+        if ( "zume-funnel/$this->base_slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             add_action( 'wp_head',[ $this, 'wp_head' ], 1000);
         }
@@ -29,7 +29,7 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
     public function base_menu( $content ) {
         $content .= '<li class=""><hr></li>';
         $content .= '<li class="">PRACTITIONERS</li>';
-        $content .= '<li class=""><a href="'.site_url('/zume-path/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
+        $content .= '<li class=""><a href="'.site_url('/zume-funnel/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
         return $content;
     }
     public function wp_head() {
@@ -40,7 +40,7 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
                     "use strict";
                     let chart = jQuery('#chart')
                     chart.empty().html(`
-                        <div id="zume-path">
+                        <div id="zume-funnel">
                             <div class="grid-x">
                                 <div class="cell small-6"><h1>Practitioner Journey - Overview</h1></div>
                                 <div class="cell small-6">
@@ -64,7 +64,7 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
                                 </div>
                                 <div class="cell medium-3"></div>
                                 <!-- element-->
-                                <div class="cell medium-9 critical-path">
+                                <div class="cell medium-9 zume-funnel">
                                      <div class="registrants"><span class="loading-spinner active"></span></div>
                                 </div>
                                 <div class="cell medium-3 padding-top">
@@ -80,7 +80,7 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
                                 </div>
 
                                 <!-- element-->
-                                <div class="cell medium-9 critical-path">
+                                <div class="cell medium-9 zume-funnel">
                                      <div class="active_training_trainees"><span class="loading-spinner active"></span></div>
                                 </div>
                                 <div class="cell medium-3 padding-top">
@@ -96,7 +96,7 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
                                 </div>
 
                                 <!-- element-->
-                                <div class="cell medium-9 critical-path">
+                                <div class="cell medium-9 zume-funnel">
                                      <div class="post_training_trainees"><span class="loading-spinner active"></span></div>
                                 </div>
                                 <div class="cell medium-3 padding-top">
@@ -113,7 +113,7 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
                                 </div>
 
                                 <!-- element-->
-                                <div class="cell medium-9 critical-path">
+                                <div class="cell medium-9 zume-funnel">
                                      <div class="s1_practitioners"><span class="loading-spinner active"></span></div>
                                 </div>
                                 <div class="cell medium-3 padding-top">
@@ -132,7 +132,7 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
                                 </div>
 
                                 <!-- element-->
-                                <div class="cell medium-9 critical-path">
+                                <div class="cell medium-9 zume-funnel">
                                      <div class="s2_practitioners"><span class="loading-spinner active"></span></div>
                                 </div>
                                 <div class="cell medium-3 padding-top">
@@ -150,7 +150,7 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
                                 </div>
 
                                 <!-- element-->
-                                <div class="cell medium-9 critical-path">
+                                <div class="cell medium-9 zume-funnel">
                                     <div class="s3_practitioners"><span class="loading-spinner active"></span></div>
                                 </div>
                                 <div class="cell medium-3 padding-top">
@@ -240,4 +240,4 @@ class Zume_Trainee_Critical_Path extends Zume_Chart_Base
     }
 
 }
-new Zume_Trainee_Critical_Path();
+new Zume_Funnel_Trainee();

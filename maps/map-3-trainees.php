@@ -2,10 +2,10 @@
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 if ( strpos( dt_get_url_path(), 'zume_app' ) !== false || dt_is_rest() ){
-    Zume_Public_Heatmap_Trainees::instance();
+    Zume_Funnel_Public_Heatmap_Trainees::instance();
 }
 
-class Zume_Public_Heatmap_Trainees extends DT_Magic_Url_Base
+class Zume_Funnel_Public_Heatmap_Trainees extends DT_Magic_Url_Base
 {
     public $page_title = 'Zúme Practitioner Map';
     public $root = "zume_app";
@@ -66,11 +66,11 @@ class Zume_Public_Heatmap_Trainees extends DT_Magic_Url_Base
     }
 
     public function _header(){
-        Zume_App_Heatmap::_header();
+        Zume_Funnel_App_Heatmap::_header();
     }
 
     public static function _wp_enqueue_scripts(){
-        Zume_App_Heatmap::_wp_enqueue_scripts();
+        Zume_Funnel_App_Heatmap::_wp_enqueue_scripts();
     }
 
     public function body(){
@@ -90,7 +90,7 @@ class Zume_Public_Heatmap_Trainees extends DT_Magic_Url_Base
                 'parts' => $this->parts,
                 'post_type' => $this->post_type,
                 'translation' => [
-                    'add' => __( 'Zúme', 'disciple_tools' ),
+                    'add' => __( 'Zúme', 'zume_funnels' ),
                     'title' => 'Practitioner'
                 ],
                 'grid_data' => ['data' => [], 'highest_value' => 1 ],
@@ -197,21 +197,21 @@ class Zume_Public_Heatmap_Trainees extends DT_Magic_Url_Base
 
         switch ( $action ) {
             case 'self':
-                return Zume_App_Heatmap::get_self( $params['grid_id'], $this->global_div, $this->us_div );
+                return Zume_Funnel_App_Heatmap::get_self( $params['grid_id'], $this->global_div, $this->us_div );
             case 'a3':
             case 'a2':
             case 'a1':
             case 'a0':
             case 'world':
-                $list = Zume_App_Heatmap::query_practitioner_grid_totals( $action );
-                return Zume_App_Heatmap::endpoint_get_level( $params['grid_id'], $action, $list, $this->global_div, $this->us_div );
+                $list = Zume_Funnel_App_Heatmap::query_practitioner_grid_totals( $action );
+                return Zume_Funnel_App_Heatmap::endpoint_get_level( $params['grid_id'], $action, $list, $this->global_div, $this->us_div );
             case 'activity_data':
                 $grid_id = sanitize_text_field( wp_unslash( $params['grid_id'] ) );
                 $offset = sanitize_text_field( wp_unslash( $params['offset'] ) );
-                return Zume_App_Heatmap::query_activity_data( $grid_id, $offset );
+                return Zume_Funnel_App_Heatmap::query_activity_data( $grid_id, $offset );
             case 'grid_data':
-                $grid_totals = Zume_App_Heatmap::query_practitioner_grid_totals();
-                return Zume_App_Heatmap::_initial_polygon_value_list( $grid_totals, $this->global_div, $this->us_div );
+                $grid_totals = Zume_Funnel_App_Heatmap::query_practitioner_grid_totals();
+                return Zume_Funnel_App_Heatmap::_initial_polygon_value_list( $grid_totals, $this->global_div, $this->us_div );
             default:
                 return new WP_Error( __METHOD__, "Missing valid action", [ 'status' => 400 ] );
         }

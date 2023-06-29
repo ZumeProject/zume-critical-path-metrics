@@ -2,4 +2,4 @@
 {translation-domain}-{localisation}.po
 
 ex:
-zume-funnel-metrics-fr_FR.po
+zume-funnels-fr_FR.po

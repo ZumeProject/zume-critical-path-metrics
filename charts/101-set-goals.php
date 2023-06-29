@@ -1,7 +1,7 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-class Zume_Reporting_Goals extends Zume_Chart_Base
+class Zume_Funnel_Set_Goals extends Zume_Funnel_Chart_Base
 {
     //slug and title of the top menu folder
     public $base_slug = 'reporting_goals'; // lowercase
@@ -17,10 +17,10 @@ class Zume_Reporting_Goals extends Zume_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Manage goals', 'disciple_tools' );
+        $this->base_title = __( 'Manage goals', 'zume_funnels' );
 
         $url_path = dt_get_url_path( true );
-        if ( "zume-path/$this->base_slug" === $url_path ) {
+        if ( "zume-funnel/$this->base_slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             add_action( 'wp_head',[ $this, 'wp_head' ], 1000);
         }
@@ -29,7 +29,7 @@ class Zume_Reporting_Goals extends Zume_Chart_Base
     public function base_menu( $content ) {
         if ( user_can( get_current_user_id(), 'manage_options' ) ) {
             $content .= '<li class=""><hr>Admin</li>';
-            $content .= '<li class=""><a href="'.site_url('/zume-path/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
+            $content .= '<li class=""><a href="'.site_url('/zume-funnel/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
         }
         return $content;
     }
@@ -39,7 +39,7 @@ class Zume_Reporting_Goals extends Zume_Chart_Base
         $this->js_api();
         ?>
         <script>
-            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_stats/v1/'
+            window.site_url = '<?php echo site_url() ?>' + '/wp-json/zume_funnel/v1/'
             window.user_id = '<?php echo get_current_user_id() ?>'
 
             //  0 = Anonymous
@@ -347,7 +347,7 @@ class Zume_Reporting_Goals extends Zume_Chart_Base
                 let chart = jQuery('#chart')
 
                 chart.empty().html(`
-                        <div id="zume-path">
+                        <div id="zume-funnel">
 
                             <span class="loading-spinner active"></span>
                             <table class="hover" id="datatable">
@@ -446,7 +446,7 @@ class Zume_Reporting_Goals extends Zume_Chart_Base
                     ]
                 });
 
-                jQuery.get('https://zume5.training/coaching/wp-json/zume_stats/v1/location', function(data){
+                jQuery.get('https://zume5.training/coaching/wp-json/zume_funnel/v1/location', function(data){
                     // console.log(data)
                     window.user_location = data
 
@@ -480,7 +480,7 @@ class Zume_Reporting_Goals extends Zume_Chart_Base
                     jQuery('.loading-spinner').removeClass('active')
                 })
 
-                function makePostRequest(type, url, data, base = "zume_stats/v1/") {
+                function makePostRequest(type, url, data, base = "zume_funnel/v1/") {
                     //make sure base has a trailing slash if url does not start with one
                     if ( !base.endsWith('/') && !url.startsWith('/')){
                         base += '/'
@@ -509,7 +509,7 @@ class Zume_Reporting_Goals extends Zume_Chart_Base
     public function data() {
         return [
             'translations' => [
-                'title_overview' => __( 'Project Overview', 'disciple_tools' ),
+                'title_overview' => __( 'Project Overview', 'zume_funnels' ),
             ],
         ];
     }
@@ -532,4 +532,4 @@ class Zume_Reporting_Goals extends Zume_Chart_Base
 
     }
 }
-new Zume_Reporting_Goals();
+new Zume_Funnel_Set_Goals();
