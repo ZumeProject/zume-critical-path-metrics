@@ -1,13 +1,13 @@
 <?php
 /**
- * Plugin Name: Zúme - Critical Path
- * Plugin URI: https://github.com/ZumeProject/zume-critical-path
+ * Plugin Name: Zúme - Funnels
+ * Plugin URI: https://github.com/ZumeProject/zume-funnel-metrics
  * Description: Zúme - Critical Path is for reporting metrics on the Zume Critical Path.
- * Text Domain: zume-critical-path
+ * Text Domain: zume-funnel-metrics
  * Domain Path: /languages
  * Version:  0.1
  * Author URI: https://github.com/DiscipleTools
- * GitHub Plugin URI: https://github.com/ZumeProject/zume-critical-path
+ * GitHub Plugin URI: https://github.com/ZumeProject/zume-funnel-metrics
  * Requires at least: 4.7.0
  * (Requires 4.7+ because of the integration of the REST API at 4.7 and the security requirements of this milestone version.)
  * Tested up to: 5.6
@@ -68,7 +68,7 @@ add_action( 'after_setup_theme', 'zume_critical_path', 20 );
 //register the D.T Plugin
 add_filter( 'dt_plugins', function ( $plugins ){
     $plugin_data = get_file_data( __FILE__, [ 'Version' => 'Version', 'Plugin Name' => 'Plugin Name' ], false );
-    $plugins['zume-critical-path'] = [
+    $plugins['zume-funnel-metrics'] = [
         'plugin_url' => trailingslashit( plugin_dir_url( __FILE__ ) ),
         'version' => $plugin_data['Version'] ?? null,
         'name' => $plugin_data['Plugin Name'] ?? null,
@@ -101,9 +101,6 @@ class Zume_Critical_Path {
             require_once( 'api/rest-api.php' );
         }
 
-        require_once ('stats/loader.php');
-        require_once ('stats-alltime/loader.php');
-
         require_once ('maps/cluster-1-last100.php');
         require_once ('maps/heatmap.php');
         require_once ('maps/map-2-network-activities.php');
@@ -111,14 +108,7 @@ class Zume_Critical_Path {
         require_once ('maps/map-4-practitioners.php');
         require_once ('maps/map-5-churches.php');
 
-        if ( is_admin() ) {
-            require_once( 'admin/admin-menu-and-tabs.php' ); // adds starter admin page and section for plugin
-        }
-
-
-//        if ( strpos( dt_get_url_path(), 'metrics' ) !== false || ( $is_rest && strpos( dt_get_url_path(), 'zume-critical-path-metrics' ) !== false ) ){
         require_once( 'charts/loader.php' );
-//        }
 
         $this->i18n();
 
@@ -158,7 +148,7 @@ class Zume_Critical_Path {
      */
     public static function deactivation() {
         // add functions here that need to happen on deactivation
-        delete_option( 'dismissed-zume-critical-path' );
+        delete_option( 'dismissed-zume-funnel-metrics' );
     }
 
     /**
@@ -169,7 +159,7 @@ class Zume_Critical_Path {
      * @return void
      */
     public function i18n() {
-        $domain = 'zume-critical-path';
+        $domain = 'zume-funnel-metrics';
         load_plugin_textdomain( $domain, false, trailingslashit( dirname( plugin_basename( __FILE__ ) ) ). 'languages' );
     }
 
@@ -181,7 +171,7 @@ class Zume_Critical_Path {
      * @return string
      */
     public function __toString() {
-        return 'zume-critical-path';
+        return 'zume-funnel-metrics';
     }
 
     /**
@@ -238,18 +228,18 @@ if ( ! function_exists( 'zume_critical_path_hook_admin_notice' ) ) {
             $message .= ' ' . sprintf( esc_html( 'Current Disciple.Tools version: %1$s, required version: %2$s' ), esc_html( $current_version ), esc_html( $zume_critical_path_required_dt_theme_version ) );
         }
         // Check if it's been dismissed...
-        if ( ! get_option( 'dismissed-zume-critical-path', false ) ) { ?>
-            <div class="notice notice-error notice-zume-critical-path is-dismissible" data-notice="zume-critical-path">
+        if ( ! get_option( 'dismissed-zume-funnel-metrics', false ) ) { ?>
+            <div class="notice notice-error notice-zume-funnel-metrics is-dismissible" data-notice="zume-funnel-metrics">
                 <p><?php echo esc_html( $message );?></p>
             </div>
             <script>
                 jQuery(function($) {
-                    $( document ).on( 'click', '.notice-zume-critical-path .notice-dismiss', function () {
+                    $( document ).on( 'click', '.notice-zume-funnel-metrics .notice-dismiss', function () {
                         $.ajax( ajaxurl, {
                             type: 'POST',
                             data: {
                                 action: 'dismissed_notice_handler',
-                                type: 'zume-critical-path',
+                                type: 'zume-funnel-metrics',
                                 security: '<?php echo esc_html( wp_create_nonce( 'wp_rest_dismiss' ) ) ?>'
                             }
                         })
@@ -281,7 +271,7 @@ if ( !function_exists( 'dt_hook_ajax_notice_handler' ) ){
  * This section runs the remote plugin updating service, so you can issue distributed updates to your plugin
  *
  * @note See the instructions for version updating to understand the steps involved.
- * @link https://github.com/DiscipleTools/zume-critical-path/wiki/Configuring-Remote-Updating-System
+ * @link https://github.com/DiscipleTools/zume-funnel-metrics/wiki/Configuring-Remote-Updating-System
  *
  * @todo Enable this section with your own hosted file
  * @todo An example of this file can be found in (version-control.json)
@@ -306,9 +296,9 @@ if ( !function_exists( 'dt_hook_ajax_notice_handler' ) ){
 //        }
 //        if ( class_exists( 'Puc_v4_Factory' ) ){
 //            Puc_v4_Factory::buildUpdateChecker(
-//                'https://raw.githubusercontent.com/DiscipleTools/zume-critical-path/master/version-control.json',
+//                'https://raw.githubusercontent.com/DiscipleTools/zume-funnel-metrics/master/version-control.json',
 //                __FILE__,
-//                'zume-critical-path'
+//                'zume-funnel-metrics'
 //            );
 //
 //        }

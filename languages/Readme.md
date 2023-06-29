@@ -2,4 +2,4 @@
 {translation-domain}-{localisation}.po
 
 ex:
-zume-critical-path-fr_FR.po
+zume-funnel-metrics-fr_FR.po

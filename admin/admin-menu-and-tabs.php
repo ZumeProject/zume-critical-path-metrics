@@ -37,7 +37,7 @@ class Zume_Critical_Path_Menu {
 
         add_action( 'admin_menu', array( $this, 'register_menu' ) );
 
-        $this->page_title = __( 'Zúme Critical Path', 'zume-critical-path' );
+        $this->page_title = __( 'Zúme Critical Path', 'zume-funnel-metrics' );
     }
 
 
@@ -46,7 +46,7 @@ class Zume_Critical_Path_Menu {
      * @since 0.1
      */
     public function register_menu() {
-        $this->page_title = __( 'Zúme Critical Path', 'zume-critical-path' );
+        $this->page_title = __( 'Zúme Critical Path', 'zume-funnel-metrics' );
 
         add_submenu_page( 'dt_extensions', $this->page_title, 'Critical Path', 'manage_dt', $this->token, [ $this, 'content' ] );
     }

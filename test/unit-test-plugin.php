@@ -3,10 +3,10 @@
 class PluginTest extends TestCase
 {
     public function test_plugin_installed() {
-        activate_plugin( 'zume-critical-path/zume-critical-path.php' );
+        activate_plugin( 'zume-funnel-metrics/zume-funnel-metrics.php' );
 
         $this->assertContains(
-            'zume-critical-path/zume-critical-path.php',
+            'zume-funnel-metrics/zume-funnel-metrics.php',
             get_option( 'active_plugins' )
         );
     }

@@ -73,8 +73,8 @@ class Zume_Path_Goals extends Zume_Chart_Base
                                 </div>
                                 <div class="cell medium-9">
                                      <div class="grid-x critical-path">
-                                        <div class="cell"><div class="practitioners zume-critical-path"><span class="loading-spinner active"></span></div></div>
-                                        <div class="cell"><div class="churches zume-critical-path"><span class="loading-spinner active"></span></div></div>
+                                        <div class="cell"><div class="practitioners zume-funnel-metrics"><span class="loading-spinner active"></span></div></div>
+                                        <div class="cell"><div class="churches zume-funnel-metrics"><span class="loading-spinner active"></span></div></div>
                                     </div>
                                 </div>
                             </div>
