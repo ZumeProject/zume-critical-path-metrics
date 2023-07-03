@@ -4,7 +4,7 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 class Zume_Funnel_Trainee extends Zume_Funnel_Chart_Base
 {
     //slug and title of the top menu folder
-    public $base_slug = 'trainee_funnel'; // lowercase
+    public $base_slug = ''; // lowercase
     public $slug = ''; // lowercase
     public $title;
     public $base_title;
@@ -20,19 +20,18 @@ class Zume_Funnel_Trainee extends Zume_Funnel_Chart_Base
         $this->base_title = __( 'Overview', 'zume_funnels' );
 
         $url_path = dt_get_url_path( true );
-        if ( "zume-funnel/$this->base_slug" === $url_path ) {
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+        if ( "zume-funnel" === $url_path ) {
+            add_action( 'wp_enqueue_scripts', [ $this, 'base_scripts' ], 99 );
             add_action( 'wp_head',[ $this, 'wp_head' ], 1000);
         }
     }
 
     public function base_menu( $content ) {
-        $content .= '<li class=""><hr></li>';
-        $content .= '<li class="">PRACTITIONERS</li>';
         $content .= '<li class=""><a href="'.site_url('/zume-funnel/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
         return $content;
     }
     public function wp_head() {
+        $this->styles();
             $this->js_api();
             ?>
             <script>
@@ -42,7 +41,7 @@ class Zume_Funnel_Trainee extends Zume_Funnel_Chart_Base
                     chart.empty().html(`
                         <div id="zume-funnel">
                             <div class="grid-x">
-                                <div class="cell small-6"><h1>Practitioner Journey - Overview</h1></div>
+                                <div class="cell small-6"><h1>Practitioner Funnel</h1></div>
                                 <div class="cell small-6">
                                     <span style="float: right;">
                                         <select id="range-filter">
@@ -232,6 +231,12 @@ class Zume_Funnel_Trainee extends Zume_Funnel_Chart_Base
     public function styles() {
         ?>
         <style>
+            .side-menu-item-highlight {
+                font-weight: 300;
+            }
+            #-menu {
+                font-weight: 700;
+            }
             .zume-cards {
                 max-width: 700px;
             }

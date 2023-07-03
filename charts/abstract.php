@@ -30,7 +30,6 @@ abstract class Zume_Funnel_Chart_Base
                 add_action( 'wp_enqueue_scripts', [ $this, 'base_scripts' ], 99 );
             }
         }
-
     }
 
     public function base_menu( $content ) {
@@ -52,7 +51,7 @@ abstract class Zume_Funnel_Chart_Base
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
-        wp_enqueue_style( 'zume_funnel_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
+        wp_enqueue_style( 'zume_charts', plugin_dir_url(__FILE__) . 'charts.css', [], filemtime( plugin_dir_path(__FILE__) . 'charts.css' ) );
 
         wp_enqueue_style( 'datatable_css', '//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css', [], '1.13.4' );
         wp_enqueue_script( 'datatable_js', '//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js', ['jquery'], '1.13.4');
@@ -67,10 +66,6 @@ abstract class Zume_Funnel_Chart_Base
                 'current_user_id' => get_current_user_id()
             ]
         );
-    }
-
-    public function scripts() {
-
     }
 
     public function has_permission(){
@@ -345,6 +340,4 @@ abstract class Zume_Funnel_Chart_Base
         </script>
         <?php
     }
-
-
 }

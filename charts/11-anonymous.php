@@ -21,9 +21,16 @@ class Zume_Funnel_Anonymous extends Zume_Funnel_Chart_Base
 
         $url_path = dt_get_url_path( true );
         if ( "zume-funnel/$this->base_slug" === $url_path ) {
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            add_action( 'wp_enqueue_scripts', [ $this, 'base_scripts' ], 99 );
             add_action( 'wp_head',[ $this, 'wp_head' ], 1000);
         }
+    }
+
+    public function base_menu( $content ) {
+        $content .= '<li><hr></li>';
+        $content .= '<li>FUNNEL</li>';
+        $content .= '<li><a href="'.site_url('/zume-funnel/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
+        return $content;
     }
 
     public function wp_head() {
@@ -68,7 +75,7 @@ class Zume_Funnel_Anonymous extends Zume_Funnel_Chart_Base
                                 </div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
-                                 <div class="cell medium-6 registrations"><span class="loading-spinner active"></span></div>
+                                 <div class="cell medium-12 registrations"><span class="loading-spinner active"></span></div>
                             </div>
                             <div class="grid-x grid-margin-x grid-margin-y">
                                  <div class="cell medium-6 coach_requests"><span class="loading-spinner active"></span></div>

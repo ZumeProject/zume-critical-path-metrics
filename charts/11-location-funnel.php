@@ -20,7 +20,7 @@ class Zume_Funnel_Locations_List extends Zume_Funnel_Chart_Base
             return;
         }
         $this->title = __( 'Locations List', 'zume_funnels' );
-        $this->base_title = __( 'Steps By Location', 'zume_funnels' );
+        $this->base_title = __( 'Funnel By Location', 'zume_funnels' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-funnel/$this->base_slug" === $url_path ) {
@@ -31,10 +31,8 @@ class Zume_Funnel_Locations_List extends Zume_Funnel_Chart_Base
     public function list_scripts() {
         DT_Mapping_Module::instance()->drilldown_script();
 
-        // Datatable
-        wp_register_style( 'datatable-css', '//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css', [], '1.10.19' );
-        wp_enqueue_style( 'datatable-css' );
-        wp_register_script( 'datatable', '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js', [], '1.10.19' );
+        wp_enqueue_style( 'datatable-css', '//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css', [], '1.13.4' );
+        wp_enqueue_script( 'datatable', '//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js', ['jquery'], '1.13.4');
 
         // Map starter Script
         wp_enqueue_script( 'dt_'.$this->slug.'_script',

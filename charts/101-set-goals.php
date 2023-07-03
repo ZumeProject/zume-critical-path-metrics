@@ -17,25 +17,23 @@ class Zume_Funnel_Set_Goals extends Zume_Funnel_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Manage goals', 'zume_funnels' );
+        $this->base_title = __( 'Manage Goals', 'zume_funnels' );
 
         $url_path = dt_get_url_path( true );
         if ( "zume-funnel/$this->base_slug" === $url_path ) {
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            add_action( 'wp_enqueue_scripts', [ $this, 'base_scripts' ], 99 );
             add_action( 'wp_head',[ $this, 'wp_head' ], 1000);
         }
     }
 
     public function base_menu( $content ) {
         if ( user_can( get_current_user_id(), 'manage_options' ) ) {
-            $content .= '<li class=""><hr>Admin</li>';
+            $content .= '<li class=""><hr>ADMIN</li>';
             $content .= '<li class=""><a href="'.site_url('/zume-funnel/'.$this->base_slug).'" id="'.$this->base_slug.'-menu">' .  $this->base_title . '</a></li>';
         }
         return $content;
     }
     public function wp_head() {
-        $user_list = $this->user_list();
-
         $this->js_api();
         ?>
         <script>
@@ -446,7 +444,7 @@ class Zume_Funnel_Set_Goals extends Zume_Funnel_Chart_Base
                     ]
                 });
 
-                jQuery.get('https://zume5.training/coaching/wp-json/zume_funnel/v1/location', function(data){
+                jQuery.get( window.site_url+'location', function(data){
                     // console.log(data)
                     window.user_location = data
 

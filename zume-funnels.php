@@ -100,7 +100,6 @@ class Zume_Funnel {
         $is_rest = dt_is_rest();
 
         if ( $is_rest ) {
-            require_once ('api/goals.php');
             require_once ('api/queries.php');
             require_once( 'api/rest-api.php' );
         }
