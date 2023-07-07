@@ -87,7 +87,7 @@ class Zume_Funnel_Registrant extends Zume_Funnel_Chart_Base
 
                 // totals
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "registrants", key: "total_registrants" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "registrants", key: "total_registrants" }, window.site_info.rest_root ).done( function( data ) {
                     data.label = 'Registrants'
                     data.description = 'Description'
                     jQuery('.'+data.key).html(window.template_map_list(data))
@@ -95,7 +95,7 @@ class Zume_Funnel_Registrant extends Zume_Funnel_Chart_Base
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_plan" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "registrants", key: "no_plan" }, window.site_info.rest_root ).done( function( data ) {
                     data.valence = 'valence-grey'
                     data.label = 'Has No Plan'
                     data.description = 'Description'
@@ -104,7 +104,7 @@ class Zume_Funnel_Registrant extends Zume_Funnel_Chart_Base
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_friends" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "registrants", key: "no_friends" }, window.site_info.rest_root ).done( function( data ) {
                     data.valence = 'valence-grey'
                     data.label = 'Has No Friends'
                     data.description = 'Description'
@@ -113,7 +113,7 @@ class Zume_Funnel_Registrant extends Zume_Funnel_Chart_Base
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_coach" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "registrants", key: "no_coach" }, window.site_info.rest_root ).done( function( data ) {
                     data.valence = 'valence-grey'
                     data.label = 'Has No Coach'
                     data.description = 'Description'
@@ -122,7 +122,7 @@ class Zume_Funnel_Registrant extends Zume_Funnel_Chart_Base
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_updated_profiles" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "registrants", key: "no_updated_profiles" }, window.site_info.rest_root ).done( function( data ) {
                     data.valence = 'valence-grey'
                     data.label = 'Has Not Updated Profile'
                     data.description = 'Description'
@@ -137,13 +137,13 @@ class Zume_Funnel_Registrant extends Zume_Funnel_Chart_Base
 
                     // positive
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "registrations_in_out", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "registrants", key: "registrations_in_out", range: range }, window.site_info.rest_root ).done( function( data ) {
                         jQuery('.new_registrants').html( window.template_in_out( data ) )
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "coach_requests", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "registrants", key: "coach_requests", range: range }, window.site_info.rest_root ).done( function( data ) {
                         data.label = 'Coaching Requests'
                         data.description = 'Description'
                         jQuery('.'+data.key).html(window.template_single_map(data))
@@ -151,7 +151,7 @@ class Zume_Funnel_Registrant extends Zume_Funnel_Chart_Base
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "set_profile", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "registrants", key: "set_profile", range: range }, window.site_info.rest_root ).done( function( data ) {
                         data.label = 'Set Profile'
                         data.description = 'Description'
                         jQuery('.'+data.key).html(window.template_single_map(data))
@@ -159,7 +159,7 @@ class Zume_Funnel_Registrant extends Zume_Funnel_Chart_Base
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "invited_friends", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "registrants", key: "invited_friends", range: range }, window.site_info.rest_root ).done( function( data ) {
                         data.label = 'Invited Friends'
                         data.description = 'Description'
                         jQuery('.'+data.key).html(window.template_single_map(data))
@@ -167,7 +167,7 @@ class Zume_Funnel_Registrant extends Zume_Funnel_Chart_Base
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "registrants", key: "joined_online_training", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "registrants", key: "joined_online_training", range: range }, window.site_info.rest_root ).done( function( data ) {
                         data.label = 'Joined Online Training'
                         data.description = 'Description'
                         jQuery('.'+data.key).html(window.template_single_map(data))

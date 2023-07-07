@@ -76,14 +76,14 @@ class Zume_Funnel_Coaching_Advanced extends Zume_Funnel_Chart_Base
                     `)
 
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "s2", key: "total_s2" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "s2", key: "total_s2" }, window.site_info.rest_root ).done( function( data ) {
                     data.label = 'Current S2 Practitioners'
                     data.valence = 'valence-grey'
                     jQuery('.total_registrants').html(window.template_single(data))
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "s3", key: "total_s3" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "s3", key: "total_s3"}, window.site_info.rest_root ).done( function( data ) {
                     data.label = 'Current S3 Practitioners'
                     data.valence = 'valence-grey'
                     jQuery('.total_att').html(window.template_single(data))
@@ -93,13 +93,13 @@ class Zume_Funnel_Coaching_Advanced extends Zume_Funnel_Chart_Base
                 window.path_load = ( range ) => {
 
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "early", key: "new_coaching_requests", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "early", key: "new_coaching_requests", range: range }, window.site_info.rest_root ).done( function( data ) {
                         jQuery('.new_coaching_requests').html(window.template_single(data))
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "early", key: "languages", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "early", key: "languages", range: range }, window.site_info.rest_root ).done( function( data ) {
                         jQuery('.languages').html(window.template_single(data))
                         window.click_listener( data )
                         window.spin_remove()

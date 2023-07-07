@@ -77,14 +77,14 @@ class Zume_Funnel_Coaching_Facilitator extends Zume_Funnel_Chart_Base
                     `)
 
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "registrants", key: "total_registrants" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "registrants", key: "total_registrants" }, window.site_info.rest_root ).done( function( data ) {
                     data.label = 'Current Registrants'
                     data.valence = 'valence-grey'
                     jQuery('.total_registrants').html(window.template_single(data))
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "att", key: "total_att" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "att", key: "total_att" }, window.site_info.rest_root ).done( function( data ) {
                     data.label = 'Current Active Trainees'
                     data.valence = 'valence-grey'
                     jQuery('.total_att').html(window.template_single(data))
@@ -94,13 +94,13 @@ class Zume_Funnel_Coaching_Facilitator extends Zume_Funnel_Chart_Base
                 window.path_load = ( range ) => {
 
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "facilitator", key: "new_coaching_requests", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "facilitator", key: "new_coaching_requests", range: range }, window.site_info.rest_root ).done( function( data ) {
                         jQuery('.new_coaching_requests').html(window.template_single(data))
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "facilitator", key: "languages", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "facilitator", key: "languages", range: range }, window.site_info.rest_root ).done( function( data ) {
                         jQuery('.languages').html(window.template_single(data))
                         window.click_listener( data )
                         window.spin_remove()

@@ -85,6 +85,7 @@ abstract class Zume_Funnel_Chart_Base
             jQuery(document).ready(function($) {
 
                 window.site_info = {
+                    'rest_root': 'zume_funnel/v1/',
                     'site_url': '<?php echo site_url(); ?>',
                     'rest_url': '<?php echo esc_url_raw( rest_url() ); ?>',
                     'total_url': '<?php echo esc_url_raw( rest_url() ); ?>zume_funnel/v1/total',

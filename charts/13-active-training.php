@@ -94,7 +94,7 @@ class Zume_Funnel_Active extends Zume_Funnel_Chart_Base
                     `)
                 // totals
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "att", key: "total_att" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "att", key: "total_att" }, window.site_info.rest_root ).done( function( data ) {
                     data.link = ''
                     data.label = 'Active Training Trainees'
                     data.description = 'People who are actively working a training plan or have only partially completed the training.'
@@ -103,7 +103,7 @@ class Zume_Funnel_Active extends Zume_Funnel_Chart_Base
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_coach" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "att", key: "no_coach" }, window.site_info.rest_root ).done( function( data ) {
                     data.valence = 'valence-grey'
                     data.label = 'Has No Coach'
                     data.description = 'Description'
@@ -112,7 +112,7 @@ class Zume_Funnel_Active extends Zume_Funnel_Chart_Base
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_friends" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "att", key: "no_friends" }, window.site_info.rest_root ).done( function( data ) {
                     data.valence = 'valence-grey'
                     data.label = 'Has No Friends'
                     data.description = 'Description'
@@ -121,7 +121,7 @@ class Zume_Funnel_Active extends Zume_Funnel_Chart_Base
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "registrants", key: "no_updated_profiles" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "att", key: "no_updated_profiles" }, window.site_info.rest_root ).done( function( data ) {
                     data.valence = 'valence-grey'
                     data.label = 'Has Not Updated Profile'
                     data.description = 'Description'
@@ -135,21 +135,21 @@ class Zume_Funnel_Active extends Zume_Funnel_Chart_Base
                     jQuery('.loading-spinner').addClass('active')
 
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "att", key: "active_training_in_out", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "att", key: "active_training_in_out", range: range }, window.site_info.rest_root ).done( function( data ) {
                         data.label = 'Active Training Flow'
                         jQuery('.'+data.key).html( window.template_in_out( data ) )
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "att", key: "total_checkins", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "att", key: "total_checkins", range: range }, window.site_info.rest_root ).done( function( data ) {
                         data.label = 'Total Checkins'
                         jQuery('.'+data.key).html(window.template_single_map(data))
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "att", key: "3_month_plans", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "att", key: "3_month_plans", range: range }, window.site_info.rest_root ).done( function( data ) {
                         data.label = '3-Month Plans'
                         data.description = 'Description'
                         jQuery('.'+data.key).html(window.template_single_map(data))
@@ -157,8 +157,7 @@ class Zume_Funnel_Active extends Zume_Funnel_Chart_Base
                         window.spin_remove()
                     })
 
-
-                    window.API_get( window.site_info.elements_url, { range: range }, ( data ) => {
+                    makeRequest('GET', 'training_elements', { range: range }, window.site_info.rest_root ).done( function( data ) {
                         am5.ready(function() {
                             console.log(data)
 

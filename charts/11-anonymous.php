@@ -89,7 +89,7 @@ class Zume_Funnel_Anonymous extends Zume_Funnel_Chart_Base
 
 
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "anonymous", key: "total_registrations" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "anonymous", key: "total_registrations" }, window.site_info.rest_root ).done( function( data ) {
                     jQuery('.hero').html( window.template_single( data ) )
                     window.click_listener( data )
                     window.spin_remove()
@@ -98,34 +98,32 @@ class Zume_Funnel_Anonymous extends Zume_Funnel_Chart_Base
                 window.path_load = ( range ) => {
 
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "anonymous", key: "registrations", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "anonymous", key: "registrations", range: range }, window.site_info.rest_root ).done( function( data ) {
                         jQuery('.registrations').html( window.template_trio( data ) )
                         window.click_listener( data )
                         window.spin_remove()
                     })
-
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "anonymous", key: "coach_requests", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "anonymous", key: "coach_requests", range: range }, window.site_info.rest_root ).done( function( data ) {
                         data.valence = "valence-grey"
                         jQuery('.coach_requests').html( window.template_single( data ) )
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "anonymous", key: "joined_online_training", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "anonymous", key: "joined_online_training", range: range }, window.site_info.rest_root ).done( function( data ) {
                         data.valence = "valence-grey"
                         jQuery('.joined_online_training').html( window.template_single( data ) )
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "anonymous", key: "visitors", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "anonymous", key: "visitors", range: range }, window.site_info.rest_root ).done( function( data ) {
                         data.valence = "valence-grey"
                         jQuery('.visitors').html( window.template_single( data ) )
                         window.click_listener( data )
                         window.spin_remove()
                     })
-
                 }
                 window.setup_filter()
 

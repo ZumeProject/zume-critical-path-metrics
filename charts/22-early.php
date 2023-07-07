@@ -78,21 +78,21 @@ class Zume_Funnel_Coaching_Early extends Zume_Funnel_Chart_Base
                     `)
 
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "ptt", key: "total_ptt" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "ptt", key: "total_ptt" }, window.site_info.rest_root ).done( function( data ) {
                     data.label = 'Current Post-Training Trainees'
                     data.valence = 'valence-grey'
                     jQuery('.total_registrants').html(window.template_single(data))
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "s1", key: "total_s1" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "s1", key: "total_s1" }, window.site_info.rest_root ).done( function( data ) {
                     data.label = 'Current (S1) Partial Practitioners'
                     data.valence = 'valence-grey'
                     jQuery('.total_att').html(window.template_single(data))
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "early", key: "coaches" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "early", key: "coaches" }, window.site_info.rest_root ).done( function( data ) {
                     data.label = 'Coaches'
                     data.valence = 'valence-grey'
                     jQuery('.coaches').html(window.template_single(data))
@@ -102,13 +102,13 @@ class Zume_Funnel_Coaching_Early extends Zume_Funnel_Chart_Base
                 window.path_load = ( range ) => {
 
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "early", key: "new_coaching_requests", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "early", key: "new_coaching_requests", range: range }, window.site_info.rest_root ).done( function( data ) {
                         jQuery('.new_coaching_requests').html(window.template_single(data))
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "early", key: "languages", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "early", key: "languages", range: range }, window.site_info.rest_root ).done( function( data ) {
                         jQuery('.languages').html(window.template_single(data))
                         window.click_listener( data )
                         window.spin_remove()

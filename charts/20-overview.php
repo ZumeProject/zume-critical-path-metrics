@@ -87,7 +87,7 @@ class Zume_Funnel_Coaching_Stages extends Zume_Funnel_Chart_Base
 
                 // totals
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "general", key: "coaches" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "general", key: "coaches" }, window.site_info.rest_root ).done( function( data ) {
                     data.label = "Coaches"
                     jQuery('.'+data.key).html(window.template_single_map(data))
                     window.click_listener( data )
@@ -95,7 +95,7 @@ class Zume_Funnel_Coaching_Stages extends Zume_Funnel_Chart_Base
                 })
 
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "general", key: "total_people_in_coaching" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "general", key: "total_people_in_coaching" }, window.site_info.rest_root ).done( function( data ) {
                     jQuery('.total_people_in_coaching').html(window.template_single_map(data))
                     window.click_listener( data )
                     window.spin_remove()
@@ -104,25 +104,29 @@ class Zume_Funnel_Coaching_Stages extends Zume_Funnel_Chart_Base
                 window.path_load = ( range ) => {
 
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "general", key: "active_coaches", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "general", key: "active_coaches", range: range }, window.site_info.rest_root ).done( function( data ) {
                         data.label = "Active Coaches"
                         jQuery('.'+data.key).html(window.template_single(data))
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "early", key: "new_coaching_requests", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "general", key: "new_coaching_requests", range: range }, window.site_info.rest_root ).done( function( data ) {
+                        data.label = "New Coaching Requests"
                         jQuery('.new_coaching_requests').html(window.template_single(data))
                         window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "general", key: "coaching_engagements", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "general", key: "coaching_engagements", range: range }, window.site_info.rest_root ).done( function( data ) {
+                        data.label = "Coach Engagements"
                         jQuery('.coaching_engagements').html(window.template_single(data))
+                        window.click_listener( data )
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "general", key: "people_in_coaching", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "general", key: "people_in_coaching", range: range }, window.site_info.rest_root ).done( function( data ) {
+                        data.label = "People in Coaching"
                         jQuery('.people_in_coaching').html(window.template_single_map(data))
                         window.click_listener( data )
                         window.spin_remove()

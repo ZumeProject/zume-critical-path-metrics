@@ -3,6 +3,7 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 class Zume_Stats_Endpoints
 {
+    public $permissions = ['manage_dt'];
     public $namespace = 'zume_funnel/v1';
     private static $_instance = null;
     public static function instance() {
@@ -24,42 +25,54 @@ class Zume_Stats_Endpoints
             $namespace, '/total', [
                 'methods'  => [ 'GET', 'POST' ],
                 'callback' => [ $this, 'total' ],
-                'permission_callback' => '__return_true'
+                'permission_callback' => function () {
+                    return $this->has_permission();
+                }
             ]
         );
         register_rest_route(
             $namespace, '/location', [
                 'methods'  => [ 'GET', 'POST' ],
                 'callback' => [ $this, 'location' ],
-                'permission_callback' => '__return_true'
+                'permission_callback' => function () {
+                    return $this->has_permission();
+                }
             ]
         );
         register_rest_route(
             $namespace, '/list', [
                 'methods'  => [ 'GET', 'POST' ],
                 'callback' => [ $this, 'list' ],
-                'permission_callback' => '__return_true'
+                'permission_callback' => function () {
+                    return $this->has_permission();
+                }
             ]
         );
         register_rest_route(
             $namespace, '/map', [
                 'methods'  => [ 'GET', 'POST' ],
                 'callback' => [ $this, 'map' ],
-                'permission_callback' => '__return_true'
+                'permission_callback' => function () {
+                    return $this->has_permission();
+                }
             ]
         );
         register_rest_route(
             $namespace, '/training_elements', [
                 'methods'  => [ 'GET', 'POST' ],
                 'callback' => [ $this, 'training_elements' ],
-                'permission_callback' => '__return_true'
+                'permission_callback' => function () {
+                    return $this->has_permission();
+                }
             ]
         );
         register_rest_route(
             $namespace, '/log', [
                 'methods'  => [ 'GET', 'POST' ],
                 'callback' => [ $this, 'log' ],
-                'permission_callback' => '__return_true'
+                'permission_callback' => function () {
+                    return $this->has_permission();
+                }
             ]
         );
         register_rest_route(
@@ -67,7 +80,9 @@ class Zume_Stats_Endpoints
                 [
                     'methods'  => 'GET',
                     'callback' => [ $this, 'location_funnel' ],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function () {
+                        return $this->has_permission();
+                    }
                 ],
             ]
         );
@@ -76,7 +91,9 @@ class Zume_Stats_Endpoints
                 [
                     'methods'  => 'GET',
                     'callback' => [ $this, 'location_goals' ],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function () {
+                        return $this->has_permission();
+                    }
                 ],
             ]
         );
@@ -84,7 +101,9 @@ class Zume_Stats_Endpoints
             $namespace, '/simulate', [
                 'methods'  => [ 'GET', 'POST' ],
                 'callback' => [ $this, 'training_elements' ],
-                'permission_callback' => '__return_true'
+                'permission_callback' => function () {
+                    return $this->has_permission();
+                }
             ]
         );
 
@@ -93,7 +112,9 @@ class Zume_Stats_Endpoints
             $namespace, '/sample', [
                 'methods'  => [ 'GET', 'POST' ],
                 'callback' => [ $this, 'sample' ],
-                'permission_callback' => '__return_true'
+                'permission_callback' => function () {
+                    return $this->has_permission();
+                }
             ]
         );
     }
@@ -2378,6 +2399,15 @@ class Zume_Stats_Endpoints
         return Zume_Funnel_Query::sample( dt_recursive_sanitize_array( $request->get_params() ) );
     }
 
+    public function has_permission(){
+        $pass = false;
+        foreach ( $this->permissions as $permission ){
+            if ( current_user_can( $permission ) ){
+                $pass = true;
+            }
+        }
+        return $pass;
+    }
     public function authorize_url( $authorized ){
         if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), $this->namespace  ) !== false ) {
             $authorized = true;

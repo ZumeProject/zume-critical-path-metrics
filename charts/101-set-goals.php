@@ -444,7 +444,7 @@ class Zume_Funnel_Set_Goals extends Zume_Funnel_Chart_Base
                     ]
                 });
 
-                jQuery.get( window.site_url+'location', function(data){
+                makeRequest('GET', 'location', {  }, window.site_info.rest_root ).done( function( data ) {
                     // console.log(data)
                     window.user_location = data
 

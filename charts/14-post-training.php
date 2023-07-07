@@ -85,7 +85,7 @@ class Zume_Funnel_Post extends Zume_Funnel_Chart_Base
 
                 // totals
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "ptt", key: "total_ptt" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "ptt", key: "total_ptt"}, window.site_info.rest_root ).done( function( data ) {
                     data.link = ''
                     data.label = 'Post-Training Trainees'
                     data.description = 'Description'
@@ -94,7 +94,7 @@ class Zume_Funnel_Post extends Zume_Funnel_Chart_Base
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "general", key: "no_coach" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "ptt", key: "no_coach" }, window.site_info.rest_root ).done( function( data ) {
                     data.valence = 'valence-grey'
                     data.label = 'Has No Coach'
                     data.description = 'Description'
@@ -103,7 +103,7 @@ class Zume_Funnel_Post extends Zume_Funnel_Chart_Base
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "general", key: "no_updated_profiles" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "ptt", key: "no_updated_profiles" }, window.site_info.rest_root ).done( function( data ) {
                     data.valence = 'valence-grey'
                     data.label = 'Has Not Updated Profile'
                     data.description = 'Description'
@@ -112,7 +112,7 @@ class Zume_Funnel_Post extends Zume_Funnel_Chart_Base
                     window.spin_remove()
                 })
                 window.spin_add()
-                window.API_get( window.site_info.total_url, { stage: "general", key: "needs_3_month_plan" }, ( data ) => {
+                makeRequest('GET', 'total', { stage: "ptt", key: "needs_3_month_plan" }, window.site_info.rest_root ).done( function( data ) {
                     data.valence = 'valence-grey'
                     data.label = 'Needs 3-Month Plan'
                     data.description = 'Description'
@@ -126,7 +126,7 @@ class Zume_Funnel_Post extends Zume_Funnel_Chart_Base
                     jQuery('.loading-spinner').addClass('active')
 
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "general", key: "in_and_out", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "general", key: "in_and_out", range: range }, window.site_info.rest_root ).done( function( data ) {
                         data.label = 'Post-Training Flow'
                         data.description = 'Description'
                         jQuery('.'+data.key).html( window.template_in_out( data ) )
@@ -134,7 +134,7 @@ class Zume_Funnel_Post extends Zume_Funnel_Chart_Base
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "general", key: "coach_requests", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "ptt", key: "coach_requests", range: range }, window.site_info.rest_root ).done( function( data ) {
                         data.label = 'Coaching Requests'
                         data.description = 'Description'
                         jQuery('.'+data.key).html(window.template_single_map(data))
@@ -142,7 +142,7 @@ class Zume_Funnel_Post extends Zume_Funnel_Chart_Base
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "general", key: "set_profile", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "ptt", key: "set_profile", range: range }, window.site_info.rest_root ).done( function( data ) {
                         data.label = 'Set Profile'
                         data.description = 'Description'
                         jQuery('.'+data.key).html(window.template_single_map(data))
@@ -150,7 +150,7 @@ class Zume_Funnel_Post extends Zume_Funnel_Chart_Base
                         window.spin_remove()
                     })
                     window.spin_add()
-                    window.API_get( window.site_info.total_url, { stage: "general", key: "completed_3_month_plans", range: range }, ( data ) => {
+                    makeRequest('GET', 'total', { stage: "ptt", key: "completed_3_month_plans", range: range }, window.site_info.rest_root ).done( function( data ) {
                         data.label = 'Completed 3-Month Plans'
                         data.description = 'Description'
                         jQuery('.'+data.key).html(window.template_single_map(data))

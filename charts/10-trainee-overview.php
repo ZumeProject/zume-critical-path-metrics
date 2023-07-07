@@ -171,42 +171,42 @@ class Zume_Funnel_Trainee extends Zume_Funnel_Chart_Base
 
                     window.path_load = ( range ) => {
                         window.spin_add()
-                        window.API_get( window.site_info.total_url, { stage: "registrants", key: "total_registrants", range: range }, ( data ) => {
+                        makeRequest('GET', 'total', { stage: "registrants", key: "total_registrants", range: range }, window.site_info.rest_root ).done( function( data ) {
                             data.label = "Registrant"
                             jQuery('.registrants').html(window.template_map_list(data))
                             window.click_listener(data)
                             window.spin_remove()
                         })
                         window.spin_add()
-                        window.API_get( window.site_info.total_url, { stage: "att", key: "total_att", range: range }, ( data ) => {
+                        makeRequest('GET', 'total', { stage: "att", key: "total_att", range: range }, window.site_info.rest_root ).done( function( data ) {
                             data.label = "Active Training Trainee"
                             jQuery('.active_training_trainees').html(window.template_map_list(data))
                             window.click_listener(data)
                             window.spin_remove()
                         })
                         window.spin_add()
-                        window.API_get( window.site_info.total_url, { stage: "ptt", key: "total_ptt", range: range }, ( data ) => {
+                        makeRequest('GET', 'total', { stage: "ptt", key: "total_ptt", range: range }, window.site_info.rest_root ).done( function( data ) {
                             data.label = "Post Training Trainee"
                             jQuery('.post_training_trainees').html(window.template_map_list(data))
                             window.click_listener(data)
                             window.spin_remove()
                         })
                         window.spin_add()
-                        window.API_get( window.site_info.total_url, { stage: "s1", key: "total_s1", range: range }, ( data ) => {
+                        makeRequest('GET', 'total', { stage: "s1", key: "total_s1", range: range }, window.site_info.rest_root ).done( function( data ) {
                             data.label = "(S1) Partial Practitioner"
                             jQuery('.s1_practitioners').html(window.template_map_list(data))
                             window.click_listener(data)
                             window.spin_remove()
                         })
                         window.spin_add()
-                        window.API_get( window.site_info.total_url, { stage: "s2", key: "total_s2", range: range }, ( data ) => {
+                        makeRequest('GET', 'total', { stage: "s2", key: "total_s2", range: range }, window.site_info.rest_root ).done( function( data ) {
                             data.label = "(S2) Completed Practitioner"
                             jQuery('.s2_practitioners').html(window.template_map_list(data))
                             window.click_listener(data)
                             window.spin_remove()
                         })
                         window.spin_add()
-                        window.API_get( window.site_info.total_url, { stage: "s3", key: "total_s3", range: range }, ( data ) => {
+                        makeRequest('GET', 'total', { stage: "s3", key: "total_s3", range: range }, window.site_info.rest_root ).done( function( data ) {
                             data.label = "(S3) Multiplying Practitioner"
                             jQuery('.s3_practitioners').html(window.template_map_list(data))
                             window.click_listener(data)
