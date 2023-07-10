@@ -104,14 +104,6 @@ class Zume_Funnel {
             require_once( 'api/rest-api.php' );
         }
 
-
-        require_once ('maps/cluster-1-last100.php');
-        require_once ('maps/heatmap.php');
-        require_once ('maps/map-2-network-activities.php');
-        require_once ('maps/map-3-trainees.php');
-        require_once ('maps/map-4-practitioners.php');
-        require_once ('maps/map-5-churches.php');
-
         require_once( 'charts/loader.php' );
 
         $this->i18n();
