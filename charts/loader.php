@@ -52,7 +52,7 @@ class Zume_Funnel_Base {
         if ( current_user_can( 'list_users' ) ) {
             $tabs[] = [
                 "link" => site_url( "/zume-funnel/" ), // the link where the user will be directed when they click
-                "label" => __( "Funnels", "zume_funnels" )  // the label the user will see
+                "label" => __( "Funnel", "zume_funnels" )  // the label the user will see
             ];
         }
         return $tabs;

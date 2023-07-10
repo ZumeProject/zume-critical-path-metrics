@@ -297,14 +297,14 @@ abstract class Zume_Funnel_Chart_Base
                 window.load_list = ( data ) => {
                     jQuery('.zume-list.'+data.key).click(function(){
                         jQuery('#modal-large').foundation('open')
-                        jQuery('#modal-large-title').empty().html(`${data.label} <span style="float:right; margin-right: 2em;"><button class="button small">Take Action</button> <button class="button small ">Take Action</button></span> <hr>`)
+                        jQuery('#modal-large-title').empty().html(`${data.label} <span style="float:right; margin-right: 2em;"><a href="https://zume5.training/contacts?query=eyJmaWVsZHMiOlt7InR5cGUiOlsidXNlciJdfV0sInNvcnQiOiJuYW1lIiwib2Zmc2V0IjowfQ%3D%3D&labels=W3siaWQiOiJ1c2VyIiwibmFtZSI6IkNvbnRhY3QgVHlwZTogVXNlciIsImZpZWxkIjoidHlwZSJ9XQ%3D%3D&filter_id=1689018512.323&filter_tab=" class="button small">Take Action</a></span> <hr>`)
                         jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
 
                         makeRequest('GET', 'list', {}, window.site_info.rest_root ).done( function( data_list ) {
                             jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-goals-list-modal"></tbody></table>')
                             jQuery('#zume-goals-list-modal').append( `<tr><td></td><td><strong>Name</strong></td><td><strong>Registered</strong></td></tr>`)
                             jQuery.each(data_list, function(i,v)  {
-                                jQuery('#zume-goals-list-modal').append( `<tr><td><input type="checkbox" /></td><td><a href="#">${ v.display_name }</a></td><td>${v.user_registered}</td></tr>`)
+                                jQuery('#zume-goals-list-modal').append( `<tr><td><input type="checkbox" /></td><td><a href="https://zume5.training/contacts?query=eyJmaWVsZHMiOlt7InR5cGUiOlsidXNlciJdfV0sInNvcnQiOiJuYW1lIiwib2Zmc2V0IjowfQ%3D%3D&labels=W3siaWQiOiJ1c2VyIiwibmFtZSI6IkNvbnRhY3QgVHlwZTogVXNlciIsImZpZWxkIjoidHlwZSJ9XQ%3D%3D&filter_id=1689018512.323&filter_tab=">${ v.display_name }</a></td><td>${v.user_registered}</td></tr>`)
                             })
                             jQuery('.loading-spinner').removeClass('active')
                         })
@@ -325,6 +325,7 @@ abstract class Zume_Funnel_Chart_Base
                                         </div>
                                         <div class="cell small-6 medium-4">
                                             <h2>List</h2>
+                                            <div id="list-results"></div>
                                         </div>
                                     </div>
                                         `)
@@ -340,6 +341,24 @@ abstract class Zume_Funnel_Chart_Base
 
                             map.dragRotate.disable();
                             map.touchZoomRotate.disableRotation();
+
+                            map.on('zoomstart', function(e) {
+                                jQuery('#list-results').empty().html('<span class="loading-spinner active"></span>')
+                            })
+                            map.on('dragstart', function(e) {
+                                jQuery('#list-results').empty().html('<span class="loading-spinner active"></span>')
+                            })
+                            map.on('zoomend', function(e) {
+                                list_result()
+                            })
+                            map.on('dragend', function(e) {
+                                list_result()
+                            })
+                            function list_result() {
+                                console.log(map.getBounds())
+                                let bounds = map.getBounds()
+                                jQuery('#list-results').empty().html(`North: ${bounds._ne.lat}<br>East: ${bounds._ne.lng}, <br>South: ${bounds._sw.lat}, <br>West: ${bounds._sw.lng}`)
+                            }
 
 
                             jQuery('.loading-spinner').removeClass('active')
