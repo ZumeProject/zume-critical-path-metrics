@@ -85,6 +85,7 @@ abstract class Zume_Funnel_Chart_Base
             jQuery(document).ready(function($) {
 
                 window.site_info = {
+                    'map_key': '<?php echo DT_Mapbox_API::get_key(); ?>',
                     'rest_root': 'zume_funnel/v1/',
                     'site_url': '<?php echo site_url(); ?>',
                     'rest_url': '<?php echo esc_url_raw( rest_url() ); ?>',
@@ -299,11 +300,11 @@ abstract class Zume_Funnel_Chart_Base
                         jQuery('#modal-large-title').empty().html(`${data.label} <span style="float:right; margin-right: 2em;"><button class="button small">Take Action</button> <button class="button small ">Take Action</button></span> <hr>`)
                         jQuery('#modal-large-content').empty().html('<span class="loading-spinner active"></span>')
 
-                        window.API_get( window.site_info.list_url, ( data_list ) => {
-                            jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-list-modal"></tbody></table>')
-                            jQuery('#zume-list-modal').append( `<tr><td></td><td><strong>Name</strong></td><td><strong>Registered</strong></td></tr>`)
+                        makeRequest('GET', 'list', {}, window.site_info.rest_root ).done( function( data_list ) {
+                            jQuery('#modal-large-content').empty().html('<table class="hover"><tbody id="zume-goals-list-modal"></tbody></table>')
+                            jQuery('#zume-goals-list-modal').append( `<tr><td></td><td><strong>Name</strong></td><td><strong>Registered</strong></td></tr>`)
                             jQuery.each(data_list, function(i,v)  {
-                                jQuery('#zume-list-modal').append( `<tr><td><input type="checkbox" /></td><td><a href="#">${ v.display_name }</a></td><td>${v.user_registered}</td></tr>`)
+                                jQuery('#zume-goals-list-modal').append( `<tr><td><input type="checkbox" /></td><td><a href="#">${ v.display_name }</a></td><td>${v.user_registered}</td></tr>`)
                             })
                             jQuery('.loading-spinner').removeClass('active')
                         })
@@ -313,9 +314,34 @@ abstract class Zume_Funnel_Chart_Base
                     jQuery('.zume-map.'+data.key).click(function(){
                         jQuery('#modal-full').foundation('open')
                         jQuery('#modal-full-title').empty().html(`${data.label}<hr>`)
-                        window.API_get( window.site_info.map_url, { key: data.key }, ( data_map ) => {
-                            jQuery('#modal-full-content').empty().html(data_map.link)
-                            jQuery('.map-iframe').prop('src', jQuery(this).data('link')).prop('height', window.innerHeight - 150)
+                        jQuery('#modal-full-content').empty().html('<span class="loading-spinner active"></span>')
+
+                        makeRequest('GET', 'map', { key: data.key }, window.site_info.rest_root ).done( function( data_map ) {
+                            let height = window.innerHeight - 150;
+                            jQuery('#modal-full-content').html(`
+                                    <div class="grid-x grid-padding-x">
+                                        <div class="cell small-6 medium-8">
+                                            <div id="map" style="position:relative;height: ${height}px !important;"></div>
+                                        </div>
+                                        <div class="cell small-6 medium-4">
+                                            <h2>List</h2>
+                                        </div>
+                                    </div>
+                                        `)
+
+                            mapboxgl.accessToken = window.site_info.map_key;
+                            var map = new mapboxgl.Map({
+                                container: 'map',
+                                style: 'mapbox://styles/mapbox/light-v10',
+                                center: [0, 0],
+                                minZoom: 0,
+                                zoom: 0
+                            });
+
+                            map.dragRotate.disable();
+                            map.touchZoomRotate.disableRotation();
+
+
                             jQuery('.loading-spinner').removeClass('active')
                         })
                     })
